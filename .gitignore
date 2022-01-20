@@ -1,0 +1,8 @@
+# Fichiers CPython
+__pycache__/
+# Fichiers MAC OSX
+.DS_Store
+# Fichiers de configuration VS Code
+.vscode
+# Fichiers Jupyter d'historique d'éxécution.
+.ipynb_checkpoints/
