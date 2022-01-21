@@ -70,3 +70,8 @@ def jour_semaine (Y: int, M: int, D: float) -> int :
     jj += 1.5
 
     return jj % 7
+
+def siecles_juliens_epoch (jj: float) -> float :
+    '''Renvoie le temps T, mesuré en siècles juliens à partir de l'Epoch'''
+    T = (jj - 2_451_545) / 36_525
+    return T
