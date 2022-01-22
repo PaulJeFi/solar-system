@@ -1,6 +1,7 @@
 # Principaux termes de la théorie VSOP87
 # Copiés depuis la NASA, des lignes 2 627 à 13 775 de cette page :
-# https:#ssd.jpl.nasa.gov/ov
+# https://ssd.jpl.nasa.gov/ov
+# https://ssd.jpl.nasa.gov/ov/main.js
 
 ################################################################################
 # Mercure
