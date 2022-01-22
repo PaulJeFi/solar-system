@@ -11046,3 +11046,18 @@ sun_Z = [
 	sun_Z1,
 	sun_Z2
 ]
+
+# Grand récap général
+
+Mercure = [mercury_L, mercury_B, mercury_R]
+Venus = [venus_L, venus_B, venus_R]
+Terre = [earth_L, earth_B, earth_R]
+Jupiter = [jupiter_L, jupiter_B, jupiter_R]
+Saturn = [saturn_L, saturn_B, saturn_R]
+Uranus = [uranus_L, uranus_B, uranus_R]
+Neptune = [neptune_L, neptune_B, neptune_R]
+Sun = [sun_X, sun_Y, sun_Z]
+
+planets = {'mercure' : Mercure, 'venus': Venus, 'terre': Terre,
+           'jupiter': Jupiter, 'saturn': Saturn, 'uranus': Uranus,
+           'neptune': Neptune}
