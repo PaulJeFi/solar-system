@@ -11052,12 +11052,13 @@ sun_Z = [
 Mercure = [mercury_L, mercury_B, mercury_R]
 Venus = [venus_L, venus_B, venus_R]
 Terre = [earth_L, earth_B, earth_R]
+Mars = [mars_L, mars_B, mars_L]
 Jupiter = [jupiter_L, jupiter_B, jupiter_R]
 Saturn = [saturn_L, saturn_B, saturn_R]
 Uranus = [uranus_L, uranus_B, uranus_R]
 Neptune = [neptune_L, neptune_B, neptune_R]
 Sun = [sun_X, sun_Y, sun_Z]
 
-planets = {'mercure' : Mercure, 'venus': Venus, 'terre': Terre,
+planets = {'mercure': Mercure, 'venus': Venus, 'terre': Terre, 'mars': Mars,
            'jupiter': Jupiter, 'saturn': Saturn, 'uranus': Uranus,
            'neptune': Neptune}
