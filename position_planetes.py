@@ -2,6 +2,7 @@ import elements_orbitaux
 import VSOP87
 import temps
 import math
+import copy
 
 def Kepler (e: float, M: float) -> float :
     '''Résout l'équation de Kepler.'''
@@ -32,7 +33,7 @@ def get_by_VSOP87 (planet: str, Y: int, M: int, D: float) :
 
     # Première étape : selection de la planète.
     planet = planet.lower()
-    planete = VSOP87.planets[planet]
+    planete = copy.deepcopy(VSOP87.planets[planet])
 
     # Deuxième étape, calcul de τ (tau), mesuré en milliers d'années juliennes depuis J 2000.
     jj = temps.JJ(Y, M, D)
