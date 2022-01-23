@@ -65,3 +65,41 @@ def get_by_VSOP87 (planet: str, Y: int, M: int, D: float) :
     
     # Notes de retour : L en radians, B en radians et R en UA
     return L, B, R
+
+def get_sun (Y: int, M: int, D: float) :
+    '''Retourne les coordonnées du Soleil (x, y, z) par rapport au barycentre du
+    Système Solaire.'''
+
+    # Première étape : selection ddu Soleil.
+    sun = copy.deepcopy(VSOP87.Sun)
+
+    # Deuxième étape, calcul de τ (tau), mesuré en milliers d'années juliennes depuis J 2000.
+    jj = temps.JJ(Y, M, D)
+    tau = (jj - 2_451_545.0) / 365_250
+
+    # Troisième étape : calcul de la somme des A • cos(B + C•τ) de la liste.
+    for type_liste_index in range(len(sun)) :
+        for liste_index in range(len(sun[type_liste_index])) :
+            for triplet_index in range(len(sun[type_liste_index][liste_index])) :
+                sun[type_liste_index][liste_index][triplet_index] = sun[type_liste_index][liste_index][triplet_index][0] * math.cos(sun[type_liste_index][liste_index][triplet_index][1] + sun[type_liste_index][liste_index][triplet_index][2] * tau)
+
+            sun[type_liste_index][liste_index] = sum(sun[type_liste_index][liste_index])
+        
+    # Quatrième étape : calcul de la longitude des coordonnées x, y, z :
+    # E (pour élément) = E0 + E1•τ + E2•τ^2 + E3•τ^3 ...
+    x = 0
+    y = 0
+    z = 0
+
+    # Pour x
+    for X in range(len(sun[0])) :
+        x += sun[0][X] * (tau ** X)
+    # Pour y
+    for Y in range(len(sun[1])) :
+        y += sun[1][Y] * (tau ** Y)
+    # Pour z
+    for Z in range(len(sun[2])) :
+        z += sun[2][Z] * (tau ** Z)
+    
+    # Notes de retour : x, y et z en UA
+    return x, y, z
