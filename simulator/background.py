@@ -4,10 +4,10 @@ import numpy as np
 
 # Définitions des variables
 screen_size = width, height = (1080, 720) # La taille finale de l'image, en px
-star_percent                = 5           # Le pourcentage d'étoiles
+star_percent                = 1           # Le pourcentage d'étoiles
 star_median_size            = 6           # La taille moyenne des étoiles, en px
-star_size_error             = 10           # La marge d'erreur de la taille, en %
-color_max_randomness        = 10          # Aléatoire des couleurs, en unité.
+star_size_error             = 8           # La marge d'erreur de la taille, en %
+color_max_randomness        = 3           # Aléatoire des couleurs, en unité.
 
 star_colors  = [ [255, 107, 70], [219, 168, 46], [0, 154, 255], [75, 151, 255] ]  # Liste de couleurs réalistes pour une étoile. Des variations aléatoires seront effectuées.
 
