@@ -2,6 +2,10 @@ import math
 
 orbit_resolution = 100
 
+# On utilise la méthode de Newton pour résoudre l'équation de Kepler.
+def kepler_equation(E: float, M: float, e:float) -> float:
+    return M - E + e * math.sin(E)
+
 class Planete :
     def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0]) -> None :
 
@@ -11,9 +15,10 @@ class Planete :
         self.apoapsis = apoapsis # apogée
 
         self.compute_data()
+        self.compute_orbit_path()
 
 
-    def compute_data(self) :
+    def compute_data(self) -> None :
 
         self.semi_major_axis = (self.perigee + self.apogee) / 2
         self.linear_eccentricity = self.semi_major_axis - self.perigee # distance focale
@@ -22,7 +27,7 @@ class Planete :
         self.ellipse_centre_X = self.center_of_mass[0] - self.linear_eccentricity
         self.ellipse_centre_Y = self.center_of_mass[1]
 
-    def compute_orbit_path(self) :
+    def compute_orbit_path(self) -> None :
         self.orbit_path = []
 
         for i in range(orbit_resolution) :
