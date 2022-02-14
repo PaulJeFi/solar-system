@@ -6,6 +6,26 @@ orbit_resolution = 100
 def kepler_equation(E: float, M: float, e:float) -> float:
     return M - E + e * math.sin(E)
 
+def solve(func: function, initial_guess: float=0, max_iterations: float=100) -> float :
+    '''Thanks Newton !'''
+    h = 0.0001 # taille du pas de l'analyse de la dérivée
+    acceptable_error  = 0.00000001
+    guess = initial_guess
+
+    for i in range(max_iterations) :
+        y = func(guess)
+        if abs(y) < acceptable_error : # sortir si on est assez proche de 0
+            break
+        slope = (func(guess + h) - y) / h
+        step = y / slope
+        guess -= step
+    
+    return guess
+
+def solve_kepler(mean_anomaly: float, eccentricity: float, max_iterations: float=100) -> float :
+    kep = lambda x : kepler_equation(x, mean_anomaly, eccentricity)
+    return solve(kep, initial_guess=mean_anomaly)
+
 class Planete :
     def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0]) -> None :
 
@@ -36,3 +56,15 @@ class Planete :
             py = math.sin(angle) * self.semi_minor_axis + self.ellipse_centre_Y # dans la vidéo, il utilise ellipse_centre_x ?
             self.orbit_path.append([px, py])
 
+    def calculate_point_from_time(self, t: float) -> list :
+
+        # Angle du corps si l'orbit était circulaire
+        mean_anomaly = t * math.pi * 2
+        # Résoudre l'anomalie eccentrique (angle du corps dans son orbite elliptique)
+        eccentric_anomaly = solve_kepler(mean_anomaly, self.eccentricity)
+
+        # Calculer les coordonnées cartésiennes
+        point_x = math.cos(eccentric_anomaly) * self.semi_major_axis + self.ellipse_centre_X
+        point_y = math.sin(eccentric_anomaly) * self.semi_minor_axis + self.ellipse_centre_Y
+
+        return [point_x, point_y]
