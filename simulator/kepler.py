@@ -6,7 +6,7 @@ orbit_resolution = 100
 def kepler_equation(E: float, M: float, e:float) -> float:
     return M - E + e * math.sin(E)
 
-def solve(func: function, initial_guess: float=0, max_iterations: float=100) -> float :
+def solve(func, initial_guess: float=0, max_iterations: float=100) -> float :
     '''Thanks Newton !'''
     h = 0.0001 # taille du pas de l'analyse de la dérivée
     acceptable_error  = 0.00000001
@@ -40,8 +40,8 @@ class Planete :
 
     def compute_data(self) -> None :
 
-        self.semi_major_axis = (self.perigee + self.apogee) / 2
-        self.linear_eccentricity = self.semi_major_axis - self.perigee # distance focale
+        self.semi_major_axis = (self.periapsis + self.apoapsis) / 2
+        self.linear_eccentricity = self.semi_major_axis - self.periapsis # distance focale
         self.eccentricity = self.linear_eccentricity / self.semi_major_axis # exentricité
         self.semi_minor_axis = math.sqrt( (self.semi_major_axis ** 2) - (self.linear_eccentricity ** 2) )
         self.ellipse_centre_X = self.center_of_mass[0] - self.linear_eccentricity
