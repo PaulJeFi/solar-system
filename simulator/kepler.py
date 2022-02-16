@@ -68,6 +68,10 @@ class Planete :
 
     def calculate_point_from_time(self, t: float) -> list :
 
+        # Il faut modifier le temps !!!
+        if self.orbital_period != None :
+            t = t + (t/self.orbital_period)
+
         # Angle du corps si l'orbit était circulaire
         mean_anomaly = t * math.pi * 2
         # Résoudre l'anomalie eccentrique (angle du corps dans son orbite elliptique)
