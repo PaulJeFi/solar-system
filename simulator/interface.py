@@ -15,7 +15,7 @@ width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
 pygame.init()
 pygame.mouse.set_visible(False)
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Spatior")
+pygame.display.set_caption("Spacior")
 pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
 screen.fill(BLACK)
 clock = pygame.time.Clock()
@@ -31,7 +31,7 @@ def main():
     moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
 
     temps = 1
-    vitesse = 365.25
+    vitesse = 365.25 / 2
     frame_time = time()
     
     while True:

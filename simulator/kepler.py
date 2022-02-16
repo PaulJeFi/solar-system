@@ -1,5 +1,9 @@
 import math
 
+# G = 6.674_30 × 10**-(11) # m3 kg−1 s−2
+# On veut convertir G pour que son unité de temps soit le jour, et son unité de distance l'UA.
+G = 1.4818517 * 10 ** (-34) # kg^-1 • AU^3 • jour^(-2)
+
 orbit_resolution = 100
 
 # On utilise la méthode de Newton pour résoudre l'équation de Kepler.
@@ -27,18 +31,18 @@ def solve_kepler(mean_anomaly: float, eccentricity: float, max_iterations: float
     return solve(kep, initial_guess=mean_anomaly)
 
 class Planete :
-    def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0]) -> None :
+    def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0], sum_mass=None) -> None :
 
         
         self.center_of_mass = center_of_mass
         self.periapsis = periapsis # périgée
         self.apoapsis = apoapsis # apogée
 
-        self.compute_data()
+        self.compute_data(sum_mass)
         self.compute_orbit_path()
 
 
-    def compute_data(self) -> None :
+    def compute_data(self, sum_mass) -> None :
 
         self.semi_major_axis = (self.periapsis + self.apoapsis) / 2
         self.linear_eccentricity = self.semi_major_axis - self.periapsis # distance focale
@@ -46,6 +50,12 @@ class Planete :
         self.semi_minor_axis = math.sqrt( (self.semi_major_axis ** 2) - (self.linear_eccentricity ** 2) )
         self.ellipse_centre_X = self.center_of_mass[0] - self.linear_eccentricity
         self.ellipse_centre_Y = self.center_of_mass[1]
+
+        # Calcul de la période orbitale
+        if sum_mass != None :
+            self.orbital_period = math.sqrt( (4 * math.pi * (self.semi_major_axis ** 3)) / (G * sum_mass)) # En jours
+        else :
+            self.orbital_period = None
 
     def compute_orbit_path(self) -> None :
         self.orbit_path = []
