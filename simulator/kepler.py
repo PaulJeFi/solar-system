@@ -70,7 +70,7 @@ class Planete :
 
         # Il faut modifier le temps !!!
         if self.orbital_period != None :
-            t = t + (t/self.orbital_period)
+            t *= 1/self.orbital_period
 
         # Angle du corps si l'orbit était circulaire
         mean_anomaly = t * math.pi * 2
