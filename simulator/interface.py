@@ -38,19 +38,19 @@ def update_time(temps, j, last_frame=time()):
 
 class ecran():
 
-    def espace_donnee(self):
+    def espace_donnee():
         #dessine une zone pour photo planete et infos en dessous 
-        pygame.draw.rect(screen, GRAY, 900, 0, 1080, 250)
-        pygame.draw.rect(screen, WHITE, 900, 250, 1080, 600)
+        pygame.draw.rect(screen, GRAY, (900, 0, 1080, 250))
+        pygame.draw.rect(screen, WHITE, (900, 250, 1080, 600))
         pygame.display.flip()
 
-    def barre_action(self):
+    def barre_action():
         #creer une barre sur la gauche pour ajouter boutons et actions 
-        pygame.draw.rect(screen, GRAY, 0, 0, 50, 600)
-        pygame.draw.rect(screen, GRAY, 50, 0, 55, 600)
+        pygame.draw.rect(screen, GRAY, (0, 0, 50, 600))
+        pygame.draw.rect(screen, GRAY, (50, 0, 55, 600))
         pygame.display.flip()
 
-    def affichage_info(self):
+    def affichage_info():
         #pour retrouver les donnees associer a la planete dans le dico
         #retourne sous forme de dico : {poids, rayon, distance au soleil, temps rotation soleil}
         for i in data:
@@ -62,19 +62,19 @@ class ecran():
 
 
 def main():
-    donnee = ecran.espace_donnee
-    barre = ecran.barre_action
+    donnee = ecran.espace_donnee()
+    barre = ecran.barre_action()
     sunpos = (int(width/2), int(height/2))
 
     moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
 
     temps = 1
-    vitesse = 365.25 / 2
-    frame_time = time()
+    vitesse = 30 # Jours par secondes
+    frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     
     while True:
-        donnee()
-        barre()
+        donnee
+        barre
         dt = clock.tick(144)
         screen.fill(BLACK)
         for event in pygame.event.get() :
@@ -84,14 +84,14 @@ def main():
 
         moon_pos = moon.calculate_point_from_time(temps)
 
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0]), int(moon_pos[1])], 15) # Soleil
+        pygame.draw.circle(screen, WHITE, [int(moon_pos[0]), int(moon_pos[1])], 15) # Astre random sorti de mon imaginaire
         pygame.draw.circle(screen, YELLOW, sunpos, 30) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
     
-        temps, frame_time = update_time(temps, vitesse, frame_time)
+        temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
         
-        pygame.display.flip()
+        pygame.display.flip() # Affichage final
 
 if __name__ == '__main__':
     main()
