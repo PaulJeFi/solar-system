@@ -22,13 +22,14 @@ BLEU_FC = (0, 0, 25)
 
 width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
 pygame.init()
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Spacior")
 pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
 screen.fill(BLACK)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
+jouer = False
 
 #données palnètes
 
@@ -54,8 +55,20 @@ class ecran():
         #dessine une zone pour photo planete et infos en dessous 
         pygame.draw.rect(screen, BLEU_FC, ((800, 0), (1080, 275)))#photo planete
         pygame.draw.rect(screen, WHITE, ((800, 275), (1080, 600)))#affichage donnees
+
+    def play_pause_date(self):
         pygame.draw.rect(screen, GRAY, ((800, 550), (1080, 600)))#barre date
         pygame.draw.rect(screen, OR_STP, ((1000, 550), (1080, 600)))#bouton play/pause
+        
+    def bouton_pause(self):
+        if jouer == True:
+            bouton = pygame.image.load("simulator\images\pause.png")
+            bouton = pygame.transform.scale(bouton, (50, 45))
+            screen.blit(bouton, (1015, 552))
+        elif jouer == False :
+            bouton = pygame.image.load("simulator\images\play.png")
+            bouton = pygame.transform.scale(bouton, (50, 45))
+            screen.blit(bouton, (1015, 552))
         
 
     def barre_action(self):
@@ -102,8 +115,11 @@ class ecran():
 
 
 def main():
-
+    
     HUD = ecran()
+    data = False
+    jouer = True
+    
 
     sunpos = (int(width/2), int(height/2))
 
@@ -123,12 +139,40 @@ def main():
             if event.type == pygame.QUIT :
                 pygame.quit()
                 sys.exit()
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z:
+                    data = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    data = True
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    jouer = True
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    jouer = False
+                    
+    
+        if data == True:
+            HUD.espace_donnee()
+            HUD.ecriture()
+
+        if jouer == False:
+            HUD.bouton_pause()
+
+        if jouer == True:
+            HUD.bouton_pause()
+
 
         moon_pos = moon.calculate_point_from_time(temps)
         #mise en place des éléments de l'interface
-        HUD.espace_donnee()
+        HUD.play_pause_date()
         HUD.barre_action()
-        HUD.ecriture()
+        HUD.bouton_pause()
 
         # on fait apparaitre les différents astres 
         pygame.draw.circle(screen, WHITE, [int(moon_pos[0]), int(moon_pos[1])], 15) # Astre random sorti de mon imaginaire
