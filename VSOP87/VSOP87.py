@@ -11061,4 +11061,4 @@ Sun = [sun_X, sun_Y, sun_Z]
 
 planets = {'mercure': Mercure, 'venus': Venus, 'terre': Terre, 'mars': Mars,
            'jupiter': Jupiter, 'saturn': Saturn, 'uranus': Uranus,
-           'neptune': Neptune}
+           'neptune': Neptune, 'saturne': Saturn}

@@ -58,8 +58,8 @@ class ecran():
         self.bouton_pause_pos = (1015, 552) # Position du bouton pause
         self.bouton_pause_size = (50, 45) # Dimensions du bouton pause
         self.bouton_pause_images = { # Sprites du bouton pause
-                                    "play": pygame.transform.scale(pygame.image.load("simulator\images\play.png"), self.bouton_pause_size),
-                                    "pause": pygame.transform.scale(pygame.image.load("simulator\images\pause.png"), self.bouton_pause_size)}
+                                    "play": pygame.transform.scale(pygame.image.load("simulator/images/play.png"), self.bouton_pause_size),
+                                    "pause": pygame.transform.scale(pygame.image.load("simulator/images/pause.png"), self.bouton_pause_size)}
 
     def espace_donnee(self) -> None:
         '''Dessine une zone pour photo planete et infos en dessous'''
