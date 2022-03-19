@@ -6,8 +6,9 @@ import temps
 import position_planetes
 
 def get_coords(L, B, R) :
-    return [ R * math.sin(B) * math.cos(L), R * math.sin(B) * math.sin(L), R * math.cos(L) ]
-
+    #return [R * math.sin(L), R * math.cos(L), 0]
+    return [ R * math.cos(B) * math.cos(L), R * math.sin(B) * math.cos(L), R * math.sin(L) ]
+# R * math.sin(L), R * math.cos(L)
 def get_distance(plan, sun) :
     return math.sqrt((plan[0] - sun[0])**2 + (plan[1] - sun[1])**2 + (plan[2] - sun[2])**2)
 

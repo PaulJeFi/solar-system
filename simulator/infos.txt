@@ -1,0 +1,21 @@
+Apogée de Terre le 
+2459766.5
+À une distance (en UA) :
+1.0075241771213406
+
+
+Périgée de Terre le 
+2459944.5
+À une distance (en UA) :
+0.9923318226638247
+
+Apogée de Terre le 
+2459790.5
+À une distance (en UA) :
+1.020890097623276
+
+
+Périgée de Terre le 
+2459607.5
+À une distance (en UA) :
+0.9793682081497443
