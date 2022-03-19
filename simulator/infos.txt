@@ -1,3 +1,5 @@
+
+# Ancien (2D)
 Apogée de Terre le 
 2459766.5
 À une distance (en UA) :
@@ -9,6 +11,8 @@ Périgée de Terre le
 À une distance (en UA) :
 0.9923318226638247
 
+
+# Nouveau (tenant compte de la 3D)
 Apogée de Terre le 
 2459790.5
 À une distance (en UA) :

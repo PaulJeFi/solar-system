@@ -24,8 +24,10 @@ def get_position (planet: str, Y: int, Month: int, D: float) :
     E = Kepler(e, M)
 
     # Troisième étape, on calcule v l'anomalie vraie et r la distance au Soleil.
-
+    v = 2 * math.atan( (((1 + e)/(1 - e)) ** (1/2)) ) * math.tan( E/2 )
     r = a * (1 - e * math.cos(math.radians(E)))
+
+
 
 def get_by_VSOP87 (planet: str, Y: int, M: int, D: float) :
     '''Retourne les coordonnées héliocentriques précises d'une planète à une
