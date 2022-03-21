@@ -102,7 +102,9 @@ class ecran():
         '''dessine la zone pour entrer la date '''
         pygame.draw.rect(screen, GRAY, ((800, 550), (1080, 600)))#barre date
         pygame.draw.rect(screen, OR_STP, ((990, 550), (90, 600)))#bouton validation date
-        pygame.draw.line(screen, WHITE, (800, 550), (1080, 550), 2)#ligne de séparation
+        pygame.draw.line(screen, WHITE, (499, 551), (1080, 551), 3)#ligne de séparation
+        pygame.draw.line(screen, WHITE, (499, 550), (499, 600), 3)#ligne de séparation
+        pygame.draw.line(screen, WHITE, (798, 550), (798, 600), 3)#ligne de séparation
         pygame.draw.rect(screen, BLEU_STP, ((800, 500), (280, 50)))#barre contrôle temps
         pygame.draw.rect(screen, GRAY, ((800, 500), (90, 50)))#bouton sens inverse
         pygame.draw.rect(screen, GRAY, ((990, 500), (280, 50)))#bouton vitesse
@@ -296,12 +298,12 @@ def main() -> None:
         #mise en place des éléments de l'interface
         if data == True:
             HUD.espace_donnee()
-            HUD.ecriture()
-        HUD.play_pause_date()
+            HUD.ecriture("C")
         HUD.vitesse_lecture(vitesse)
         HUD.barre_action()
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
+        HUD.play_pause_date()
         # SON.lecture()
 
         if jouer:
