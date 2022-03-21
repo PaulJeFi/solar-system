@@ -261,7 +261,8 @@ def main() -> None:
     vitesse = 30 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     
-    zoom_factor = 1 # Facteur de zoom sur la simulation
+    camera_zoom = 1 # Facteur de zoom sur la simulation
+    camera_pos = list(sunpos) # Position de la caméra
 
     while True:
         
@@ -270,15 +271,16 @@ def main() -> None:
         screen.fill(BLACK)
 
         # Actualisation du zoom
-        if zoom_factor != HUD.zoom_factor:
-            zoom_factor = HUD.zoom_factor
-            moon.compute_orbit_path(zoom_factor, sunpos)
+        if camera_zoom != HUD.zoom_factor:
+            camera_zoom = HUD.zoom_factor
+            moon.compute_orbit_path(camera_zoom, camera_pos)
 
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
                 pygame.quit()
                 sys.exit()
             
+            # Actions à ne faire qu'une seule fois par clique
             if event.type == pygame.KEYDOWN:
 
                 # Affichage ou non des informations sur la planête
@@ -298,15 +300,32 @@ def main() -> None:
                 if event.key == pygame.K_d:
                     vitesse = 60
 
+        # Actions à faire tant que la touche est pressée
+        pressed = pygame.key.get_pressed()
+
+        if pressed[pygame.K_UP]:
+            camera_pos[1] -= 0.5/camera_zoom
+            moon.compute_orbit_path(camera_zoom, camera_pos)
+        if pressed[pygame.K_DOWN]:
+            camera_pos[1] += 0.5/camera_zoom
+            moon.compute_orbit_path(camera_zoom, camera_pos)
+        if pressed[pygame.K_LEFT]:
+            camera_pos[0] -= 0.5/camera_zoom
+            moon.compute_orbit_path(camera_zoom, camera_pos)
+        if pressed[pygame.K_RIGHT]:
+            camera_pos[0] += 0.5/camera_zoom
+            moon.compute_orbit_path(camera_zoom, camera_pos)
+
+
         moon_pos = moon.calculate_point_from_time(temps)
 
         # Formule utilisé pour le zoom :
-        # pos_initialle + (pos_initiale - pos_centre_de_zoom)*(facteur de zoom - 1)
+        # pos_initialle + (pos_initiale - pos_centre_de_zoom) * facteur de zoom
 
         # on fait apparaitre les différents astres
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0]-sunpos[0])*(zoom_factor-1)), int(moon_pos[1] + (moon_pos[1]-sunpos[1])*(zoom_factor-1))], 15*zoom_factor) # Astre random sorti de mon imaginaire
-        planetes.draw_all_planets(temps, zoom_factor, sunpos)
-        pygame.draw.circle(screen, YELLOW, sunpos, 30*zoom_factor) # Soleil
+        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(moon_pos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
+        planetes.draw_all_planets(temps, camera_zoom, camera_pos)
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
@@ -337,18 +356,14 @@ def main() -> None:
             if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
                 if vitesse == 15:
                     vitesse = 30
-                    pass
                 else:
                     vitesse = 15
-                    pass
             """bouton vitesse rapide change en fonction de la vitesse actuelle"""
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
                 if vitesse == 60:
                     vitesse = 30
-                    pass
                 else:
                     vitesse = 60
-                    pass
             """bouton play/pause change en fonction du mode actuelle"""
             if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
                 if jouer == True:
