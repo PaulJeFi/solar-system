@@ -226,7 +226,21 @@ class ecran():
 #     def pause(self):
 #         pygame.mixer.music.pause()
 
+class Gestion_Planete :
+    def __init__(self, mass_center) :
+        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 0.7096386091312117]
+        self.venus = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5]
 
+        self.planetes = [self.mercury, self.venus]
+
+    def draw_planet(self, date, planete, zoom_factor, sun_pos) :
+        time_to_calc = date - planete[1]
+        pos = planete[0].calculate_point_from_time(time_to_calc)
+        pygame.draw.circle(screen, WHITE, [20 * int(pos[0] + (pos[0]-sun_pos[0])*(zoom_factor-1)), 20 * int(pos[1] + (pos[1]-sun_pos[1])*(zoom_factor-1))], 15*zoom_factor)
+
+    def draw_all_planets(self, date, zoom_factor, sun_pos) :
+        for planete in self.planetes :
+            self.draw_planet(date, planete, zoom_factor, sun_pos)
 
 def main() -> None:
     
@@ -239,6 +253,7 @@ def main() -> None:
     sunpos = (int(width/2), int(height/2))
 
     moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
+    planetes = Gestion_Planete(sunpos)
 
     temps = 1
     vitesse = 30 # Jours par secondes
@@ -288,6 +303,7 @@ def main() -> None:
 
         # on fait apparaitre les différents astres
         pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0]-sunpos[0])*(zoom_factor-1)), int(moon_pos[1] + (moon_pos[1]-sunpos[1])*(zoom_factor-1))], 15*zoom_factor) # Astre random sorti de mon imaginaire
+        planetes.draw_all_planets(temps, zoom_factor, sunpos)
         pygame.draw.circle(screen, YELLOW, sunpos, 30*zoom_factor) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
