@@ -64,8 +64,8 @@ class Planete :
             angle = (i / (orbit_resolution - 1)) * math.pi * 2
             px = math.cos(angle) * self.semi_major_axis + self.ellipse_centre_X
             py = math.sin(angle) * self.semi_minor_axis + self.ellipse_centre_Y # dans la vidéo, il utilise ellipse_centre_x ?
-            px += (px - camera_pos[0]) * camera_zoom
-            py += (py - camera_pos[1]) * camera_zoom
+            px = int(sunpos[0] + (px - camera_pos[0]) * camera_zoom) # Ajustements pour le zoom
+            py = int(sunpos[1] + (py - camera_pos[1]) * camera_zoom) # Ajustements pour le zoom
             self.orbit_path.append([px, py])
 
     def calculate_point_from_time(self, t: float) -> list :

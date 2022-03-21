@@ -320,12 +320,12 @@ def main() -> None:
         moon_pos = moon.calculate_point_from_time(temps)
 
         # Formule utilisé pour le zoom :
-        # pos_initialle + (pos_initiale - pos_centre_de_zoom) * facteur de zoom
+        # centre_ecran + (pos_initialle - pos_camera) * zoom_camera
 
         # on fait apparaitre les différents astres
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(moon_pos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom**0.5) # Astre random sorti de mon imaginaire
+        pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
         planetes.draw_all_planets(temps, camera_zoom, camera_pos)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom**0.5) # Soleil
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
