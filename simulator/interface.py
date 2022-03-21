@@ -1,15 +1,16 @@
 from multiprocessing.sharedctypes import Value
 import kepler as kp
 import pygame
-import pygame.mixer_music
 import sys
 from time import time
+import launch
 
 
 BLACK = (0, 0, 0)
 GRAY = (70, 70, 70)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+GREEN_CUSTOM = (25, 200, 25)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
@@ -30,7 +31,9 @@ pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
 screen.fill(BLACK)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
+moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
+# pygame.mixer.music.load("./simulator/musique/musique.mp3")
 jouer = False
 
 #données palnètes
@@ -42,7 +45,9 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'E' : ['Jupyter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',"simulator/images/jupyter.png"],
                 'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',"simulator/images/saturne.png"],
                 'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',"simulator/images/uranus.png"],
-                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"]}
+                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"],
+                'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',"simulator/images/pluton.png"],
+                'Z' : ['', '', '', '', '', '',""]}
 
 
 
@@ -62,6 +67,7 @@ class ecran():
         self.bouton_pause_images = { # Sprites du bouton pause
                                     "play": pygame.transform.scale(pygame.image.load("simulator/images/play.png"), self.bouton_pause_size),
                                     "pause": pygame.transform.scale(pygame.image.load("simulator/images/pause.png"), self.bouton_pause_size)}
+        # Paramètres des boutons de vitesse de lecture
         self.bouton_vitesse_lecture_pos = (820, 502)
         self.bouton_vitesse_lecture_size = (50, 45)
         self.bouton_vitesse_lecture2_pos = (1012, 503)
@@ -71,6 +77,19 @@ class ecran():
                                              "normal2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
+        # Paramètres du slider pour le zoom
+        self.zoom_slider_pos = (500, 0) # Position du background du slider (le boutton est placé en conséquance)
+        self.zoom_slider_size_factor = 2 # Facteur de taille
+        self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces valeurs, modifiez celle au-dessus)
+                                'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
+                                'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
+        self.zoom_slider_images = { # Les images utilisées pour le slider
+                                    'background': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_bg.png"), self.zoom_slider_size['background']),
+                                    'button': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_button.png"), self.zoom_slider_size['button'])}
+        self.zoom_slider_x_range = (self.zoom_slider_pos[0]+19*self.zoom_slider_size_factor, self.zoom_slider_pos[0]+98*self.zoom_slider_size_factor) # Entre quelles coordonnées y le bouton slider peut se situer
+        self.zoom_slider_current_x_pos = (self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2 # Possition x actuelle du bouton du slider
+        self.zoom_slider_clicked = False # Permet de savoir si le curseur "tient" le bouton pour le faire slider
+        self.zoom_factor = 1 # Facteur de zoom de la simulation
 
     def espace_donnee(self) -> None:
         '''Dessine une zone pour photo planete et infos en dessous'''
@@ -98,7 +117,7 @@ class ecran():
             screen.blit(self.bouton_pause_images['pause'], self.bouton_pause_pos)
 
     def vitesse_lecture(self, vitesse: int) -> None:
-        "affiche l'icone si la lecture rapide/lente est en cours"
+        '''Affiche l'icone si la lecture rapide/lente est en cours'''
         if vitesse > 30:
             screen.blit(self.bouton_vitesse_lecture_image["rapide"], self.bouton_vitesse_lecture2_pos)
             screen.blit(self.bouton_vitesse_lecture_image["rapide2"], self.bouton_vitesse_lecture_pos)
@@ -109,8 +128,38 @@ class ecran():
             screen.blit(self.bouton_vitesse_lecture_image["lent"], self.bouton_vitesse_lecture2_pos)
             screen.blit(self.bouton_vitesse_lecture_image["lent2"], self.bouton_vitesse_lecture_pos)
         
+    def zoom_slider(self) -> None:
+        '''Affichage et gestion du slider de zoom. Permet d'avoir le facteur de zoom actuel'''
 
-    def barre_action(self):
+        '''Partie "click and drag"'''
+        mouse = pygame.mouse.get_pos() # On récupère la position de la souris
+        # Si l'utilisateur clique sur le petit bouton du slider : (désolé pour la longueur)
+        if pygame.mouse.get_pressed()[0] and self.zoom_slider_current_x_pos <= mouse[0] <= self.zoom_slider_current_x_pos+4*self.zoom_slider_size_factor and self.zoom_slider_pos[1]+5*self.zoom_slider_size_factor <= mouse[1] <= self.zoom_slider_pos[1]+15*self.zoom_slider_size_factor and not self.zoom_slider_clicked:
+            self.zoom_slider_clicked = True
+        # Si l'utilisateur arrète de cliquer (donc "lache" le bouton) :
+        elif not pygame.mouse.get_pressed()[0]:
+            self.zoom_slider_clicked = False
+        # PS : pygame.mouse.get_pressed() = Bouton de la souris pressés ? -> (LMB, MMB, RMB) avec dans chacun des emplacement un boolean
+
+        '''Partie déplacement'''
+        mouse_x = mouse[0] - self.zoom_slider_size_factor*2 # Ajustement automatique
+        if self.zoom_slider_clicked:
+            # Le bouton doit rester dans les limites du slider
+            if mouse_x < self.zoom_slider_x_range[0]:
+                self.zoom_slider_current_x_pos = self.zoom_slider_x_range[0]
+            elif mouse_x > self.zoom_slider_x_range[1]:
+                self.zoom_slider_current_x_pos = self.zoom_slider_x_range[1]
+            else:
+                self.zoom_slider_current_x_pos = mouse_x
+        
+        '''Partie affichage'''
+        screen.blit(self.zoom_slider_images['background'], self.zoom_slider_pos)
+        screen.blit(self.zoom_slider_images['button'], (self.zoom_slider_current_x_pos, self.zoom_slider_pos[1] + 5*self.zoom_slider_size_factor))
+
+        '''Partie utilitaire'''
+        self.zoom_factor = 2**((self.zoom_slider_current_x_pos-(self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2)/self.zoom_slider_size_factor/10)
+
+    def barre_action(self) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et actions'''
         # pygame.draw.rect(screen, OR_STP, ((44, 0), (45, 600)))
         pygame.draw.rect(screen, BLEU_STP, ((0, 0), (50, 600)))
@@ -127,19 +176,13 @@ class ecran():
         
         """bouton quitter"""
         quitter = grandfont.render("X", 1, BLACK)
-        screen.blit(quitter, (10, 557))
+        screen.blit(quitter, (11, 557))
         
-    def affichage_info(self) -> dict:
-        '''pour retrouver les données associer a la planete dans le dico'''
-        # Retourne sous forme de dico : {poids, rayon, distance au soleil, temps rotation soleil}
-        for planete in data:
-            if planete == data.key:
-                return data.value
         
-    def ecriture(self):
+    def ecriture(self) -> None:
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
-        dataget = data.get("C")
+        dataget = data.get(planète)
         # Récupérations des données + mise en forme
         text = font.render(dataget[0], 18, (0, 0, 0))
         poids = font.render(dataget[1], 1, (0, 0, 0))
@@ -158,7 +201,18 @@ class ecran():
         img = pygame.image.load(dataget[-1])
         img = pygame.transform.scale(img, (280, 275))
         screen.blit(img, (800, 0))
-        pass
+
+    def confirmation(self):
+        """desine écran validation quitter"""
+        pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
+        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
+        pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
+        sur = moyfont.render("Sûr de vouloir quitter ?", 1, OR_STP)
+        screen.blit(sur, (387, 233))
+        quitter = moyfont.render("Oui", 1, WHITE)
+        screen.blit(quitter, (425, 312))
+        non = moyfont.render("Non", 1, WHITE)
+        screen.blit(non, (615, 312))
 
 
 # class sons():
@@ -167,7 +221,6 @@ class ecran():
 #         pygame.mixer.init()
         
 #     def lecture(self):
-#         pygame.mixer.music.load("simulator\musique\musique.mp3")
 #         pygame.mixer.music.play()
 
 #     def pause(self):
@@ -180,6 +233,7 @@ def main() -> None:
     HUD = ecran()
     data = False
     jouer = True
+    validquit = False
     # SON = sons()
 
     sunpos = (int(width/2), int(height/2))
@@ -190,11 +244,18 @@ def main() -> None:
     vitesse = 30 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     
+    zoom_factor = 1 # Facteur de zoom sur la simulation
+
     while True:
         
         dt = clock.tick(144)
         #on creer un fond de couleur noir
         screen.fill(BLACK)
+
+        # Actualisation du zoom
+        if zoom_factor != HUD.zoom_factor:
+            zoom_factor = HUD.zoom_factor
+            moon.compute_orbit_path(zoom_factor, sunpos)
 
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
@@ -219,32 +280,94 @@ def main() -> None:
 
                 if event.key == pygame.K_d:
                     vitesse = 60
-                
-    
+
+        moon_pos = moon.calculate_point_from_time(temps)
+
+        # Formule utilisé pour le zoom :
+        # pos_initialle + (pos_initiale - pos_centre_de_zoom)*(facteur de zoom - 1)
+
+        # on fait apparaitre les différents astres
+        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0]-sunpos[0])*(zoom_factor-1)), int(moon_pos[1] + (moon_pos[1]-sunpos[1])*(zoom_factor-1))], 15*zoom_factor) # Astre random sorti de mon imaginaire
+        pygame.draw.circle(screen, YELLOW, sunpos, 30*zoom_factor) # Soleil
+        for point in moon.orbit_path :
+            screen.set_at((int(point[0]), int(point[1])), WHITE)
+            # print(int(point[0]), int(point[1]))
+
+        #mise en place des éléments de l'interface
         if data == True:
             HUD.espace_donnee()
             HUD.ecriture()
-
-
-        moon_pos = moon.calculate_point_from_time(temps)
-        #mise en place des éléments de l'interface
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
         HUD.barre_action()
         HUD.display_bouton_pause(jouer)
+        HUD.zoom_slider()
         # SON.lecture()
 
-        # on fait apparaitre les différents astres 
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0]), int(moon_pos[1])], 15) # Astre random sorti de mon imaginaire
-        pygame.draw.circle(screen, YELLOW, sunpos, 30) # Soleil
-        for point in moon.orbit_path :
-            screen.set_at((int(point[0]), int(point[1])), WHITE)
-            # print(int(point[0]), int(point[1]))
-    
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
         else:
             temps, frame_time = update_time(temps, 0, frame_time) # Permet d'avoir un semblant de pause
+
+        """recupération coordonnées souris"""
+        pos_souris = pygame.mouse.get_pos()
+
+        """permet de detecter le clic de la souris"""
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.time.wait(100)
+            """bouton vitesse lente change en fonction de la vitesse actuelle"""
+            if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if vitesse == 15:
+                    vitesse = 30
+                    pass
+                else:
+                    vitesse = 15
+                    pass
+            """bouton vitesse rapide change en fonction de la vitesse actuelle"""
+            if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if vitesse == 60:
+                    vitesse = 30
+                    pass
+                else:
+                    vitesse = 60
+                    pass
+            """bouton play/pause change en fonction du mode actuelle"""
+            if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if jouer == True:
+                    jouer = False
+                else:
+                    jouer = not jouer
+
+        
+
+        """pour bouton quitter"""
+        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
+        if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                validquit = True
+                
+
+        if validquit == True:
+            """permet d'afficher le message de confirmation"""
+            HUD.confirmation()
+            """si  quitter"""
+            if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.quit()
+                    sys.exit()
+                """si annuler"""
+            elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    validquit = not validquit
+
+        """pour bouton quitter"""
+        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
+        if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 0 and pos_souris[1] < 50:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                launch.main()
+
+                
+
         pygame.display.flip() # Affichage final
 
 if __name__ == '__main__':
