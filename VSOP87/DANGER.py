@@ -1,19 +1,19 @@
-# x = rho • sin(theta) • cos(phi)
-# y = rho • sin(theta) • sin(phi)
-# z = rho • cos(theta)
 import math
 import temps
 import position_planetes
 
 def get_coords(L, B, R) :
-    #return [R * math.sin(L), R * math.cos(L), 0]
-    return [ R * math.cos(B) * math.cos(L), R * math.sin(B) * math.cos(L), R * math.sin(L) ]
-# R * math.sin(L), R * math.cos(L)
+    '''Convertir des coordonnées écliptiques en coordonnées rectangulaires.'''
+    # https://en.wikipedia.org/wiki/Ecliptic_coordinate_system#Rectangular_coordinates
+    return [ R * math.cos(B) * math.cos(L), R * math.cos(B) * math.sin(L), R * math.sin(B) ]
+
 def get_distance(plan, sun) :
+    # Simple Pythagore pour obtenir la distance entre deux points.
     return math.sqrt((plan[0] - sun[0])**2 + (plan[1] - sun[1])**2 + (plan[2] - sun[2])**2)
 
 
 def get(Y, M, D) :
+    '''Permet de calculer, pour chaque planète, les distance et dates d'apogée et périgée.'''
     temps_acutel = temps.JJ(Y, M, D)
 
     mercure_info = [[],[]] # [[distances], [dates]]
@@ -30,13 +30,13 @@ def get(Y, M, D) :
         mercure_info[1].append(temps_acutel)
         temps_acutel += 1
 
-    apogee_mercure = max(mercure_info[0])
-    date_apogee_mercure = mercure_info[1][mercure_info[0].index(apogee_mercure)]
-    print(f"Apogée de Mercure le \n{date_apogee_mercure}\nÀ une distance (en UA) :\n{apogee_mercure}\n")
+    apogee_mercure = max(mercure_info[0]) # La distance de l'apogée est la distance maximale au Soleil
+    date_apogee_mercure = mercure_info[1][mercure_info[0].index(apogee_mercure)] # On récupère la date en JJ qui correspond à cette distance
+    print(f"Apogée de Mercure le \n{date_apogee_mercure}\nÀ une distance (en UA) :\n{apogee_mercure}\n") # Affichage
     print()
-    perigee_mercure = min(mercure_info[0])
-    date_perigee_mercure = mercure_info[1][mercure_info[0].index(perigee_mercure)]
-    print(f"Périgée de Mercure le \n{date_perigee_mercure}\nÀ une distance (en UA) :\n{perigee_mercure}\n")
+    perigee_mercure = min(mercure_info[0]) # La distance du périgée est la distance minimale au Soleil
+    date_perigee_mercure = mercure_info[1][mercure_info[0].index(perigee_mercure)] # # On récupère la date en JJ qui correspond à cette distance
+    print(f"Périgée de Mercure le \n{date_perigee_mercure}\nÀ une distance (en UA) :\n{perigee_mercure}\n") # Affichage
     print()
 
     temps_acutel = temps.JJ(Y, M, D)
@@ -152,4 +152,5 @@ def get(Y, M, D) :
     print(f"Périgée de Neptune le \n{date_perigee_neptune}\nÀ une distance (en UA) :\n{perigee_neptune}\n")
     print()
 
-get(2022, 1, 1)
+if __name__ == '__main__' :
+    get(2022, 1, 1)

@@ -1,25 +1,58 @@
-
-# Ancien (2D)
-Apogée de Terre le 
-2459766.5
+Apogée de Mercure le 
+2459640.5
 À une distance (en UA) :
-1.0075241771213406
+0.4679396067760938
+
+
+Périgée de Mercure le 
+2459596.5
+À une distance (en UA) :
+0.3057031448888919
+
+
+Apogée de Venus le 
+2459729.5
+À une distance (en UA) :
+0.7367989519021444
+
+
+Périgée de Venus le 
+2459617.5
+À une distance (en UA) :
+0.7096386091312117
+
+
+Apogée de Terre le 
+2459788.5
+À une distance (en UA) :
+1.0219486233072168
 
 
 Périgée de Terre le 
-2459944.5
+2459601.5
 À une distance (en UA) :
-0.9923318226638247
+0.9768982680888847
 
 
-# Nouveau (tenant compte de la 3D)
-Apogée de Terre le 
-2459790.5
+Apogée de Mars le 
+2460092.5
 À une distance (en UA) :
-1.020890097623276
+1.6584426592108024
 
 
-Périgée de Terre le 
-2459607.5
+Périgée de Mars le 
+2459750.5
 À une distance (en UA) :
-0.9793682081497443
+1.3902879805270787
+
+
+Apogée de Jupiter le 
+2462130.5
+À une distance (en UA) :
+5.454708507664392
+
+
+Périgée de Jupiter le 
+2459969.5
+À une distance (en UA) :
+4.959802763801945
