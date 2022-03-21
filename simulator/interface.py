@@ -10,6 +10,7 @@ BLACK = (0, 0, 0)
 GRAY = (70, 70, 70)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+GREEN_CUSTOM = (25, 200, 25)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
@@ -30,6 +31,7 @@ pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
 screen.fill(BLACK)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
+moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
 jouer = False
 
@@ -160,6 +162,18 @@ class ecran():
         screen.blit(img, (800, 0))
         pass
 
+    def confirmation(self):
+        """desine écran validation quitter"""
+        pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
+        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
+        pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
+        sur = moyfont.render("Sûr de vouloir quitter ?", 1, OR_STP)
+        screen.blit(sur, (387, 233))
+        quitter = moyfont.render("Oui", 1, WHITE)
+        screen.blit(quitter, (425, 312))
+        non = moyfont.render("Non", 1, WHITE)
+        screen.blit(non, (615, 312))
+
 
 # class sons():
 
@@ -180,6 +194,7 @@ def main() -> None:
     HUD = ecran()
     data = False
     jouer = True
+    validquit = False
     # SON = sons()
 
     sunpos = (int(width/2), int(height/2))
@@ -225,7 +240,7 @@ def main() -> None:
             HUD.espace_donnee()
             HUD.ecriture()
 
-
+        
         moon_pos = moon.calculate_point_from_time(temps)
         #mise en place des éléments de l'interface
         HUD.play_pause_date()
@@ -245,6 +260,65 @@ def main() -> None:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
         else:
             temps, frame_time = update_time(temps, 0, frame_time) # Permet d'avoir un semblant de pause
+
+        """recupération coordonnées souris"""
+        pos_souris = pygame.mouse.get_pos()
+
+        """bouton vitesse lente change en fonction de la vitesse actuelle"""
+        if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if vitesse == 15:
+                        vitesse = 30
+                        pass
+                    else:
+                        vitesse = 15
+                        pass
+
+        """bouton vitesse rapide change en fonction de la vitesse actuelle"""
+        if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.event.poll()
+                    if vitesse == 60:
+                        vitesse = 30
+                        pass
+                    else:
+                        vitesse = 60
+                        pass
+
+        """bouton play/pause change en fonction du mode actuelle"""
+        if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.event.clear()
+                    if jouer == True:
+                        jouer = False
+                    else:
+                        jouer = True
+
+        
+
+        """pour bouton quitter"""
+        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
+        if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                
+                validquit = True
+                
+
+        if validquit == True:
+            """permet d'afficher le message de confirmation"""
+            HUD.confirmation()
+            """si  quitter"""
+            if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.quit()
+                    sys.exit()
+                """si annuler"""
+            elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.event.clear()
+                    validquit = not validquit
+
+
         pygame.display.flip() # Affichage final
 
 if __name__ == '__main__':

@@ -85,18 +85,19 @@ def main():
         """recupération coordonnées souris"""
         pos_souris = pygame.mouse.get_pos()
 
-        """vérifie si sourios sur le boton et lance appli si clique dans la zone"""
+        """vérifie si souris sur le boton et lance appli si clique dans la zone"""
         if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 interface.main()
         
-        """vérifie si sourios sur le boton et quitte appli si clique dans la zone"""
+        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
         if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 validquit = True
                 
 
         if validquit == True:
+            """permet d'afficher le message de confirmation pour quitter"""
             HUD.quitter()
             pos_souris = pygame.mouse.get_pos()
             if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
