@@ -159,7 +159,7 @@ class ecran():
         screen.blit(self.zoom_slider_images['button'], (self.zoom_slider_current_x_pos, self.zoom_slider_pos[1] + 5*self.zoom_slider_size_factor))
 
         '''Partie utilitaire'''
-        self.zoom_factor = 2**((self.zoom_slider_current_x_pos-(self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2)/self.zoom_slider_size_factor/10)
+        self.zoom_factor = 3**((self.zoom_slider_current_x_pos-(self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2)/self.zoom_slider_size_factor/10)
 
     def barre_action(self) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et actions'''
@@ -323,9 +323,9 @@ def main() -> None:
         # pos_initialle + (pos_initiale - pos_centre_de_zoom) * facteur de zoom
 
         # on fait apparaitre les différents astres
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(moon_pos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
+        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(moon_pos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom**0.5) # Astre random sorti de mon imaginaire
         planetes.draw_all_planets(temps, camera_zoom, camera_pos)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom) # Soleil
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom**0.5) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
