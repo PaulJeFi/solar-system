@@ -304,16 +304,16 @@ def main() -> None:
         pressed = pygame.key.get_pressed()
 
         if pressed[pygame.K_UP]:
-            camera_pos[1] -= 0.5/camera_zoom
+            camera_pos[1] -= 1/camera_zoom
             moon.compute_orbit_path(camera_zoom, camera_pos)
         if pressed[pygame.K_DOWN]:
-            camera_pos[1] += 0.5/camera_zoom
+            camera_pos[1] += 1/camera_zoom
             moon.compute_orbit_path(camera_zoom, camera_pos)
         if pressed[pygame.K_LEFT]:
-            camera_pos[0] -= 0.5/camera_zoom
+            camera_pos[0] -= 1/camera_zoom
             moon.compute_orbit_path(camera_zoom, camera_pos)
         if pressed[pygame.K_RIGHT]:
-            camera_pos[0] += 0.5/camera_zoom
+            camera_pos[0] += 1/camera_zoom
             moon.compute_orbit_path(camera_zoom, camera_pos)
 
 
