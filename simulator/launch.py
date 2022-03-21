@@ -1,5 +1,6 @@
 import pygame
 import sys
+import interface
 
 BLACK = (0, 0, 0)
 GRAY = (75, 75, 75)
@@ -25,6 +26,7 @@ pygame.display.set_caption("Spacior - Menu")
 pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
 font = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 75)
+validquit = False
 
 
 class ecran:
@@ -52,12 +54,23 @@ class ecran:
         quitter = font.render("QUITTER", 1, BLEU_STP)
         screen.blit(quitter, (733, 462))
 
-    def clique(self):
-        pass
+    def quitter(self):
+        """desine écran validation quitter"""
+        pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
+        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
+        pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
+        sur = font.render("Sûr de vouloir quitter ?", 1, BLEU_STP)
+        screen.blit(sur, (385, 220))
+        quitter = font.render("Oui", 1, WHITE)
+        screen.blit(quitter, (425, 312))
+        non = font.render("Non", 1, WHITE)
+        screen.blit(non, (615, 312))
+
 
 def main():
 
     HUD = ecran()
+    validquit = False
    
     while True:
 
@@ -69,6 +82,30 @@ def main():
             # if 
 
         HUD.affichage()
+        """recupération coordonnées souris"""
+        pos_souris = pygame.mouse.get_pos()
+
+        """vérifie si sourios sur le boton et lance appli si clique dans la zone"""
+        if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                interface.main()
+        
+        """vérifie si sourios sur le boton et quitte appli si clique dans la zone"""
+        if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                validquit = True
+                
+
+        if validquit == True:
+            HUD.quitter()
+            pos_souris = pygame.mouse.get_pos()
+            if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pygame.quit()
+                    sys.exit()
+            elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    validquit = not validquit
 
         #création du fond
         # background = pygame.image.load("simulator/images/backmenu.jpg")
