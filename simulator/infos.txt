@@ -56,3 +56,15 @@ Périgée de Jupiter le
 2459969.5
 À une distance (en UA) :
 4.959802763801945
+
+
+Apogée de Saturne le 
+2468881.5
+À une distance (en UA) :
+10.044693667002363
+
+
+Périgée de Saturne le 
+2463555.5
+À une distance (en UA) :
+9.014757970057712
