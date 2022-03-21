@@ -205,6 +205,8 @@ def main() -> None:
     vitesse = 30 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     
+    zoom_factor = 1 # Facteur de zoom sur la simulation
+
     while True:
         
         dt = clock.tick(144)
@@ -234,6 +236,16 @@ def main() -> None:
 
                 if event.key == pygame.K_d:
                     vitesse = 60
+
+                if event.key == pygame.K_UP:
+                    zoom_factor *= 1.1
+                    print(zoom_factor)
+                    moon.compute_orbit_path(zoom_factor, sunpos)
+                
+                if event.key == pygame.K_DOWN:
+                    zoom_factor /= 1.1
+                    print(zoom_factor)
+                    moon.compute_orbit_path(zoom_factor, sunpos)
                 
     
         if data == True:
@@ -249,9 +261,12 @@ def main() -> None:
         HUD.display_bouton_pause(jouer)
         # SON.lecture()
 
-        # on fait apparaitre les différents astres 
-        pygame.draw.circle(screen, WHITE, [int(moon_pos[0]), int(moon_pos[1])], 15) # Astre random sorti de mon imaginaire
-        pygame.draw.circle(screen, YELLOW, sunpos, 30) # Soleil
+        # Formule utilisé pour le zoom :
+        # pos_initialle + (pos_initiale - pos_centre_de_zoom)*(facteur de zoom - 1)
+
+        # on fait apparaitre les différents astres
+        pygame.draw.circle(screen, WHITE, [int(moon_pos[0] + (moon_pos[0]-sunpos[0])*(zoom_factor-1)), int(moon_pos[1] + (moon_pos[1]-sunpos[1])*(zoom_factor-1))], 15*zoom_factor) # Astre random sorti de mon imaginaire
+        pygame.draw.circle(screen, YELLOW, sunpos, 30*zoom_factor) # Soleil
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))

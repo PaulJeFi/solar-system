@@ -57,20 +57,22 @@ class Planete :
         else :
             self.orbital_period = None
 
-    def compute_orbit_path(self) -> None :
+    def compute_orbit_path(self, zoom_factor: float=1, sunpos: tuple=(540, 310)) -> None :
         self.orbit_path = []
 
         for i in range(orbit_resolution) :
             angle = (i / (orbit_resolution - 1)) * math.pi * 2
             px = math.cos(angle) * self.semi_major_axis + self.ellipse_centre_X
             py = math.sin(angle) * self.semi_minor_axis + self.ellipse_centre_Y # dans la vidéo, il utilise ellipse_centre_x ?
+            px += (px - sunpos[0])*(zoom_factor-1)
+            py += (py - sunpos[1])*(zoom_factor-1)
             self.orbit_path.append([px, py])
 
     def calculate_point_from_time(self, t: float) -> list :
 
         # Il faut modifier le temps !!!
         if self.orbital_period != None :
-            t *= 1/self.orbital_period
+            t /= self.orbital_period
 
         # Angle du corps si l'orbit était circulaire
         mean_anomaly = t * math.pi * 2
