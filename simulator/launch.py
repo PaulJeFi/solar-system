@@ -88,7 +88,9 @@ def main():
         """vérifie si souris sur le boton et lance appli si clique dans la zone"""
         if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.time.wait(100)
                 interface.main()
+                
         
         """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
         if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:

@@ -1,0 +1,14 @@
+                                            Pour les idées de trucs à ajouter 
+                                     <--------------------------------------------->
+
+- Implementer système de GIF pour les infos planètes --> pas une option
+- Pouvoir entrer un date --> également
+
+<------------------------------------------------------------------------------------------------------------------------>
+- Calendrier lunaire
+- Signes astrologiques (grégoriens et chinois)
+- pouvoir cliquer sur les planètes
+- Affichage prochaines éclipses solaires (vu de la terre)
+- Musique fonctionnelle
+- Suivre la planète lorsqu'elle est sélectionnée
+- Ajouter Pluton par action cachée

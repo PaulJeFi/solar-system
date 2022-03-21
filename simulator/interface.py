@@ -1,9 +1,9 @@
 from multiprocessing.sharedctypes import Value
 import kepler as kp
 import pygame
-import pygame.mixer_music
 import sys
 from time import time
+import launch
 
 
 BLACK = (0, 0, 0)
@@ -33,6 +33,7 @@ clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
 moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
+# pygame.mixer.music.load("./simulator/musique/musique.mp3")
 jouer = False
 
 #données palnètes
@@ -44,7 +45,9 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'E' : ['Jupyter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',"simulator/images/jupyter.png"],
                 'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',"simulator/images/saturne.png"],
                 'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',"simulator/images/uranus.png"],
-                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"]}
+                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"],
+                'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',"simulator/images/pluton.png"],
+                'Z' : ['', '', '', '', '', '',""]}
 
 
 
@@ -129,19 +132,13 @@ class ecran():
         
         """bouton quitter"""
         quitter = grandfont.render("X", 1, BLACK)
-        screen.blit(quitter, (10, 557))
+        screen.blit(quitter, (11, 557))
         
-    def affichage_info(self) -> dict:
-        '''pour retrouver les données associer a la planete dans le dico'''
-        # Retourne sous forme de dico : {poids, rayon, distance au soleil, temps rotation soleil}
-        for planete in data:
-            if planete == data.key:
-                return data.value
         
-    def ecriture(self):
+    def ecriture(self, planète):
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
-        dataget = data.get("C")
+        dataget = data.get(planète)
         # Récupérations des données + mise en forme
         text = font.render(dataget[0], 18, (0, 0, 0))
         poids = font.render(dataget[1], 1, (0, 0, 0))
@@ -181,7 +178,6 @@ class ecran():
 #         pygame.mixer.init()
         
 #     def lecture(self):
-#         pygame.mixer.music.load("simulator\musique\musique.mp3")
 #         pygame.mixer.music.play()
 
 #     def pause(self):
@@ -250,7 +246,7 @@ def main() -> None:
     
         if data == True:
             HUD.espace_donnee()
-            HUD.ecriture()
+            HUD.ecriture("C")
 
         
         moon_pos = moon.calculate_point_from_time(temps)
@@ -279,35 +275,31 @@ def main() -> None:
         """recupération coordonnées souris"""
         pos_souris = pygame.mouse.get_pos()
 
-        """bouton vitesse lente change en fonction de la vitesse actuelle"""
-        if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if vitesse == 15:
-                        vitesse = 30
-                        pass
-                    else:
-                        vitesse = 15
-                        pass
-
-        """bouton vitesse rapide change en fonction de la vitesse actuelle"""
-        if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.event.poll()
-                    if vitesse == 60:
-                        vitesse = 30
-                        pass
-                    else:
-                        vitesse = 60
-                        pass
-
-        """bouton play/pause change en fonction du mode actuelle"""
-        if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.event.clear()
-                    if jouer == True:
-                        jouer = False
-                    else:
-                        jouer = True
+        """permet de detecter le clic de la souris"""
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.time.wait(100)
+            """bouton vitesse lente change en fonction de la vitesse actuelle"""
+            if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if vitesse == 15:
+                    vitesse = 30
+                    pass
+                else:
+                    vitesse = 15
+                    pass
+            """bouton vitesse rapide change en fonction de la vitesse actuelle"""
+            if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if vitesse == 60:
+                    vitesse = 30
+                    pass
+                else:
+                    vitesse = 60
+                    pass
+            """bouton play/pause change en fonction du mode actuelle"""
+            if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
+                if jouer == True:
+                    jouer = False
+                else:
+                    jouer = not jouer
 
         
 
@@ -315,7 +307,6 @@ def main() -> None:
         """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
         if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                
                 validquit = True
                 
 
@@ -330,9 +321,15 @@ def main() -> None:
                 """si annuler"""
             elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.event.clear()
                     validquit = not validquit
 
+        """pour bouton quitter"""
+        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
+        if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 0 and pos_souris[1] < 50:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                launch.main()
+
+                
 
         pygame.display.flip() # Affichage final
 
