@@ -78,8 +78,8 @@ class ecran():
                                              "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
         # Paramètres du slider pour le zoom
-        self.zoom_slider_pos = (500, 0) # Position du background du slider (le boutton est placé en conséquance)
-        self.zoom_slider_size_factor = 2 # Facteur de taille
+        self.zoom_slider_pos = (512, 552) # Position du background du slider (le boutton est placé en conséquance)
+        self.zoom_slider_size_factor = 2.4 # Facteur de taille
         self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces valeurs, modifiez celle au-dessus)
                                 'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
                                 'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
