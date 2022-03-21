@@ -11,7 +11,7 @@ GRAY = (70, 70, 70)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 GREEN_CUSTOM = (25, 200, 25)
-RED = (255, 0, 0)
+RED = (200, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 BLEU_STP = (2, 75, 85)
@@ -78,8 +78,8 @@ class ecran():
                                              "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
         # Paramètres du slider pour le zoom
-        self.zoom_slider_pos = (500, 0) # Position du background du slider (le boutton est placé en conséquance)
-        self.zoom_slider_size_factor = 2 # Facteur de taille
+        self.zoom_slider_pos = (500, 550) # Position du background du slider (le boutton est placé en conséquance)
+        self.zoom_slider_size_factor = 2.5 # Facteur de taille
         self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces valeurs, modifiez celle au-dessus)
                                 'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
                                 'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
@@ -179,7 +179,7 @@ class ecran():
         screen.blit(quitter, (11, 557))
         
         
-    def ecriture(self) -> None:
+    def ecriture(self, planète) -> None:
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
         dataget = data.get(planète)
