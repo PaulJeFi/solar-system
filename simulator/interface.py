@@ -67,6 +67,7 @@ class ecran():
         self.bouton_pause_images = { # Sprites du bouton pause
                                     "play": pygame.transform.scale(pygame.image.load("simulator/images/play.png"), self.bouton_pause_size),
                                     "pause": pygame.transform.scale(pygame.image.load("simulator/images/pause.png"), self.bouton_pause_size)}
+        # Paramètres des boutons de vitesse de lecture
         self.bouton_vitesse_lecture_pos = (820, 502)
         self.bouton_vitesse_lecture_size = (50, 45)
         self.bouton_vitesse_lecture2_pos = (1012, 503)
@@ -76,6 +77,19 @@ class ecran():
                                              "normal2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
                                              "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
+        # Paramètres du slider pour le zoom
+        self.zoom_slider_pos = (500, 0) # Position du background du slider (le boutton est placé en conséquance)
+        self.zoom_slider_size_factor = 2 # Facteur de taille
+        self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces valeurs, modifiez celle au-dessus)
+                                'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
+                                'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
+        self.zoom_slider_images = { # Les images utilisées pour le slider
+                                    'background': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_bg.png"), self.zoom_slider_size['background']),
+                                    'button': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_button.png"), self.zoom_slider_size['button'])}
+        self.zoom_slider_x_range = (self.zoom_slider_pos[0]+19*self.zoom_slider_size_factor, self.zoom_slider_pos[0]+98*self.zoom_slider_size_factor) # Entre quelles coordonnées y le bouton slider peut se situer
+        self.zoom_slider_current_x_pos = (self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2 # Possition x actuelle du bouton du slider
+        self.zoom_slider_clicked = False # Permet de savoir si le curseur "tient" le bouton pour le faire slider
+        self.zoom_factor = 1 # Facteur de zoom de la simulation
 
     def espace_donnee(self) -> None:
         '''Dessine une zone pour photo planete et infos en dessous'''
@@ -103,7 +117,7 @@ class ecran():
             screen.blit(self.bouton_pause_images['pause'], self.bouton_pause_pos)
 
     def vitesse_lecture(self, vitesse: int) -> None:
-        "affiche l'icone si la lecture rapide/lente est en cours"
+        '''Affiche l'icone si la lecture rapide/lente est en cours'''
         if vitesse > 30:
             screen.blit(self.bouton_vitesse_lecture_image["rapide"], self.bouton_vitesse_lecture2_pos)
             screen.blit(self.bouton_vitesse_lecture_image["rapide2"], self.bouton_vitesse_lecture_pos)
@@ -114,8 +128,38 @@ class ecran():
             screen.blit(self.bouton_vitesse_lecture_image["lent"], self.bouton_vitesse_lecture2_pos)
             screen.blit(self.bouton_vitesse_lecture_image["lent2"], self.bouton_vitesse_lecture_pos)
         
+    def zoom_slider(self) -> None:
+        '''Affichage et gestion du slider de zoom. Permet d'avoir le facteur de zoom actuel'''
 
-    def barre_action(self):
+        '''Partie "click and drag"'''
+        mouse = pygame.mouse.get_pos() # On récupère la position de la souris
+        # Si l'utilisateur clique sur le petit bouton du slider : (désolé pour la longueur)
+        if pygame.mouse.get_pressed()[0] and self.zoom_slider_current_x_pos <= mouse[0] <= self.zoom_slider_current_x_pos+4*self.zoom_slider_size_factor and self.zoom_slider_pos[1]+5*self.zoom_slider_size_factor <= mouse[1] <= self.zoom_slider_pos[1]+15*self.zoom_slider_size_factor and not self.zoom_slider_clicked:
+            self.zoom_slider_clicked = True
+        # Si l'utilisateur arrète de cliquer (donc "lache" le bouton) :
+        elif not pygame.mouse.get_pressed()[0]:
+            self.zoom_slider_clicked = False
+        # PS : pygame.mouse.get_pressed() = Bouton de la souris pressés ? -> (LMB, MMB, RMB) avec dans chacun des emplacement un boolean
+
+        '''Partie déplacement'''
+        mouse_x = mouse[0] - self.zoom_slider_size_factor*2 # Ajustement automatique
+        if self.zoom_slider_clicked:
+            # Le bouton doit rester dans les limites du slider
+            if mouse_x < self.zoom_slider_x_range[0]:
+                self.zoom_slider_current_x_pos = self.zoom_slider_x_range[0]
+            elif mouse_x > self.zoom_slider_x_range[1]:
+                self.zoom_slider_current_x_pos = self.zoom_slider_x_range[1]
+            else:
+                self.zoom_slider_current_x_pos = mouse_x
+        
+        '''Partie affichage'''
+        screen.blit(self.zoom_slider_images['background'], self.zoom_slider_pos)
+        screen.blit(self.zoom_slider_images['button'], (self.zoom_slider_current_x_pos, self.zoom_slider_pos[1] + 5*self.zoom_slider_size_factor))
+
+        '''Partie utilitaire'''
+        self.zoom_factor = 2**((self.zoom_slider_current_x_pos-(self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2)/self.zoom_slider_size_factor/10)
+
+    def barre_action(self) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et actions'''
         # pygame.draw.rect(screen, OR_STP, ((44, 0), (45, 600)))
         pygame.draw.rect(screen, BLEU_STP, ((0, 0), (50, 600)))
@@ -135,7 +179,7 @@ class ecran():
         screen.blit(quitter, (11, 557))
         
         
-    def ecriture(self, planète):
+    def ecriture(self) -> None:
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
         dataget = data.get(planète)
@@ -157,7 +201,6 @@ class ecran():
         img = pygame.image.load(dataget[-1])
         img = pygame.transform.scale(img, (280, 275))
         screen.blit(img, (800, 0))
-        pass
 
     def confirmation(self):
         """desine écran validation quitter"""
@@ -209,6 +252,11 @@ def main() -> None:
         #on creer un fond de couleur noir
         screen.fill(BLACK)
 
+        # Actualisation du zoom
+        if zoom_factor != HUD.zoom_factor:
+            zoom_factor = HUD.zoom_factor
+            moon.compute_orbit_path(zoom_factor, sunpos)
+
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
                 pygame.quit()
@@ -233,29 +281,7 @@ def main() -> None:
                 if event.key == pygame.K_d:
                     vitesse = 60
 
-                if event.key == pygame.K_UP:
-                    zoom_factor *= 1.1
-                    print(zoom_factor)
-                    moon.compute_orbit_path(zoom_factor, sunpos)
-                
-                if event.key == pygame.K_DOWN:
-                    zoom_factor /= 1.1
-                    print(zoom_factor)
-                    moon.compute_orbit_path(zoom_factor, sunpos)
-                
-    
-        if data == True:
-            HUD.espace_donnee()
-            HUD.ecriture("C")
-
-        
         moon_pos = moon.calculate_point_from_time(temps)
-        #mise en place des éléments de l'interface
-        HUD.play_pause_date()
-        HUD.vitesse_lecture(vitesse)
-        HUD.barre_action()
-        HUD.display_bouton_pause(jouer)
-        # SON.lecture()
 
         # Formule utilisé pour le zoom :
         # pos_initialle + (pos_initiale - pos_centre_de_zoom)*(facteur de zoom - 1)
@@ -266,7 +292,18 @@ def main() -> None:
         for point in moon.orbit_path :
             screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
-    
+
+        #mise en place des éléments de l'interface
+        if data == True:
+            HUD.espace_donnee()
+            HUD.ecriture()
+        HUD.play_pause_date()
+        HUD.vitesse_lecture(vitesse)
+        HUD.barre_action()
+        HUD.display_bouton_pause(jouer)
+        HUD.zoom_slider()
+        # SON.lecture()
+
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
         else:
