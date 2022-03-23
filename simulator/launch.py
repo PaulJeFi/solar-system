@@ -59,7 +59,7 @@ class ecran:
         pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
         pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
         pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
-        sur = font.render("Sûr de vouloir quitter ?", 1, BLEU_STP)
+        sur = font.render("Sûr de vouloir quitter ?", 1, OR_STP)
         screen.blit(sur, (385, 220))
         quitter = font.render("Oui", 1, WHITE)
         screen.blit(quitter, (425, 312))
