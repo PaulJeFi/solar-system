@@ -166,8 +166,8 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        self.zoom_factor = 3**((self.zoom_slider_current_x_pos-(self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2)/self.zoom_slider_size_factor/10)
-        # N'hésitez pas à modifier le 3 et le 10 dans 3**(.../10), ce ne sont pas des valeurs représentants quelque chose de concret
+        self.zoom_factor = 2**((-1)*(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+1))
+        # WARNING : le zoom ne doit pas être plus grand que 2 (sinon...)
 
     def display_zoom_slider(self) -> None:
         '''Affichage du slider de zoom'''
@@ -227,7 +227,7 @@ class ecran():
         img = pygame.transform.scale(img, (280, 275))
         screen.blit(img, (800, 0))
 
-    def confirmation(self):
+    def confirmation(self) -> None:
         '''Dessine écran validation quitter'''
         pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
         pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
@@ -251,22 +251,61 @@ class ecran():
 #     def pause(self):
 #         pygame.mixer.music.pause()
 
-class Gestion_Planete :
-    def __init__(self, mass_center) :
+class Gestion_Planete:
+
+    def __init__(self, mass_center: tuple[int, int]) -> None:
         self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 0.7096386091312117]
         self.venus = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5]
 
         self.planetes = [self.mercury, self.venus]
 
-    def draw_planet(self, date, planete, camera_zoom, camera_pos, sun_pos) :
-        time_to_calc = date - planete[1]
-        pos = planete[0].calculate_point_from_time(time_to_calc)
-        pygame.draw.circle(screen, WHITE, [int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*300 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*300 + (sun_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom)
-        print(int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom + (sun_pos[0] - camera_pos[0]) * camera_zoom*20), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom + (sun_pos[1] - camera_pos[1]) * camera_zoom*20))
+        # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
+        #                               Quelle est sa position ? 
+        #                               Quelle est sa taille ?
+        self.data_index = len(self.planetes[0]) # Index de cet argument
+        for planete in self.planetes:
+            planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_all_planets(self, date, zoom_factor, camera_pos, sun_pos) :
-        for planete in self.planetes :
-            self.draw_planet(date, planete, zoom_factor, camera_pos, sun_pos)
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
+        '''Permet de dessiner une planète au bon endroit'''
+        time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
+        pos = planete[0].calculate_point_from_time(time_to_calc) # Calcul de la position
+        # Ci-dessous, ajustement de la position et de la taille
+        pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
+        size = int(60*camera_zoom+1)
+        # Affichage de la planète
+        pygame.draw.circle(screen, WHITE, pos_final, size)
+        pos_alt = (sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
+        # On garde en mémoire la position et la taille (apparente) de la planète
+        planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
+
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
+        '''Dessine toutes les planètes'''
+        for planete in self.planetes:
+            self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos)
+    
+    def get_followed_pos(self) -> tuple[float, float]:
+        '''Permet de récupérer les coordonnées de la planète suivie'''
+        for planete in self.planetes:
+            if planete[self.data_index][0]:
+                return planete[self.data_index][3]
+        return (0, 0) # Cas où aucune planète n'est suivie
+    
+    def follow(self) -> bool | tuple[float, float]:
+        '''Permet de commencer à suivre une planète'''
+        mouse = pygame.mouse.get_pos()
+        for planete in self.planetes:
+            if ((mouse[0]-planete[self.data_index][1][0])**2 + (mouse[1]-planete[self.data_index][1][1])**2)**0.5 <= planete[self.data_index][2]:
+                planete[self.data_index][0] = True
+                return True, planete[self.data_index][3]
+        return False, (0, 0)
+    
+    def unfollow_all(self) -> None:
+        '''Permet d'arrêter de suivre toutes les planêtes'''
+        for planete in self.planetes:
+            planete[self.data_index][0] = False
+
+
 
 def main() -> None:
 
@@ -279,7 +318,7 @@ def main() -> None:
 
     sunpos = (int(width/2), int(height/2))
 
-    moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
+    #moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
     planetes = Gestion_Planete(sunpos)
 
     temps = 1
@@ -287,7 +326,10 @@ def main() -> None:
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     
     camera_zoom = 1 # Facteur de zoom sur la simulation
-    camera_pos = list(sunpos) # Position de la caméra
+    camera_true_pos = list(sunpos) # Position théorique de la caméra
+    camera_focus = (0, 0) # Postion de l'objet à suivre
+    is_following = False # Permet de savoir si la caméra suit une planète
+    camera_pos = list(sunpos) # Position finale de la caméra
 
     while True:
 
@@ -298,7 +340,7 @@ def main() -> None:
         # Actualisation du zoom
         if camera_zoom != HUD.zoom_factor:
             camera_zoom = HUD.zoom_factor
-            moon.compute_orbit_path(camera_zoom, camera_pos)
+            #moon.compute_orbit_path(camera_zoom, camera_pos)
 
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
@@ -324,25 +366,43 @@ def main() -> None:
 
                 if event.key == pygame.K_d:
                     vitesse = 60
+                
+                # On arrète de suivre la planète
+                if event.key == pygame.K_BACKSPACE:
+                    planetes.unfollow_all()
+                    camera_true_pos = list(camera_pos)
+                    camera_focus = [0, 0]
+                    is_following = False
 
         # Actions à faire tant que la touche est pressée
         pressed = pygame.key.get_pressed()
-
+        # Déplacement vers le haut
         if pressed[pygame.K_UP]:
-            camera_pos[1] -= 1/camera_zoom
-            moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[1] -= 1/camera_zoom
+            #moon.compute_orbit_path(camera_zoom, camera_pos)
+        # Déplacement vers le bas
         if pressed[pygame.K_DOWN]:
-            camera_pos[1] += 1/camera_zoom
-            moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[1] += 1/camera_zoom
+            #moon.compute_orbit_path(camera_zoom, camera_pos)
+        # Déplacement vers la gauche
         if pressed[pygame.K_LEFT]:
-            camera_pos[0] -= 1/camera_zoom
-            moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[0] -= 1/camera_zoom
+            #moon.compute_orbit_path(camera_zoom, camera_pos)
+        # Déplacement vers la droite
         if pressed[pygame.K_RIGHT]:
-            camera_pos[0] += 1/camera_zoom
-            moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[0] += 1/camera_zoom
+            #moon.compute_orbit_path(camera_zoom, camera_pos)
+        
+
+        # Actualisation de la position finale de la caméra
+        if is_following:
+            camera_focus = planetes.get_followed_pos()
+        
+        camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
 
-        moon_pos = moon.calculate_point_from_time(temps)
+        # Calcul de la position de la planète low-cost
+        #moon_pos = moon.calculate_point_from_time(temps)
 
         # Formule simplifiée utilisé pour le zoom :
         # centre_ecran + (pos_initialle - pos_camera) * zoom_camera
@@ -353,11 +413,11 @@ def main() -> None:
         # Position finale = Etape 1 + Etape 2
 
         # on fait apparaitre les différents astres
-        pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
+        #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
         planetes.draw_all_planets(temps, camera_zoom, camera_pos, sunpos)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 30*camera_zoom) # Soleil
-        for point in moon.orbit_path :
-            screen.set_at((int(point[0]), int(point[1])), WHITE)
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 150*camera_zoom+1) # Soleil
+        #for point in moon.orbit_path :
+            #screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
 
         #mise en place des éléments de l'interface
@@ -429,6 +489,12 @@ def main() -> None:
             # Vérifie si souris sur le boton et retourne au menu principal si clique dans la zone
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 0 and pos_souris[1] < 50:
                 launch.main()
+
+            '''Sélection de planète à suivre'''
+            if not is_following:
+                is_following, camera_focus = planetes.follow()
+                if is_following:
+                    camera_true_pos = [0, 0]
         
         elif not pygame.mouse.get_pressed()[0]:
             can_press_button = True
