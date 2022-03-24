@@ -1,4 +1,3 @@
-from multiprocessing.sharedctypes import Value
 import kepler as kp
 import pygame
 import sys
@@ -42,7 +41,7 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'B' : ['Venus','poids = 4,867 5x10^24 kg', 'rayon = 6050 km', 'distance soleil = 104 mm km', 'temps de rotation = 243 j', 'température moyenne = 440°C',"simulator/images/venus.png"],
                 'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km', 'distance soleil = 150 mm km', 'temps de rotation = 365 j', 'température moyenne = 14°C',"simulator/images/terre.png"],
                 'D' : ['Mars', 'poids = 6,418 x 10^23 kg','rayon = 3 396 km', 'distance soleil = 227 mm km', 'temps de rotation = 696 j', 'température moyenne = -60°C',"simulator/images/mars.png"],
-                'E' : ['Jupyter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',"simulator/images/jupyter.png"],
+                'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',"simulator/images/jupyter.png"],
                 'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',"simulator/images/saturne.png"],
                 'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',"simulator/images/uranus.png"],
                 'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"],
@@ -254,10 +253,14 @@ class ecran():
 class Gestion_Planete:
 
     def __init__(self, mass_center: tuple[int, int]) -> None:
-        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 0.7096386091312117]
+        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 2459596.5]
         self.venus = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5]
+        self.terre = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center), 2459601.5]
+        self.mars = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center), 2459750.5]
+        self.jupiter = [kp.Planete(4.959802763801945, 5.454708507664392, center_of_mass=mass_center), 2459969.5]
+        self.saturne = [kp.Planete(9.014757970057712, 10.044693667002363, center_of_mass=mass_center), 2463555.5]
 
-        self.planetes = [self.mercury, self.venus]
+        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
         # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
         #                               Quelle est sa position ? 
