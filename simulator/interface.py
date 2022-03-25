@@ -294,7 +294,7 @@ class Gestion_Planete:
                 return planete[self.data_index][3]
         return (0, 0) # Cas où aucune planète n'est suivie
     
-    def follow(self) -> bool | tuple[float, float]:
+    def follow(self) -> tuple:
         '''Permet de commencer à suivre une planète'''
         mouse = pygame.mouse.get_pos()
         for planete in self.planetes:
@@ -316,6 +316,7 @@ def main() -> None:
     data = False
     jouer = True
     validquit = False
+    appel = "C"
     # SON = sons()
     can_press_button = True
 
@@ -400,6 +401,7 @@ def main() -> None:
         # Actualisation de la position finale de la caméra
         if is_following:
             camera_focus = planetes.get_followed_pos()
+            data = True
         
         camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
@@ -426,7 +428,7 @@ def main() -> None:
         #mise en place des éléments de l'interface
         if data == True:
             HUD.espace_donnee()
-            HUD.ecriture("C")
+            HUD.ecriture(appel)
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
         HUD.barre_action()
@@ -489,7 +491,7 @@ def main() -> None:
                     validquit = not validquit
 
             '''Bouton menu'''
-            # Vérifie si souris sur le boton et retourne au menu principal si clique dans la zone
+            # Vérifie si souris sur le bouton et retourne au menu principal si clique dans la zone
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 0 and pos_souris[1] < 50:
                 launch.main()
 
