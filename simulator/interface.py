@@ -165,7 +165,7 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        self.zoom_factor = 2**((-1)*(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+1))
+        self.zoom_factor = 2**((0.5)*(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[1]+1)/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+1)+1)
         # WARNING : le zoom ne doit pas être plus grand que 2 (sinon...)
 
     def display_zoom_slider(self) -> None:
@@ -263,22 +263,25 @@ class Gestion_Planete:
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
         # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
-        #                               Quelle est sa position ? 
-        #                               Quelle est sa taille ?
+        #                               Sa position
+        #                               Sa taille (relative au zoom)
+        #                               Les coordonnées à ajouter à la caméra pour suivre la planête
         self.data_index = len(self.planetes[0]) # Index de cet argument
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int], vitesse: int=30) -> None:
         '''Permet de dessiner une planète au bon endroit'''
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
         pos = planete[0].calculate_point_from_time(time_to_calc) # Calcul de la position
         # Ci-dessous, ajustement de la position et de la taille
         pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
+        time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la frame suivante
+        pos_next = planete[0].calculate_point_from_time(time_to_calc_next) # Nouvelle position
+        pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
         size = int(60*camera_zoom+1)
         # Affichage de la planète
         pygame.draw.circle(screen, WHITE, pos_final, size)
-        pos_alt = (sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
