@@ -12,3 +12,15 @@
 - Musique fonctionnelle
 - Suivre la planète lorsqu'elle est sélectionnée
 - Ajouter Pluton par action cachée
+
+
+
+>------------------------------------------------------------------------------<
+                             LE RÉGLAGE DU TEMPS
+Kepler ne prend, pour un tour de planète, que des valeurs dans [0, 1]. Or, la
+période orbitale de Neptune est assez grande ... Alors il faut projeter tous les
+nombres dans [0, 1] (ou dans une échelle similaire : 1.5 signifie un tour et
+demi). Donc on veut transformer le nombre de JOURS en FRACTION DE TOUR.
+Donc :
+              time_kepler = ∆jours / periode_orbitale
+Oui, ça veut dire que cheque planète aura alors SA PROPRE FORMULE (°_°).
