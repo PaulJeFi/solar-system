@@ -54,7 +54,7 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
 def update_time(temps: float, j: float, last_frame: float=time()) -> float:
     '''Permet d'avancer dans le temps'''
     new_frame = time() # Permet de faire avancer le temps non pas en fonction des FPS mais du temps réel
-    return temps + (j/365.25)*(new_frame-last_frame), new_frame
+    return temps + (j)*(new_frame-last_frame), new_frame
 
 
 class ecran():
@@ -252,13 +252,16 @@ class ecran():
 
 class Gestion_Planete:
 
-    def __init__(self, mass_center: tuple[int, int]) -> None:
-        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 2459596.5]
-        self.venus = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5]
-        self.terre = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center), 2459601.5]
-        self.mars = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center), 2459750.5]
-        self.jupiter = [kp.Planete(4.959802763801945, 5.454708507664392, center_of_mass=mass_center), 2459969.5]
-        self.saturne = [kp.Planete(9.014757970057712, 10.044693667002363, center_of_mass=mass_center), 2463555.5]
+    def __init__(self, mass_center: tuple[int, int]) -> None :
+
+        # Définition des planètes : 
+        # [PLanète(perigee, apogee) date perigee, periode orbitale]
+        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 2459596.5, 88]
+        self.venus   = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5, 225]
+        self.terre   = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center), 2459601.5, 365.25]
+        self.mars    = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center), 2459750.5, 687]
+        self.jupiter = [kp.Planete(4.959802763801945,  5.454708507664392,  center_of_mass=mass_center), 2459969.5, 4380]
+        self.saturne = [kp.Planete(9.014757970057712,  10.044693667002363, center_of_mass=mass_center), 2463555.5, 10585]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
@@ -273,11 +276,11 @@ class Gestion_Planete:
     def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int], vitesse: int=30) -> None:
         '''Permet de dessiner une planète au bon endroit'''
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
-        pos = planete[0].calculate_point_from_time(time_to_calc) # Calcul de la position
+        pos = planete[0].calculate_point_from_time(time_to_calc/planete[2]) # Calcul de la position
         # Ci-dessous, ajustement de la position et de la taille
         pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
         time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la frame suivante
-        pos_next = planete[0].calculate_point_from_time(time_to_calc_next) # Nouvelle position
+        pos_next = planete[0].calculate_point_from_time(time_to_calc_next/planete[2]) # Nouvelle position
         pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
         size = int(60*camera_zoom+1)
         # Affichage de la planète
