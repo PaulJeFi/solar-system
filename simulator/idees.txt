@@ -15,7 +15,7 @@
 
 
 
->------------------------------------------------------------------------------<
+>––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––<
                              LE RÉGLAGE DU TEMPS
 Kepler ne prend, pour un tour de planète, que des valeurs dans [0, 1]. Or, la
 période orbitale de Neptune est assez grande ... Alors il faut projeter tous les
