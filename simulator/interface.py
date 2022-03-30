@@ -247,8 +247,8 @@ class sons():
         pygame.mixer.init()
         
     def lecture(self):
-        pygame.mixer.music.load("./simulator/musique.mp3")
-        pygame.mixer.music.play()
+        sound = pygame.mixer.Sound("./simulator/pop.wav")
+        pygame.mixer.Sound.play(sound)
 
     def pause(self):
         pygame.mixer.music.pause()
