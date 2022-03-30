@@ -75,3 +75,39 @@ def siecles_juliens_epoch (jj: float) -> float :
     '''Renvoie le temps T, mesuré en siècles juliens à partir de l'Epoch'''
     T = (jj - 2_451_545) / 36_525
     return T
+
+
+    
+# def phase_lune(self, Y, M, D):
+#     '''phase de la lune'''
+#     '''durée lunaison = 29,53 j'''
+#     '''calcule la phase de la lune par la date'''
+#     date = int(JJ(Y, M, D))
+#     datetest =  int(2459580.5)
+#     tmps = 432
+#     a = datetest - date
+#     if a < 0:
+#         a = date - datetest
+#     print(a)
+#     b = a / tmps
+#     print(b)
+#     c  = b // 4
+#     print(c)
+#     if a != 0:
+#         if a / tmps >= 6 and a / tmps <= 9:
+#             print("nouvelle lune") 
+#         elif a / tmps >= 9.0 and a / tmps <= 14.0:    
+#             print("1er croissant")
+#         elif a / tmps >= 4.5 and a / tmps <= 6:
+#             print("pleine lune")
+#         elif a / tmps >= 0.1 and a / tmps <= 4.5:
+#             print("2er croissant")
+
+#     elif Y == 18 and M == 1 and D == 18: 
+#         return "pleine lune"
+#     else : 
+#         print("erreur")
+
+
+# # print(JJ(2022, 1, 1))
+# print(phase_lune(0, 2005, 2, 14))

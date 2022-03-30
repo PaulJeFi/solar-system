@@ -7,10 +7,8 @@
 <------------------------------------------------------------------------------------------------------------------------>
 - Calendrier lunaire
 - Signes astrologiques (grégoriens et chinois)
-- pouvoir cliquer sur les planètes
 - Affichage prochaines éclipses solaires (vu de la terre)
 - Musique fonctionnelle
-- Suivre la planète lorsqu'elle est sélectionnée
 - Ajouter Pluton par action cachée
 
 
