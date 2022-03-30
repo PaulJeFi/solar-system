@@ -332,8 +332,9 @@ def main() -> None:
     planetes = Gestion_Planete(sunpos)
 
     temps = 1
-    vitesse = 30 # Jours par secondes
+    base_vitesse = 60 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
+    vitesse = base_vitesse
     
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
@@ -369,13 +370,13 @@ def main() -> None:
                     jouer = not jouer
 
                 if event.key == pygame.K_q:
-                    vitesse = 15
+                    vitesse /= 2
                     
                 if event.key == pygame.K_s:
-                    vitesse = 30
+                    vitesse = base_vitesse
 
                 if event.key == pygame.K_d:
-                    vitesse = 60
+                    vitesse *= 2
                 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE:
@@ -462,17 +463,17 @@ def main() -> None:
 
             '''Bouton vitesse lente change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if vitesse == 15:
-                    vitesse = 30
+                if vitesse == base_vitesse/2 :
+                    vitesse = base_vitesse
                 else:
-                    vitesse = 15
+                    vitesse = base_vitesse/2
 
             '''Bouton vitesse rapide change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if vitesse == 60:
-                    vitesse = 30
+                if vitesse == base_vitesse*2 :
+                    vitesse = base_vitesse
                 else:
-                    vitesse = 60
+                    vitesse = base_vitesse*2
 
             '''Bouton play/pause change en fonction du mode actuelle'''
             if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
