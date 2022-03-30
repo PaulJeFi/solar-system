@@ -3,6 +3,7 @@ import pygame
 import sys
 from time import time
 import launch
+import Temps
 
 
 BLACK = (0, 0, 0)
@@ -331,8 +332,8 @@ def main() -> None:
     #moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
     planetes = Gestion_Planete(sunpos)
 
-    temps = 1
-    base_vitesse = 60 # Jours par secondes
+    temps = Temps.JJ(2022, 3, 30)
+    base_vitesse = 30 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
     
