@@ -4,6 +4,7 @@ import sys
 from time import time
 import launch
 import Temps
+import pygame.mixer
 
 
 BLACK = (0, 0, 0)
@@ -240,16 +241,17 @@ class ecran():
         screen.blit(non, (615, 312))
 
 
-# class sons():
+class sons():
 
-#     def __init__(self) -> None:
-#         pygame.mixer.init()
+    def __init__(self) -> None:
+        pygame.mixer.init()
         
-#     def lecture(self):
-#         pygame.mixer.music.play()
+    def lecture(self):
+        pygame.mixer.music.load("./simulator/musique.mp3")
+        pygame.mixer.music.play()
 
-#     def pause(self):
-#         pygame.mixer.music.pause()
+    def pause(self):
+        pygame.mixer.music.pause()
 
 class Gestion_Planete:
 
@@ -324,7 +326,7 @@ def main() -> None:
     jouer = True
     validquit = False
     appel = "C"
-    # SON = sons()
+    SON = sons()
     can_press_button = True
 
     sunpos = (int(width/2), int(height/2))
@@ -442,7 +444,7 @@ def main() -> None:
         HUD.barre_action()
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
-        # SON.lecture()
+        SON.lecture()
 
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
