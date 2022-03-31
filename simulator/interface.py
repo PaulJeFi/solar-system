@@ -1,3 +1,4 @@
+from typing import List, Tuple
 import kepler as kp
 import pygame
 import sys
@@ -255,7 +256,7 @@ class sons():
 
 class Gestion_Planete:
 
-    def __init__(self, mass_center: tuple[int, int]) -> None :
+    def __init__(self, mass_center: Tuple[int, int]) -> None :
 
         # Définition des planètes : 
         # [PLanète(perigee, apogee) date perigee, periode orbitale]
@@ -296,7 +297,7 @@ class Gestion_Planete:
         for planete in self.planetes:
             self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos)
     
-    def get_followed_pos(self) -> tuple[float, float]:
+    def get_followed_pos(self) -> Tuple[float, float]:
         '''Permet de récupérer les coordonnées de la planète suivie'''
         for planete in self.planetes:
             if planete[self.data_index][0]:
