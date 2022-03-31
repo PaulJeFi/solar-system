@@ -277,7 +277,7 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int], vitesse: int=30) -> None:
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List[float, float], sun_pos: List[int, int], vitesse: int=30) -> None:
         '''Permet de dessiner une planète au bon endroit'''
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
         pos = planete[0].calculate_point_from_time(time_to_calc/planete[2]) # Calcul de la position
@@ -292,7 +292,7 @@ class Gestion_Planete:
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
-    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List[float, float], sun_pos: List[int, int]) -> None:
         '''Dessine toutes les planètes'''
         for planete in self.planetes:
             self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos)
