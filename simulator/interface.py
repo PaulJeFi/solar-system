@@ -248,7 +248,7 @@ class sons():
         pygame.mixer.init()
         
     def lecture(self):
-        sound = pygame.mixer.Sound("./simulator/pop.wav")
+        sound = pygame.mixer.Sound("./musique/musiques.mp3")
         pygame.mixer.Sound.play(sound)
 
     def pause(self):
@@ -345,6 +345,7 @@ def main() -> None:
     camera_focus = (0, 0) # Postion de l'objet à suivre
     is_following = False # Permet de savoir si la caméra suit une planète
     camera_pos = list(sunpos) # Position finale de la caméra
+    SON.lecture()
 
     while True:
 
@@ -445,7 +446,7 @@ def main() -> None:
         HUD.barre_action()
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
-        SON.lecture()
+        
 
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps

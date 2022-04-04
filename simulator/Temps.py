@@ -79,31 +79,36 @@ def siecles_juliens_epoch (jj: float) -> float :
 
     
 def phase_lune(Y, M, D):
-    '''phase de la lune'''
-    '''durée lunaison = 29,53 j'''
+    '''durée lunaison = 29 j'''
     '''calcule la phase de la lune par la date'''
-    date = int(JJ(Y, M, D))
-    datetest =  int(2459580.5)
-    tmps = 432
+    date = JJ(Y, M, D)
+    datetest =  2451578.5
+    tmps = 29.5
     a = datetest - date
     if a < 0:
         a = date - datetest
     print(a)
-    a = a // tmps
+    a = a % tmps
     print(a)
-    if a != 0:
-        if a >= 0 and a < 7:
-            print("nouvelle lune") 
-        elif a >= 7 and a < 14:    
-            print("1er croissant")
-        elif a >= 14 and a < 21:
-            print("pleine lune")
-        elif a >= 21 and a <= 29:
-            print("2er croissant")
+    if a >= 0 and a <= 3.687 or a > 24.687 and a < 29.5:
+        return "nouvelle lune"
+    elif a > 3.687 and a <= 10.687:    
+        return "1er quartier"
+    elif a > 10.687 and a <= 17.687:
+        return "pleine lune"
+    elif a > 17.687 and a <= 24.687:
+        return "dernier quartier"
 
-        else : 
-            print("Nous rencontrons actuellement un problème technique")
+    else : 
+        return "Nous rencontrons actuellement un problème technique"
 
 
-print(JJ(2022, 1, 1))
-print(phase_lune(2005, 2, 14))
+
+
+# print(phase_lune(1995, 6, 13))
+
+
+
+#PAUL là y a problème avec tes conversions. je te laisse regarder
+print(JJ(2000, 2, 6))
+print(gregorien(2451578.5))
