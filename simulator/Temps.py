@@ -78,36 +78,32 @@ def siecles_juliens_epoch (jj: float) -> float :
 
 
     
-# def phase_lune(self, Y, M, D):
-#     '''phase de la lune'''
-#     '''durée lunaison = 29,53 j'''
-#     '''calcule la phase de la lune par la date'''
-#     date = int(JJ(Y, M, D))
-#     datetest =  int(2459580.5)
-#     tmps = 432
-#     a = datetest - date
-#     if a < 0:
-#         a = date - datetest
-#     print(a)
-#     b = a / tmps
-#     print(b)
-#     c  = b // 4
-#     print(c)
-#     if a != 0:
-#         if a / tmps >= 6 and a / tmps <= 9:
-#             print("nouvelle lune") 
-#         elif a / tmps >= 9.0 and a / tmps <= 14.0:    
-#             print("1er croissant")
-#         elif a / tmps >= 4.5 and a / tmps <= 6:
-#             print("pleine lune")
-#         elif a / tmps >= 0.1 and a / tmps <= 4.5:
-#             print("2er croissant")
+def phase_lune(Y, M, D):
+    '''phase de la lune'''
+    '''durée lunaison = 29,53 j'''
+    '''calcule la phase de la lune par la date'''
+    date = int(JJ(Y, M, D))
+    datetest =  int(2459580.5)
+    tmps = 432
+    a = datetest - date
+    if a < 0:
+        a = date - datetest
+    print(a)
+    a = a // tmps
+    print(a)
+    if a != 0:
+        if a >= 0 and a < 7:
+            print("nouvelle lune") 
+        elif a >= 7 and a < 14:    
+            print("1er croissant")
+        elif a >= 14 and a < 21:
+            print("pleine lune")
+        elif a >= 21 and a <= 29:
+            print("2er croissant")
 
-#     elif Y == 18 and M == 1 and D == 18: 
-#         return "pleine lune"
-#     else : 
-#         print("erreur")
+        else : 
+            print("Nous rencontrons actuellement un problème technique")
 
 
-# # print(JJ(2022, 1, 1))
-# print(phase_lune(0, 2005, 2, 14))
+print(JJ(2022, 1, 1))
+print(phase_lune(2005, 2, 14))
