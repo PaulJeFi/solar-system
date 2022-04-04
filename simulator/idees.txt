@@ -5,11 +5,11 @@
 - Pouvoir entrer un date --> également
 
 <------------------------------------------------------------------------------------------------------------------------>
-- Calendrier lunaire
-- Signes astrologiques (grégoriens et chinois)
+- Calendrier lunaire                                           problème de calculs--->   
+- Signes astrologiques (grégoriens et chinois)                 prêt (Manque zone entrée date)
 - Affichage prochaines éclipses solaires (vu de la terre)
-- Musique fonctionnelle
-- Ajouter Pluton par action cachée
+- Musique fonctionnelle                                        prêt (problème pygame.mixer sur windows)
+- Ajouter Pluton par action cachée                             
 
 
 

@@ -102,10 +102,74 @@ def phase_lune(Y, M, D):
     else : 
         return "Nous rencontrons actuellement un problème technique"
 
+    
+def astro_fra(Y, M, D):
+    '''calcule le signe du zodiac grégorien par la date'''
+    if M == 2 and 20 < D < 29 or M == 3 and 1 < D < 20:
+        return "poisson"
+    if M == 3 and 21 < D < 31 or M == 4 and 1 < D < 20:
+        return "Bélier"
+    if M == 4 and 21 < D < 30 or M == 5 and 1 < D < 21:
+        return "Taureau" 
+    if M == 5 and 22 < D < 31 or M == 6 and 1 < D < 21:
+        return "Gémeaux"
+    if M == 6 and 22 < D < 30 or M == 7 and 1 < D < 22:
+        return "Cancer"
+    if M == 7 and 23 < D < 31 or M == 8 and 1 < D < 22:
+        return "Lion"
+    if M == 8 and 23 < D < 31 or M == 9 and 1 < D < 22:
+        return "Vierge"
+    if M == 9 and 23 < D < 30 or M == 10 and 1 < D < 22:
+        return "Balance"
+    if M == 10 and 23 < D < 31 or M == 11 and 1 < D < 22:
+        return "Scorpion"
+    if M == 11 and 23 < D < 30 or M == 12 and 1 < D < 21:
+        return "Sagittaire"
+    if M == 12 and 22 < D < 31 or M == 1 and 1 < D < 20:
+        return "Capricorne"
+    if M == 1 and 21 < D < 31 or M == 2 and 1 < D < 19:
+        return "Verseau"
+
+    else : 
+        return "Nous rencontrons actuellement un problème technique"
+
+def astro_chn(Y, M, D):
+    '''calcule le signe astrologique chinois par la date'''
+    dif = (2000 - Y) % 12
+    if dif < 0:
+        dif = (Y - 2000) % 12
+    if dif == 0:
+        return "Dragon"
+    if dif == 1: 
+        return "Serpent"
+    if dif == 2: 
+        return "Cheval"
+    if dif == 3: 
+        return "Mouton"
+    if dif == 4: 
+        return "Singe"
+    if dif == 5: 
+        return "Coq"
+    if dif == 6: 
+        return "Chien"
+    if dif == 7: 
+        return "Porc"
+    if dif == 8: 
+        return "Rat"
+    if dif == 9: 
+        return "Boeuf"
+    if dif == 10: 
+        return "Tigre"
+    if dif == 11: 
+        return "Lièvre"
+
+    else : 
+        return "Nous rencontrons actuellement un problème technique"
 
 
 
-# print(phase_lune(1995, 6, 13))
+
+
 
 
 

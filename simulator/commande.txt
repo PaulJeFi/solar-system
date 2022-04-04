@@ -1,0 +1,8 @@
+--------------------------------------------- Liste des touches ---------------------------------------------------
+
+Z       : afficher/désafficher les données
+Espace  : Play/Pause
+Q       : Vitesse X0.5
+S       : Vitesse X1
+D       : Vitesse X2
+W       : Wall-E (en attendant la date (2008))

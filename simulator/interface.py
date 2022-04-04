@@ -6,6 +6,7 @@ from time import time
 import launch
 import Temps
 import pygame.mixer
+import random
 
 
 BLACK = (0, 0, 0)
@@ -94,6 +95,9 @@ class ecran():
         self.zoom_slider_current_x_pos = (self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2 # Possition x actuelle du bouton du slider
         self.zoom_slider_clicked = False # Permet de savoir si le curseur "tient" le bouton pour le faire slider
         self.zoom_factor = 1 # Facteur de zoom de la simulation
+        self.wallE_x = 1080 #position x wall-E
+        self.walle_y = 150 #position y wall-E
+        self.wallE_rotation  = 4 #rotation wall-E
 
     def espace_donnee(self) -> None:
         '''Dessine une zone pour photo planete et infos en dessous'''
@@ -241,18 +245,27 @@ class ecran():
         non = moyfont.render("Non", 1, WHITE)
         screen.blit(non, (615, 312))
 
+    def wallE(self):
+        img = pygame.transform.scale(pygame.image.load("simulator\images\wallE.png"), (400, 200))
+        img = pygame.transform.rotate(img, self.wallE_rotation)
+        screen.blit(img, (self.wallE_x, self.walle_y))
+        self.wallE_x -= 2
+        self.wallE_rotation += 1
+    
+        pass
 
-class sons():
 
-    def __init__(self) -> None:
-        pygame.mixer.init()
+# class sons():
+
+#     def __init__(self) -> None:
+#         pygame.mixer.init()
         
-    def lecture(self):
-        sound = pygame.mixer.Sound("./musique/musiques.mp3")
-        pygame.mixer.Sound.play(sound)
+#     def lecture(self):
+#         sound = pygame.mixer.Sound("simulator\musique\musiques.mp3")
+#         pygame.mixer.Sound.play(sound)
 
-    def pause(self):
-        pygame.mixer.music.pause()
+#     def pause(self):
+#         pygame.mixer.music.pause()
 
 class Gestion_Planete:
 
@@ -277,7 +290,7 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List[float, float], sun_pos: List[int, int], vitesse: int=30) -> None:
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List, sun_pos: List, vitesse: int=30) -> None:
         '''Permet de dessiner une planète au bon endroit'''
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
         pos = planete[0].calculate_point_from_time(time_to_calc/planete[2]) # Calcul de la position
@@ -292,7 +305,7 @@ class Gestion_Planete:
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
-    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List[float, float], sun_pos: List[int, int]) -> None:
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List, sun_pos: List) -> None:
         '''Dessine toutes les planètes'''
         for planete in self.planetes:
             self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos)
@@ -327,8 +340,9 @@ def main() -> None:
     jouer = True
     validquit = False
     appel = "C"
-    SON = sons()
+    # SON = sons()
     can_press_button = True
+    wallE = False
 
     sunpos = (int(width/2), int(height/2))
 
@@ -345,7 +359,7 @@ def main() -> None:
     camera_focus = (0, 0) # Postion de l'objet à suivre
     is_following = False # Permet de savoir si la caméra suit une planète
     camera_pos = list(sunpos) # Position finale de la caméra
-    SON.lecture()
+    # SON.lecture()
 
     while True:
 
@@ -382,6 +396,10 @@ def main() -> None:
 
                 if event.key == pygame.K_d:
                     vitesse *= 2
+                
+                if event.key == pygame.K_w:
+                    wallE = not wallE
+                    
                 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE:
@@ -438,14 +456,18 @@ def main() -> None:
             # print(int(point[0]), int(point[1]))
 
         #mise en place des éléments de l'interface
+        
+        if wallE == True:
+            HUD.wallE()
         if data == True:
             HUD.espace_donnee()
             HUD.ecriture(appel)
+        HUD.barre_action()
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
-        HUD.barre_action()
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
+
         
 
         if jouer:
