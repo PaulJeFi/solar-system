@@ -291,7 +291,11 @@ class Gestion_Planete:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List, sun_pos: List, vitesse: int=30) -> None:
+=======
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int], vitesse: int=30) -> None:
+>>>>>>> parent of d38b6ca (Update interface.py)
 =======
     def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int], vitesse: int=30) -> None:
 >>>>>>> parent of d38b6ca (Update interface.py)
@@ -310,7 +314,11 @@ class Gestion_Planete:
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List, sun_pos: List) -> None:
+=======
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
+>>>>>>> parent of d38b6ca (Update interface.py)
 =======
     def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: list[float, float], sun_pos: list[int, int]) -> None:
 >>>>>>> parent of d38b6ca (Update interface.py)
