@@ -210,10 +210,10 @@ class ecran():
         screen.blit(quitter, (11, 557))
         
         
-    def ecriture(self, planète) -> None:
+    def ecriture(self, planete) -> None:
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
-        dataget = data.get(planète)
+        dataget = data.get(planete)
         # Récupérations des données + mise en forme
         text = font.render(dataget[0], 18, (0, 0, 0))
         poids = font.render(dataget[1], 1, (0, 0, 0))
