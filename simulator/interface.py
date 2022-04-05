@@ -7,6 +7,7 @@ import launch
 import Temps
 import pygame.mixer
 import random
+from tools import main_path
 
 
 BLACK = (0, 0, 0)
@@ -36,20 +37,20 @@ clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
 moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
-# pygame.mixer.music.load("./simulator/musique/musique.mp3")
+# pygame.mixer.music.load(main_path+"musique/musique.mp3")
 jouer = False
 
 #données palnètes
 
-data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j', 'température moyenne = 462°C', "simulator/images/mercure.png"],
-                'B' : ['Venus','poids = 4,867 5x10^24 kg', 'rayon = 6050 km', 'distance soleil = 104 mm km', 'temps de rotation = 243 j', 'température moyenne = 440°C',"simulator/images/venus.png"],
-                'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km', 'distance soleil = 150 mm km', 'temps de rotation = 365 j', 'température moyenne = 14°C',"simulator/images/terre.png"],
-                'D' : ['Mars', 'poids = 6,418 x 10^23 kg','rayon = 3 396 km', 'distance soleil = 227 mm km', 'temps de rotation = 696 j', 'température moyenne = -60°C',"simulator/images/mars.png"],
-                'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',"simulator/images/jupyter.png"],
-                'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',"simulator/images/saturne.png"],
-                'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',"simulator/images/uranus.png"],
-                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',"simulator/images/neptune.png"],
-                'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',"simulator/images/pluton.png"],
+data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j', 'température moyenne = 462°C', main_path+"images/mercure.png"],
+                'B' : ['Venus','poids = 4,867 5x10^24 kg', 'rayon = 6050 km', 'distance soleil = 104 mm km', 'temps de rotation = 243 j', 'température moyenne = 440°C',main_path+"images/venus.png"],
+                'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km', 'distance soleil = 150 mm km', 'temps de rotation = 365 j', 'température moyenne = 14°C',main_path+"images/terre.png"],
+                'D' : ['Mars', 'poids = 6,418 x 10^23 kg','rayon = 3 396 km', 'distance soleil = 227 mm km', 'temps de rotation = 696 j', 'température moyenne = -60°C',main_path+"images/mars.png"],
+                'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',main_path+"images/jupyter.png"],
+                'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',main_path+"images/saturne.png"],
+                'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',main_path+"images/uranus.png"],
+                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',main_path+"images/neptune.png"],
+                'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',main_path+"images/pluton.png"],
                 'Z' : ['', '', '', '', '', '',""]}
 
 
@@ -68,18 +69,18 @@ class ecran():
         self.bouton_pause_pos = (915, 503) # Position du bouton pause
         self.bouton_pause_size = (50, 43) # Dimensions du bouton pause
         self.bouton_pause_images = { # Sprites du bouton pause
-                                    "play": pygame.transform.scale(pygame.image.load("simulator/images/play.png"), self.bouton_pause_size),
-                                    "pause": pygame.transform.scale(pygame.image.load("simulator/images/pause.png"), self.bouton_pause_size)}
+                                    "play": pygame.transform.scale(pygame.image.load(main_path+"images/play.png"), self.bouton_pause_size),
+                                    "pause": pygame.transform.scale(pygame.image.load(main_path+"images/pause.png"), self.bouton_pause_size)}
         # Paramètres des boutons de vitesse de lecture
         self.bouton_vitesse_lecture_pos = (820, 502)
         self.bouton_vitesse_lecture_size = (50, 45)
         self.bouton_vitesse_lecture2_pos = (1012, 503)
-        self.bouton_vitesse_lecture_image = {"normal": pygame.transform.scale(pygame.image.load("./simulator/images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
-                                             "rapide": pygame.transform.scale(pygame.image.load("./simulator/images/vitessecours.png"), self.bouton_vitesse_lecture_size),
-                                             "lent": pygame.transform.scale(pygame.image.load("./simulator/images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
-                                             "normal2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
-                                             "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
-                                             "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load("./simulator/images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
+        self.bouton_vitesse_lecture_image = {"normal": pygame.transform.scale(pygame.image.load(main_path+"images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
+                                             "rapide": pygame.transform.scale(pygame.image.load(main_path+"images/vitessecours.png"), self.bouton_vitesse_lecture_size),
+                                             "lent": pygame.transform.scale(pygame.image.load(main_path+"images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
+                                             "normal2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
+                                             "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
+                                             "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
         # Paramètres du slider pour le zoom
         self.zoom_slider_pos = (515, 553) # Position du background du slider (le boutton est placé en conséquance)
         self.zoom_slider_size_factor = 2.35 # Facteur de taille
@@ -88,8 +89,8 @@ class ecran():
                                 'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
                                 'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
         self.zoom_slider_images = { # Les images utilisées pour le slider
-                                    'background': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_bg.png"), self.zoom_slider_size['background']),
-                                    'button': pygame.transform.scale(pygame.image.load("./simulator/images/zoom_slider_button.png"), self.zoom_slider_size['button'])}
+                                    'background': pygame.transform.scale(pygame.image.load(main_path+"images/zoom_slider_bg.png"), self.zoom_slider_size['background']),
+                                    'button': pygame.transform.scale(pygame.image.load(main_path+"images/zoom_slider_button.png"), self.zoom_slider_size['button'])}
         '''
         self.zoom_slider_x_range = (self.zoom_slider_pos[0]+18*self.zoom_slider_size_factor, self.zoom_slider_pos[0]+98*self.zoom_slider_size_factor) # Entre quelles coordonnées y le bouton slider peut se situer
         self.zoom_slider_current_x_pos = (self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2 # Possition x actuelle du bouton du slider
@@ -246,7 +247,7 @@ class ecran():
         screen.blit(non, (615, 312))
 
     def wallE(self):
-        img = pygame.transform.scale(pygame.image.load("simulator\images\wallE.png"), (400, 200))
+        img = pygame.transform.scale(pygame.image.load(main_path+"images/wallE.png"), (400, 200))
         img = pygame.transform.rotate(img, self.wallE_rotation)
         screen.blit(img, (self.wallE_x, self.walle_y))
         self.wallE_x -= 2
@@ -261,7 +262,7 @@ class ecran():
 #         pygame.mixer.init()
         
 #     def lecture(self):
-#         sound = pygame.mixer.Sound("simulator\musique\musiques.mp3")
+#         sound = pygame.mixer.Sound(main_path+"musique/musiques.mp3")
 #         pygame.mixer.Sound.play(sound)
 
 #     def pause(self):

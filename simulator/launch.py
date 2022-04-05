@@ -1,6 +1,7 @@
 import pygame
 import sys
 import interface
+from tools import main_path
 
 BLACK = (0, 0, 0)
 GRAY = (75, 75, 75)
@@ -23,7 +24,7 @@ pygame.init()
 pygame.mouse.set_visible(True)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Spacior - Menu")
-pygame.display.set_icon(pygame.image.load('./simulator/images/logo.png'))
+pygame.display.set_icon(pygame.image.load(main_path+'images/logo.png'))
 font = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 75)
 validquit = False
@@ -36,7 +37,7 @@ class ecran:
 
     def affichage(self):
         """affichage image de fond"""
-        background = pygame.image.load("simulator/images/backmenu.jpg")
+        background = pygame.image.load(main_path+"images/backmenu.jpg")
         background = pygame.transform.scale(background, (1080, 640))
         screen.blit(background, (0, -20))
 
@@ -111,7 +112,7 @@ def main():
                     validquit = not validquit
 
         #création du fond
-        # background = pygame.image.load("simulator/images/backmenu.jpg")
+        # background = pygame.image.load(main_path+"images/backmenu.jpg")
         # background = pygame.transform.scale(background, (1080, 640))
         # screen.blit(background, (0, -20))
         pygame.display.flip()
