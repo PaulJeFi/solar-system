@@ -339,9 +339,19 @@ class Text_Input:
         self.text = '' # Le contenu de la barre d'input textuelle
         self.bg_text = 'JJ / MM / AAAA' # Le texte "place holder"
         self.selected = False # Permet de savoir si la barre d'input textuelle est sélectionnée
+        self.rect = ((800, 553), (190, 48)) # Position de l'encadrement de la barre d'input textuelle (utilisé pour les collisions)
+        self.statut = 0 # x < 0 --> rouge ; x = 0 --> jaune ; x > 0 --> vert
     
+    def clicked(self, mouse_pos: Tuple(int, int)) -> None:
+        '''On vérifie si la barre d'input textuelle est cliquée (ou non)'''
+        if pygame.Rect(self.rect).collidepoint(mouse_pos):
+            self.selected = not self.selected
+        else:
+            self.selected = False
+
     def check_input(self, event: pygame.KEYDOWN, temps: float) -> float:
         '''Fonction permettant d'écrire dans la barre d'input textuelle et renvoyer le temps si nécessaire'''
+        # Valider l'input
         if event.key == pygame.K_RETURN:
             # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
             if len(self.text) > 4:
@@ -350,23 +360,41 @@ class Text_Input:
                     # Il ne peut y avoir de signe "-" qu'en 5ème position (année)
                     if index == 4 and len(self.text) > 5:
                         if not letter in [str(x) for x in range(10)]+['-']:
+                            self.statut = -45
                             return temps # Erreur
                     else:
                         if not letter in [str(x) for x in range(10)]:
+                            self.statut = -45
                             return temps # Erreur
                     # Le jour, mois ou année ne peut être égal à 0
-                    if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
-                        # Cas ou toutes les conditions sont remplises
-                        return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
+                if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
+                    # Cas ou toutes les conditions sont remplises
+                    self.statut = 45
+                    return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
+            self.statut = -45
             return temps # Erreur
+        # Retour en arrière
         elif event.key == pygame.K_BACKSPACE:
             self.text = self.text[:-1]
+        # Input
         else:
             self.text += str(event.unicode)
         return temps # Si rien n'est touché
         
     def display(self) -> None:
-        '''Affichage'''
+        '''Affichage de la barre d'input textuelle'''
+        # Encadrement de la barre d'input textuelle
+        if self.selected:
+            # Choix de la couleur lors de l'encadrement de la barre d'input textuelle
+            color = OR_STP
+            if abs(self.statut) % 30 < 15:
+                if self.statut > 0:
+                    color = GREEN
+                elif self.statut < 0:
+                    color = RED
+            pygame.draw.rect(screen, color, self.rect, 4)
+        else:
+            pygame.draw.rect(screen, BLEU_STP, self.rect, 4)
         # Création du texte affiché (on met en forme et en fait une surface affichable)
         if len(self.text) > 4:
             text_list = [self.text[:2], self.text[2:4], self.text[4:]]
@@ -385,6 +413,12 @@ class Text_Input:
         # Affichage
         screen.blit(text_bg, self.pos)
         screen.blit(text, self.pos)
+        # Actualisation du statut de la barre d'input textuelle
+        if self.statut < 0:
+            self.statut += 1
+        elif self.statut > 0:
+            self.statut -= 1
+
 
 
 def main() -> None:
@@ -436,27 +470,30 @@ def main() -> None:
             # Actions à ne faire qu'une seule fois par clique
             if event.type == pygame.KEYDOWN:
 
-                # Affichage ou non des informations sur la planête
-                if event.key == pygame.K_z:
-                    data = not data
+                if time_set.selected:
+                    # Input pour la barre d'input textuelle
+                    temps = time_set.check_input(event, temps)
+                
+                else:
+                    # Affichage ou non des informations sur la planête
+                    if event.key == pygame.K_z:
+                        data = not data
 
-                # Pause ou marche
-                if event.key == pygame.K_SPACE:
-                    jouer = not jouer
+                    # Pause ou marche
+                    if event.key == pygame.K_SPACE:
+                        jouer = not jouer
 
-                if event.key == pygame.K_q:
-                    vitesse /= 2
+                    if event.key == pygame.K_q:
+                        vitesse /= 2
+                        
+                    if event.key == pygame.K_s:
+                        vitesse = base_vitesse
+
+                    if event.key == pygame.K_d:
+                        vitesse *= 2
                     
-                if event.key == pygame.K_s:
-                    vitesse = base_vitesse
-
-                if event.key == pygame.K_d:
-                    vitesse *= 2
-                
-                if event.key == pygame.K_w:
-                    wallE = not wallE
-                
-                temps = time_set.check_input(event, temps)
+                    if event.key == pygame.K_w:
+                        wallE = not wallE
                 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE:
@@ -545,6 +582,8 @@ def main() -> None:
             pos_souris = pygame.mouse.get_pos()
 
             # Permet de detecter le clic de la souris
+
+            time_set.clicked(pos_souris) # On check si la barre d'input textuelle est cliquée
 
             '''Bouton vitesse lente change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
