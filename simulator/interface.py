@@ -332,6 +332,60 @@ class Gestion_Planete:
             planete[self.data_index][0] = False
 
 
+class Text_Input:
+
+    def __init__(self) -> None:
+        self.pos = [830, 568] # Position de la barre d'input textuelle
+        self.text = '' # Le contenu de la barre d'input textuelle
+        self.bg_text = 'JJ / MM / AAAA' # Le texte "place holder"
+        self.selected = False # Permet de savoir si la barre d'input textuelle est sélectionnée
+    
+    def check_input(self, event: pygame.KEYDOWN, temps: float) -> float:
+        '''Fonction permettant d'écrire dans la barre d'input textuelle et renvoyer le temps si nécessaire'''
+        if event.key == pygame.K_RETURN:
+            # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
+            if len(self.text) > 4:
+                # Test pour voir si tous les chiffres sont valide
+                for index, letter in enumerate(self.text):
+                    # Il ne peut y avoir de signe "-" qu'en 5ème position (année)
+                    if index == 4 and len(self.text) > 5:
+                        if not letter in [str(x) for x in range(10)]+['-']:
+                            return temps # Erreur
+                    else:
+                        if not letter in [str(x) for x in range(10)]:
+                            return temps # Erreur
+                    # Le jour, mois ou année ne peut être égal à 0
+                    if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
+                        # Cas ou toutes les conditions sont remplises
+                        return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
+            return temps # Erreur
+        elif event.key == pygame.K_BACKSPACE:
+            self.text = self.text[:-1]
+        else:
+            self.text += str(event.unicode)
+        return temps # Si rien n'est touché
+        
+    def display(self) -> None:
+        '''Affichage'''
+        # Création du texte affiché (on met en forme et en fait une surface affichable)
+        if len(self.text) > 4:
+            text_list = [self.text[:2], self.text[2:4], self.text[4:]]
+        elif len(self.text) > 2:
+            text_list = [self.text[:2], self.text[2:]]
+        else:
+            text_list = [self.text]
+        text_str = ' / '.join(text_list)
+        text = font.render(text_str, 1, OR_STP)
+        # Création du texte de "place holder"
+        if len(text_str) >= len(self.bg_text):
+            bg_text_str = ''
+        else:
+            bg_text_str = text_str[:len(text_str)] + self.bg_text[len(text_str):]
+        text_bg = font.render(bg_text_str, 1, BLEU_STP)
+        # Affichage
+        screen.blit(text_bg, self.pos)
+        screen.blit(text, self.pos)
+
 
 def main() -> None:
 
@@ -343,6 +397,8 @@ def main() -> None:
     # SON = sons()
     can_press_button = True
     wallE = False
+
+    time_set = Text_Input()
 
     sunpos = (int(width/2), int(height/2))
 
@@ -399,7 +455,8 @@ def main() -> None:
                 
                 if event.key == pygame.K_w:
                     wallE = not wallE
-                    
+                
+                temps = time_set.check_input(event, temps)
                 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE:
@@ -467,6 +524,7 @@ def main() -> None:
         HUD.vitesse_lecture(vitesse)
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
+        time_set.display()
 
         
 
