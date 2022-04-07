@@ -272,13 +272,13 @@ class Gestion_Planete:
     def __init__(self, mass_center: Tuple(int, int)) -> None :
 
         # Définition des planètes : 
-        # [PLanète(perigee, apogee) date perigee, periode orbitale]
-        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center), 2459596.5, 88]
-        self.venus   = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center), 2459617.5, 225]
-        self.terre   = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center), 2459601.5, 365.25]
-        self.mars    = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center), 2459750.5, 687]
-        self.jupiter = [kp.Planete(4.959802763801945,  5.454708507664392,  center_of_mass=mass_center), 2459969.5, 4380]
-        self.saturne = [kp.Planete(9.014757970057712,  10.044693667002363, center_of_mass=mass_center), 2463555.5, 10585]
+        #              [PLanète(   perigee,            apogee,             centre de masse,            angle perigee avec Mercure), date perigee, periode orbitale]
+        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center, angle=0),                    2459596.5, 88]
+        self.venus   = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center, angle=0.4446504848559939),   2459617.5, 225]
+        self.terre   = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center, angle=0.2559078669525651),   2459601.5, 365.25]
+        self.mars    = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center, angle=0.1960686839406845),   2459750.5, 687]
+        self.jupiter = [kp.Planete(4.959802763801945,  5.454708507664392,  center_of_mass=mass_center, angle=0.05907250291883684),  2459969.5, 4380]
+        self.saturne = [kp.Planete(9.014757970057712,  10.044693667002363, center_of_mass=mass_center, angle=0.006223172803348567), 2463555.5, 10585]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 

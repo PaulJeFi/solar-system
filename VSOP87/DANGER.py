@@ -181,8 +181,18 @@ def get_angle(A, B, C) :
 
 def calculate_angle_by_mercury() :
     '''Calcule les différences d'angle avec Mercure lors de périgées'''
-    pass
+    mercury = get_coords(*position_planetes.get_by_VSOP87('mercure', *temps.gregorien(2459596.5)))
+
+    for planete, date in (  ('Venus', 2459617.5),
+                            ('Terre', 2459601.5),
+                            ('Mars', 2459750.5),
+                            ('Jupiter', 2459969.5),
+                            ('Saturne', 2463555.5)) :
+        print(f"""\nAngle Mercure-Soleil-{planete} (radians) :\n {
+            get_angle(mercury, position_planetes.get_sun(*temps.gregorien(date)),
+            get_coords(*position_planetes.get_by_VSOP87(planete, *temps.gregorien(date))))
+            }\n""")
 
 if __name__ == '__main__' :
     #get(2022, 1, 1)
-    pass
+    calculate_angle_by_mercury()

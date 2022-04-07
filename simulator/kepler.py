@@ -31,12 +31,13 @@ def solve_kepler(mean_anomaly: float, eccentricity: float, max_iterations: float
     return solve(kep, initial_guess=mean_anomaly)
 
 class Planete :
-    def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0], sum_mass=None) -> None :
+    def __init__(self, periapsis, apoapsis,  center_of_mass: list=[0, 0], sum_mass=None, angle=0) -> None :
 
         
         self.center_of_mass = center_of_mass
         self.periapsis = periapsis # périgée
         self.apoapsis = apoapsis # apogée
+        self.angle = angle # angle de périgée formé avec Mercure
 
         self.compute_data(sum_mass)
         self.compute_orbit_path()
@@ -80,6 +81,7 @@ class Planete :
         eccentric_anomaly = solve_kepler(mean_anomaly, self.eccentricity)
 
         # Ajour du décalage
+        eccentric_anomaly += self.angle
 
         # Calculer les coordonnées cartésiennes
         point_x = math.cos(eccentric_anomaly) * self.semi_major_axis + self.ellipse_centre_X

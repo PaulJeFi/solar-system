@@ -68,3 +68,23 @@ Périgée de Saturne le
 2463555.5
 À une distance (en UA) :
 9.014757970057712
+
+
+
+################################################################################
+Pour les angles de Périgées avec Mercure :
+
+Angle Mercure-Soleil-Venus (radians) :
+ 0.4446504848559939
+
+Angle Mercure-Soleil-Terre (radians) :
+ 0.2559078669525651
+
+Angle Mercure-Soleil-Mars (radians) :
+ 0.1960686839406845
+
+Angle Mercure-Soleil-Jupiter (radians) :
+ 0.05907250291883684
+
+Angle Mercure-Soleil-Saturne (radians) :
+ 0.006223172803348567
