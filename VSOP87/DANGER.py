@@ -152,5 +152,37 @@ def get(Y, M, D) :
     print(f"Périgée de Neptune le \n{date_perigee_neptune}\nÀ une distance (en UA) :\n{perigee_neptune}\n")
     print()
 
+def get_angle(A, B, C) :
+    '''Détermine l'angle (point1, point2, point3) grâce au théorême d'Al-Kashi'''
+
+    '''
+    On a, dans le triangle ABC, d'après le théorème d'Al-Kashi :
+    
+                         AB ^ 2 = AC ^ 2 + CB ^ 2 - 2 AC • CB . cos(ACB)
+    
+    <=>  - 2 AC • CB • cos(ACB) = AB ^ 2 - (AC ^ 2 + CB ^ 2)
+    <=>                cos(ABC) = (- AB ^ 2 + AC ^ 2 + CB ^ 2) / (2 AC • CB)
+
+    <=>                     ABC = arc cos((- AB ^ 2 + AC ^ 2 + CB ^ 2) / (2 AC • CB))
+    '''
+
+    # Calcul des distances :
+    AB = math.dist(A, B)
+    AC = math.dist(A, C)
+    CB = math.dist(C, B)
+
+    return math.acos(
+        (
+            - (AB ** 2) + (AC ** 2) + (CB ** 2)
+        ) / (
+            2 * AC * CB
+        )
+    )
+
+def calculate_angle_by_mercury() :
+    '''Calcule les différences d'angle avec Mercure lors de périgées'''
+    pass
+
 if __name__ == '__main__' :
-    get(2022, 1, 1)
+    #get(2022, 1, 1)
+    pass
