@@ -52,6 +52,19 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',main_path+"images/pluton.png"],
                 'Z' : ['', '', '', '', '', '',""]}
 
+signes = {'A': ["    Bélier", "21 Mars - 20 Avril", "Element : Feu"],
+         'B': ["   Taureau", "21 Avril - 21 Mai", "Element : Terre"],
+         'C': ["    Gémaux", "22 Mai- 21 Juin", "Element : Air"],
+         'D': ["    Cancer", "22 Juin - 22 Juillet", "Element : Eau"],
+         'E': ["      Lion", "23 Juillet - 22 Août", "Element : Feu"],
+         'F': ["    Vierge", "23 Août - 22 Septembre", "Element : Terre"],
+         'G': ["   Balance", "23 Septembre - 22 Octobre", "Element : Air"],
+         'H': ["  Scorpion", "23 Octobre - 22 Novembre", "Element : Feu"],
+         'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Element : Feu"],
+         'J': ["Capricorne", "22 Décembre - 20 Janvier", "Element : Terre"],
+         'K': ["   Verseau", "21 Janvier - 18 Février", "Element : Air"],
+         'L': ["   Poisson", "19 Février - 20 Mars", "Element : Eau"]}
+
 
 
 
@@ -96,7 +109,7 @@ class ecran():
         self.zoom_slider_clicked = False # Permet de savoir si le curseur "tient" le bouton pour le faire slider
         self.zoom_factor = 1 # Facteur de zoom de la simulation
         self.wallE_x = 1080 #position x wall-E
-        self.walle_y = 150 #position y wall-E
+        self.wallE_y = 25 #position y wall-E
         self.wallE_rotation  = 4 #rotation wall-E
 
     def espace_donnee(self) -> None:
@@ -116,6 +129,7 @@ class ecran():
         pygame.draw.rect(screen, BLEU_STP, ((800, 500), (280, 50)))#barre contrôle temps
         pygame.draw.rect(screen, GRAY, ((800, 500), (90, 50)))#bouton sens inverse
         pygame.draw.rect(screen, GRAY, ((990, 500), (280, 50)))#bouton vitesse
+        pygame.draw.line(screen, GRAY, (990, 553), (990, 600), 3)
         ok = grandfont.render("OK", 1, BLACK)
         screen.blit(ok, (1003, 558))
         
@@ -208,6 +222,24 @@ class ecran():
         '''bouton quitter'''
         quitter = grandfont.render("X", 1, BLACK)
         screen.blit(quitter, (11, 557))
+
+    def signe_astro(self, signe, data):
+        """"affiche le signe asrtrologique plus une petite phares"""
+        # work in progress .....
+        getsigne = signes.get(signe)
+        if data == True:
+            pygame.draw.rect(screen, GRAY, ((225, 200),(400, 200)), 0, 10)
+            pygame.draw.rect(screen, RED, ((225, 200), (40, 40)), 0, 0, 10, 0, 0, 30)
+            text = grandfont.render(getsigne[0], 1, OR_STP)
+            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
+            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
+            screen.blit(text, (300, 215))
+            screen.blit(text2, (250, 280))
+            screen.blit(text3, (250, 330))
+        if data == False:
+            pygame.draw.rect(screen, GRAY, ((250, 200),(600, 200)), 0, 10)
+            text = moyfont.render(getsigne[0], 1, OR_STP)
+            screen.blit(text, (500, 225))
         
         
     def ecriture(self, planete) -> None:
@@ -215,12 +247,12 @@ class ecran():
         # Cherche dans le dictionnaire ==> (work in progress)
         dataget = data.get(planete)
         # Récupérations des données + mise en forme
-        text = font.render(dataget[0], 18, (0, 0, 0))
-        poids = font.render(dataget[1], 1, (0, 0, 0))
-        rayon = font.render(dataget[2], 1, (0, 0, 0))
-        distance = font.render(dataget[3], 1, (0, 0, 0))
-        rotation = font.render(dataget[4], 1, (0, 0, 0))
-        temperature = font.render(dataget[5], 1, (0, 0, 0))
+        text = font.render(dataget[0], 1, BLACK)
+        poids = font.render(dataget[1], 1, BLACK)
+        rayon = font.render(dataget[2], 1, BLACK)
+        distance = font.render(dataget[3], 1, BLACK)
+        rotation = font.render(dataget[4], 1, BLACK)
+        temperature = font.render(dataget[5], 1, BLACK)
         # Affichage des données
         screen.blit(text, (900, 290))
         screen.blit(poids, (815, 350))
@@ -246,12 +278,19 @@ class ecran():
         screen.blit(non, (615, 312))
 
     def wallE(self):
-        img = pygame.transform.scale(pygame.image.load(main_path+"images/wallE.png"), (400, 200))
+        img = pygame.transform.scale(pygame.image.load(main_path+"images/wallE.png"), (350, 175))
         img = pygame.transform.rotate(img, self.wallE_rotation)
-        screen.blit(img, (self.wallE_x, self.walle_y))
-        self.wallE_x -= 2
-        self.wallE_rotation += 1
-    
+        screen.blit(img, (self.wallE_x, self.wallE_y))
+        self.wallE_x -= 5
+        self.wallE_rotation += 0.3
+        if self.wallE_rotation >= 88 or self.wallE_rotation <= 90 or self.wallE_rotation >= 168 or self.wallE_rotation <= 170:
+            self.wallE_y += 0.4
+        if self.wallE_rotation >= 178 or self.wallE_rotation <= 180 or self.wallE_rotation >= 358 or self.wallE_rotation <= 0:
+            self.wallE_y += 0.4
+        if self.wallE_x <= -300:
+            self.wallE_x = 1080 #position x wall-E
+            self.wallE_y = 25 #position y wall-E
+            self.wallE_rotation  = 4
         pass
 
 
@@ -380,6 +419,14 @@ class Text_Input:
         else:
             self.text += str(event.unicode)
         return temps # Si rien n'est touché
+
+    def retour_date(self):
+        date = Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
+        return date
+
+    def retour_date_complete(self):
+        date = [int(self.text[4:]), int(self.text[2:4]), int(self.text[:2])]
+        return date
         
     def display(self) -> None:
         '''Affichage de la barre d'input textuelle'''
@@ -392,9 +439,9 @@ class Text_Input:
                     color = GREEN
                 elif self.statut < 0:
                     color = RED
-            pygame.draw.rect(screen, color, self.rect, 4)
+            pygame.draw.rect(screen, color, self.rect, 5)
         else:
-            pygame.draw.rect(screen, BLEU_STP, self.rect, 4)
+            pygame.draw.rect(screen, BLEU_STP, self.rect, 5)
         # Création du texte affiché (on met en forme et en fait une surface affichable)
         if len(self.text) > 4:
             text_list = [self.text[:2], self.text[2:4], self.text[4:]]
@@ -427,6 +474,7 @@ def main() -> None:
     data = False
     jouer = True
     validquit = False
+    signe_astro = False
     appel = "C"
     # SON = sons()
     can_press_button = True
@@ -443,6 +491,7 @@ def main() -> None:
     base_vitesse = 30 # Jours par secondes
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
+    timeWallE = time()
     
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
@@ -494,6 +543,9 @@ def main() -> None:
                     
                     if event.key == pygame.K_w:
                         wallE = not wallE
+                    
+                    if event.key == pygame.K_a:
+                        signe_astro = not signe_astro
                 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE:
@@ -563,7 +615,10 @@ def main() -> None:
         HUD.zoom_slider()
         time_set.display()
 
-        
+    
+        if signe_astro == True:
+            saisie = time_set.retour_date_complete()
+            HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
 
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
@@ -606,6 +661,14 @@ def main() -> None:
                 else:
                     jouer = not jouer
 
+            """valide la date et change les planètes de places"""
+            if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
+                saisie = time_set.retour_date()
+                if saisie > 2454466 and saisie < 2454832:
+                    wallE = True
+                    timeWallE = time()
+
+            
             '''Bouton quitter'''
             # Vérifie si souris sur le boton et quitte appli si clique dans la zone
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
@@ -637,9 +700,10 @@ def main() -> None:
 
         # Si message pour quitter actif
         if validquit:
-            HUD.confirmation() # Permet d'afficher le message de confirmation
+            HUD.confirmation() # Permet d'afficher le message de confirmation 
 
-                
+        if wallE == True and time() - timeWallE >= 8:
+            wallE = False
 
         pygame.display.flip() # Affichage final
 

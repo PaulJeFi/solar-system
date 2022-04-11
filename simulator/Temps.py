@@ -106,29 +106,29 @@ def phase_lune(Y, M, D):
 def astro_fra(Y, M, D):
     '''calcule le signe du zodiac grégorien par la date'''
     if M == 2 and 20 < D < 29 or M == 3 and 1 < D < 20:
-        return "poisson"
+        return "L"
     if M == 3 and 21 < D < 31 or M == 4 and 1 < D < 20:
-        return "Bélier"
+        return "A"
     if M == 4 and 21 < D < 30 or M == 5 and 1 < D < 21:
-        return "Taureau" 
+        return "B" 
     if M == 5 and 22 < D < 31 or M == 6 and 1 < D < 21:
-        return "Gémeaux"
+        return "C"
     if M == 6 and 22 < D < 30 or M == 7 and 1 < D < 22:
-        return "Cancer"
+        return "D"
     if M == 7 and 23 < D < 31 or M == 8 and 1 < D < 22:
-        return "Lion"
+        return "E"
     if M == 8 and 23 < D < 31 or M == 9 and 1 < D < 22:
-        return "Vierge"
+        return "F"
     if M == 9 and 23 < D < 30 or M == 10 and 1 < D < 22:
-        return "Balance"
+        return "G"
     if M == 10 and 23 < D < 31 or M == 11 and 1 < D < 22:
-        return "Scorpion"
+        return "H"
     if M == 11 and 23 < D < 30 or M == 12 and 1 < D < 21:
-        return "Sagittaire"
+        return "I"
     if M == 12 and 22 < D < 31 or M == 1 and 1 < D < 20:
-        return "Capricorne"
+        return "J"
     if M == 1 and 21 < D < 31 or M == 2 and 1 < D < 19:
-        return "Verseau"
+        return "K"
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
