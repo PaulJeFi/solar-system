@@ -388,12 +388,10 @@ class Text_Input:
         else:
             self.selected = False
 
-    def check_input(self, event: pygame.KEYDOWN=False, temps: float=0, button_ok_pressed: bool=False) -> float:
+    def check_input(self, event: pygame.KEYDOWN, temps: float) -> float:
         '''Fonction permettant d'écrire dans la barre d'input textuelle et renvoyer le temps si nécessaire'''
         # Valider l'input
-        if not event :
-            return temps
-        if event.key == pygame.K_RETURN or button_ok_pressed:
+        if event.key == pygame.K_RETURN:
             # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
             if len(self.text) > 4:
                 # Test pour voir si tous les chiffres sont valide
@@ -518,7 +516,7 @@ def main() -> None:
                 pygame.quit()
                 sys.exit()
             
-            # Actions à ne faire qu'une seule fois par clic
+            # Actions à ne faire qu'une seule fois par clique
             if event.type == pygame.KEYDOWN:
 
                 if time_set.selected:
@@ -666,16 +664,12 @@ def main() -> None:
             """valide la date et change les planètes de places"""
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
                 temps = time_set.retour_date()
-                saisie = time_set.retour_date()
-                if saisie > 2454466 and saisie < 2454832:
+                if temps > 2454466 and temps < 2454832:
                     wallE = True
                     timeWallE = time()
-                
-                
-
             
             '''Bouton quitter'''
-            # Vérifie si souris sur le boton et quitte appli si clique dans la zone
+            # Vérifie si la souris est sur le bouton et quitte appli si clic dans la zone
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
                 validquit = True
 
@@ -690,7 +684,7 @@ def main() -> None:
                     validquit = not validquit
 
             '''Bouton menu'''
-            # Vérifie si souris sur le bouton et retourne au menu principal si clique dans la zone
+            # Vérifie si la souris est sur le bouton et retourne au menu principal si clic dans la zone
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 0 and pos_souris[1] < 50:
                 launch.main()
 
