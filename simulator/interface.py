@@ -665,11 +665,12 @@ def main() -> None:
 
             """valide la date et change les planètes de places"""
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
+                temps = time_set.retour_date()
                 saisie = time_set.retour_date()
                 if saisie > 2454466 and saisie < 2454832:
                     wallE = True
                     timeWallE = time()
-                temps = time_set.check_input(temps=temps, button_ok_pressed=True)
+                
                 
 
             
