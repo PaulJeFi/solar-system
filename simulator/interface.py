@@ -388,10 +388,12 @@ class Text_Input:
         else:
             self.selected = False
 
-    def check_input(self, event: pygame.KEYDOWN, temps: float) -> float:
+    def check_input(self, event: pygame.KEYDOWN=False, temps: float=0, button_ok_pressed: bool=False) -> float:
         '''Fonction permettant d'écrire dans la barre d'input textuelle et renvoyer le temps si nécessaire'''
         # Valider l'input
-        if event.key == pygame.K_RETURN:
+        if not event :
+            return temps
+        if event.key == pygame.K_RETURN or button_ok_pressed:
             # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
             if len(self.text) > 4:
                 # Test pour voir si tous les chiffres sont valide
@@ -516,7 +518,7 @@ def main() -> None:
                 pygame.quit()
                 sys.exit()
             
-            # Actions à ne faire qu'une seule fois par clique
+            # Actions à ne faire qu'une seule fois par clic
             if event.type == pygame.KEYDOWN:
 
                 if time_set.selected:
@@ -667,6 +669,8 @@ def main() -> None:
                 if saisie > 2454466 and saisie < 2454832:
                     wallE = True
                     timeWallE = time()
+                temps = time_set.check_input(temps=temps, button_ok_pressed=True)
+                
 
             
             '''Bouton quitter'''
