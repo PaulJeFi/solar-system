@@ -12,7 +12,7 @@ def get_distance(plan, sun) :
     return math.sqrt((plan[0] - sun[0])**2 + (plan[1] - sun[1])**2 + (plan[2] - sun[2])**2)
 
 
-def get(Y, M, D) :
+def get(Y, M, D) : # DANGEUREUX : DO NOT USE !
     '''Permet de calculer, pour chaque planète, les distance et dates d'apogée et périgée.'''
     temps_acutel = temps.JJ(Y, M, D)
 
