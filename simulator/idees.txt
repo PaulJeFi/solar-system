@@ -11,7 +11,12 @@
 - Musique fonctionnelle                                        prêt (problème pygame.mixer sur windows)
 - Ajouter Pluton par action cachée                             
 
+>––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––<
+                          OPTIMISATIONS POSSIBLES
 
+- réduire les opérations (gourmandes) inutiles d'un tour de boucle à l'autre
+     (à l'aide de code conditionnel) (ex: pas besoin à chaque fois de déterminer
+     la planète suivie si elle n'a pas changée)
 
 >––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––<
                              LE RÉGLAGE DU TEMPS
