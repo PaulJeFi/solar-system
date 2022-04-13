@@ -11,12 +11,16 @@ from math import floor
 def JJ (Y: int, M: int, D: float) -> float :
     '''Retourne une date Y/M/D grégorienne en temps Jour Julien.'''
 
-    if M < 2 :
+    if M <= 2 :
         Y -= 1
         M += 12
-
-    A = floor(Y/100)
-    B = 2 - A + floor(A/4)
+        
+    if (Y < 1582) or (Y == 1582 and M < 10) or (Y == 1582 and M == 10 and D < 15) :
+        # Car le calendrier Grégorien commence le 15 oct 1582
+        B = 0
+    else :
+        A = floor(Y/100)
+        B = 2 - A + floor(A/4)
 
     jj = floor( 365.25 * (Y + 4_716) ) + floor( 30.6001 * (M + 1) ) + D + B - 1_524.5
 
