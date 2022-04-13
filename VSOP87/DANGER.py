@@ -183,16 +183,28 @@ def calculate_angle_by_mercury() :
     '''Calcule les différences d'angle avec Mercure lors de périgées'''
     mercury = get_coords(*position_planetes.get_by_VSOP87('mercure', *temps.gregorien(2459596.5)))
 
-    for planete, date in (  ('Venus', 2459617.5),
-                            ('Terre', 2459601.5),
-                            ('Mars', 2459750.5),
-                            ('Jupiter', 2459969.5),
-                            ('Saturne', 2463555.5)) :
+    for planete, date in (  ('Venus', 2459378.050801399),
+                            ('Terre', 2459217.95935868),
+                            ('Mars', 2459064.98384513),
+                            ('Jupiter', 2459969.8332017004),
+                            ('Saturne', 2452830.12)) :
         print(f"""\nAngle Mercure-Soleil-{planete} (radians) :\n {
             get_angle(mercury, position_planetes.get_sun(*temps.gregorien(date)),
             get_coords(*position_planetes.get_by_VSOP87(planete, *temps.gregorien(date))))
             }\n""")
 
+def calculate_datas_periph_aph(Y) :
+    '''Affiche les données de périphélie et d'aphélie des planères'''
+    planetes = 'Mercure Venus Terre Mars Jupiter Saturne'.split()
+    for planete in planetes :
+        JJ_periphelie, JJ_aphelie = temps.calc_periphelie_aphelie(Y, planete)
+        dist_perigee = math.dist(position_planetes.get_sun(*temps.gregorien(JJ_periphelie)), get_coords(*position_planetes.get_by_VSOP87(planete, *temps.gregorien(JJ_periphelie))))
+        dist_apogee  = math.dist(position_planetes.get_sun(*temps.gregorien(JJ_aphelie)), get_coords(*position_planetes.get_by_VSOP87(planete, *temps.gregorien(JJ_aphelie))))
+
+        print(f'Apogée de {planete} le\n    {JJ_aphelie}\nÀ une distance (en UA) :\n    {dist_apogee}\n\n')
+        print(f'Périgée de {planete} le\n    {JJ_periphelie}\nÀ une distance (en UA) :\n    {dist_perigee}\n\n')
+
 if __name__ == '__main__' :
     #get(2022, 1, 1)
     calculate_angle_by_mercury()
+    #calculate_datas_periph_aph(2022)

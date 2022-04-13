@@ -1,73 +1,73 @@
-Apogée de Mercure le 
-2459640.5
+Apogée de Mercure le
+    2459551.4831415154
 À une distance (en UA) :
-0.4679396067760938
+    0.46842943478058124
 
 
-Périgée de Mercure le 
-2459596.5
+Périgée de Mercure le
+    2459507.4984667003
 À une distance (en UA) :
-0.3057031448888919
+    0.3055966332078965
 
 
-Apogée de Venus le 
-2459729.5
+Apogée de Venus le
+    2459490.401209679
 À une distance (en UA) :
-0.7367989519021444
+    0.73676134561161
 
 
-Périgée de Venus le 
-2459617.5
+Périgée de Venus le
+    2459378.050801399
 À une distance (en UA) :
-0.7096386091312117
+    0.7096395277449469
 
 
-Apogée de Terre le 
-2459788.5
+Apogée de Terre le
+    2459400.5891769114
 À une distance (en UA) :
-1.0219486233072168
+    1.0231627778961105
 
 
-Périgée de Terre le 
-2459601.5
+Périgée de Terre le
+    2459217.95935868
 À une distance (en UA) :
-0.9768982680888847
+    0.9759349503905891
 
 
-Apogée de Mars le 
-2460092.5
+Apogée de Mars le
+    2459408.4817367634
 À une distance (en UA) :
-1.6584426592108024
+    1.6568787018388922
 
 
-Périgée de Mars le 
-2459750.5
+Périgée de Mars le
+    2459064.98384513
 À une distance (en UA) :
-1.3902879805270787
+    1.3892063960381649
 
 
-Apogée de Jupiter le 
-2462130.5
+Apogée de Jupiter le
+    2462136.281905075
 À une distance (en UA) :
-5.454708507664392
+    5.454701809756877
 
 
-Périgée de Jupiter le 
-2459969.5
+Périgée de Jupiter le
+    2459969.8332017004
 À une distance (en UA) :
-4.959802763801945
+    4.959802875063826
 
 
-Apogée de Saturne le 
-2468881.5
+Apogée de Saturne le
+    2458212.22858675
 À une distance (en UA) :
-10.044693667002363
+    10.072123061732313
 
 
-Périgée de Saturne le 
-2463555.5
+Périgée de Saturne le
+    2452830.12
 À une distance (en UA) :
-9.014757970057712
+    9.034936763609108
 
 
 
@@ -75,16 +75,20 @@ Périgée de Saturne le
 Pour les angles de Périgées avec Mercure :
 
 Angle Mercure-Soleil-Venus (radians) :
- 0.4446504848559939
+ 0.42216048217738344
+
 
 Angle Mercure-Soleil-Terre (radians) :
- 0.2559078669525651
+ 0.15288811480428713
+
 
 Angle Mercure-Soleil-Mars (radians) :
- 0.1960686839406845
+ 0.1933828995017202
+
 
 Angle Mercure-Soleil-Jupiter (radians) :
- 0.05907250291883684
+ 0.059062298186004995
+
 
 Angle Mercure-Soleil-Saturne (radians) :
- 0.006223172803348567
+ 0.0062405892185779

@@ -316,13 +316,13 @@ class Gestion_Planete:
     def __init__(self, mass_center: Tuple(int, int)) -> None :
 
         # Définition des planètes : 
-        #              [PLanète(   perigee,            apogee,             centre de masse,            angle perigee avec Mercure), date perigee, periode orbitale]
-        self.mercury = [kp.Planete(0.3057031448888919, 0.4679396067760938, center_of_mass=mass_center, angle=0),                    2459596.5, 88]
-        self.venus   = [kp.Planete(0.7096386091312117, 0.7367989519021444, center_of_mass=mass_center, angle=0.4446504848559939),   2459617.5, 225]
-        self.terre   = [kp.Planete(0.9768982680888847, 1.0219486233072168, center_of_mass=mass_center, angle=0.2559078669525651),   2459601.5, 365.25]
-        self.mars    = [kp.Planete(1.3902879805270787, 1.6584426592108024, center_of_mass=mass_center, angle=0.1960686839406845),   2459750.5, 687]
-        self.jupiter = [kp.Planete(4.959802763801945,  5.454708507664392,  center_of_mass=mass_center, angle=0.05907250291883684),  2459969.5, 4380]
-        self.saturne = [kp.Planete(9.014757970057712,  10.044693667002363, center_of_mass=mass_center, angle=0.006223172803348567), 2463555.5, 10585]
+        #              [PLanète(   perigee,            apogee,              centre de masse,            angle perigee avec Mercure), date perigee,       periode orbitale]
+        self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63]
+        self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8]
+        self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8]
+        self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7]
+        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065]
+        self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
