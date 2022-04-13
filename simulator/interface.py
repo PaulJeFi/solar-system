@@ -45,49 +45,68 @@ grandfont = pygame.font.Font(None, 60)
 # pygame.mixer.music.load(main_path+"musique/musique.mp3")
 jouer = False
 
-"""données planètes"""
+# Données planètes
 
-data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j', 'température moyenne = 462°C', main_path+"images/mercure.png"],
-                'B' : ['Venus','poids = 4,867 5x10^24 kg', 'rayon = 6050 km', 'distance soleil = 104 mm km', 'temps de rotation = 243 j', 'température moyenne = 440°C',main_path+"images/venus.png"],
-                'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km', 'distance soleil = 150 mm km', 'temps de rotation = 365 j', 'température moyenne = 14°C',main_path+"images/terre.png"],
-                'D' : ['Mars', 'poids = 6,418 x 10^23 kg','rayon = 3 396 km', 'distance soleil = 227 mm km', 'temps de rotation = 696 j', 'température moyenne = -60°C',main_path+"images/mars.png"],
-                'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km', 'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j', 'température moyenne = -163°C',main_path+"images/jupyter.png"],
-                'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km', 'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j', 'température moyenne = -189°C',main_path+"images/saturne.png"],
-                'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km','distance soleil = 2,8 md km', 'temps de rotation = 84 ans', 'température moyenne = -218°C',main_path+"images/uranus.png"],
-                'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',main_path+"images/neptune.png"],
-                'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',main_path+"images/pluton.png"],
-                'Z' : ['', '', '', '', '', '',""]}
+data = {'A' : ['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 
+              'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j',
+              'température moyenne = 462°C', main_path+"images/mercure.png"],
+        'B' : ['Venus', 'poids = 4,867 5x10^24 kg', 'rayon = 6050 km',
+              'distance soleil = 104 mm km', 'temps de rotation = 243 j',
+              'température moyenne = 440°C', main_path+"images/venus.png"],
+        'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km',
+              'distance soleil = 150 mm km', 'temps de rotation = 365 j',
+              'température moyenne = 14°C', main_path+"images/terre.png"],
+        'D' : ['Mars', 'poids = 6,418 x 10^23 kg', 'rayon = 3 396 km',
+              'distance soleil = 227 mm km', 'temps de rotation = 696 j',
+              'température moyenne = -60°C', main_path+"images/mars.png"],
+        'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km',
+              'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j',
+              'température moyenne = -163°C', main_path+"images/jupyter.png"],
+        'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km',
+              'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j',
+              'température moyenne = -189°C', main_path+"images/saturne.png"],
+        'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km',
+              'distance soleil = 2,8 md km', 'temps de rotation = 84 ans',
+              'température moyenne = -218°C', main_path+"images/uranus.png"],
+        'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km',
+              'distance soleil = 4,5 md km', 'temps de rotation = 165 ans',
+              'température moyenne = -220°C', main_path+"images/neptune.png"],
+        'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km',
+              'distance soleil = 6 md km', 'temps de rotation = 248 ans',
+              'température moyenne = -225°C', main_path+"images/pluton.png"],
+        'Z' : ['', '', '', '', '', '', '']}
 
-'''données signes astrologiques '''
+# Données signes astrologiques
 
-signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril", "Element : Feu"],
-          'B': ["  Taureau ", "21 Avril - 21 Mai", "Element : Terre"],
-          'C': ["  Gémaux  ", "22 Mai- 21 Juin", "Element : Air"],
-          'D': ["  Cancer  ", "22 Juin - 22 Juillet", "Element : Eau"],
-          'E': ["    Lion  ", "23 Juillet - 22 Août", "Element : Feu"],
-          'F': ["  Vierge  ", "23 Août - 22 Septembre", "Element : Terre"],
-          'G': ["  Balance ", "23 Septembre - 22 Octobre", "Element : Air"],
-          'H': [" Scorpion ", "23 Octobre - 22 Novembre", "Element : Feu"],
-          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Element : Feu"],
-          'J': ["Capricorne", "22 Décembre - 20 Janvier", "Element : Terre"],
-          'K': ["  Verseau ", "21 Janvier - 18 Février", "Element : Air"],
-          'L': ["  Poisson ", "19 Février - 20 Mars", "Element : Eau"]}
+signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
+          'B': ["  Taureau ", "21 Avril - 21 Mai",         "Élément : Terre"],
+          'C': ["  Gémaux  ", "22 Mai- 21 Juin",           "Élément : Air"],
+          'D': ["  Cancer  ", "22 Juin - 22 Juillet",      "Élément : Eau"],
+          'E': ["    Lion  ", "23 Juillet - 22 Août",      "Élément : Feu"],
+          'F': ["  Vierge  ", "23 Août - 22 Septembre",    "Élément : Terre"],
+          'G': ["  Balance ", "23 Septembre - 22 Octobre", "Élément : Air"],
+          'H': [" Scorpion ", "23 Octobre - 22 Novembre",  "Élément : Feu"],
+          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu"],
+          'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre"],
+          'K': ["  Verseau ", "21 Janvier - 18 Février",   "Élément : Air"],
+          'L': ["  Poisson ", "19 Février - 20 Mars",      "Élément : Eau"]}
 
 
 
 
 def update_time(temps: float, j: float, last_frame: float=time()) -> float:
     '''Permet d'avancer dans le temps'''
-    new_frame = time() # Permet de faire avancer le temps non pas en fonction des FPS mais du temps réel
-    return temps + (j)*(new_frame-last_frame), new_frame
+    new_frame = time() # Permet de faire avancer le temps non pas en fonction
+                       # des FPS mais du temps réel
+    return temps + j*(new_frame-last_frame), new_frame
 
 
 class ecran():
 
     def __init__(self) -> None:
         # Paramètres du bouton pause
-        self.bouton_pause_pos = (915, 503) # Position du bouton pause
-        self.bouton_pause_size = (50, 43) # Dimensions du bouton pause
+        self.bouton_pause_pos  = (915, 503) # Position du bouton pause
+        self.bouton_pause_size = ( 50,  43) # Dimensions du bouton pause
         self.bouton_pause_images = { # Sprites du bouton pause
                                     "play": pygame.transform.scale(pygame.image.load(main_path+"images/play.png"), self.bouton_pause_size),
                                     "pause": pygame.transform.scale(pygame.image.load(main_path+"images/pause.png"), self.bouton_pause_size)}
@@ -122,62 +141,91 @@ class ecran():
 
     def espace_donnee(self) -> None:
         '''Dessine une zone pour photo planete et infos en dessous'''
-        pygame.draw.rect(screen, BLEU_FC, ((800, 0), (1080, 275)))#photo planete
-        pygame.draw.rect(screen, WHITE, ((800, 275), (1080, 600)))#affichage donnees
-        pygame.draw.line(screen, OR_STP, (800, 498), (1080, 498), 3)#lignes de séparation
-        pygame.draw.line(screen, OR_STP, (798, 0), (798, 600), 3)
+        # Photo de la planète
+        pygame.draw.rect(screen, BLEU_FC,  ((800,   0), (1080, 275)))
+        # Affichage des données
+        pygame.draw.rect(screen, WHITE,    ((800, 275), (1080, 600)))
+        # Lignes de séparation
+        pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
+        pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
 
     def play_pause_date(self) -> None:
-        '''dessine la zone pour entrer la date '''
-        pygame.draw.rect(screen, GRAY, ((800, 550), (1080, 600)))#barre date
-        pygame.draw.rect(screen, OR_STP, ((990, 550), (90, 600)))#bouton validation date
-        pygame.draw.line(screen, WHITE, (513, 551), (1080, 551), 3)#ligne de séparation
-        pygame.draw.line(screen, WHITE, (513, 550), (513, 600), 3)#ligne de séparation
-        pygame.draw.line(screen, WHITE, (798, 550), (798, 600), 3)#ligne de séparation
-        pygame.draw.rect(screen, BLEU_STP, ((800, 500), (280, 50)))#barre contrôle temps
-        pygame.draw.rect(screen, GRAY, ((800, 500), (90, 50)))#bouton sens inverse
-        pygame.draw.rect(screen, GRAY, ((990, 500), (280, 50)))#bouton vitesse
-        pygame.draw.line(screen, GRAY, (990, 553), (990, 600), 3)
+        '''Dessine la zone pour entrer la date '''
+        # Barre pour la date
+        pygame.draw.rect(screen, GRAY,     ((800, 550), (1080, 600)))
+        # Bouton pour valider la date
+        pygame.draw.rect(screen, OR_STP,   ((990, 550), (  90, 600)))
+        # Lignes de séparation (x3)
+        pygame.draw.line(screen, WHITE,     (513, 551), (1080, 551), 3)
+        pygame.draw.line(screen, WHITE,     (513, 550), ( 513, 600), 3)
+        pygame.draw.line(screen, WHITE,     (798, 550), ( 798, 600), 3)
+        # Barre de contrôle du temps
+        pygame.draw.rect(screen, BLEU_STP, ((800, 500), ( 280,  50)))
+        # Bouton sens inverse
+        pygame.draw.rect(screen, GRAY,     ((800, 500), (  90,  50)))
+        # Bouton du vitesse
+        pygame.draw.rect(screen, GRAY,     ((990, 500), ( 280,  50)))
+        pygame.draw.line(screen, GRAY,      (990, 553), ( 990, 600), 3)
         ok = grandfont.render("OK", 1, BLACK)
         screen.blit(ok, (1003, 558))
         
-    def display_bouton_pause(self, jeu_en_marche: bool) -> None:
+    def display_bouton_pause(cls, jeu_en_marche: bool) -> None:
         '''Affichage du bouton pause dans son état "pause" ou "play"'''
+        # cls : comme self (utilisé dans d'autres langages comme JS, C#, ...)
+        # Son utilisation n'est pas très "Pythonnesque", mais c'est pour la
+        # limite des 80 caractères pas lignes ... (la bonne cause)
         if jeu_en_marche:
-            screen.blit(self.bouton_pause_images['play'], self.bouton_pause_pos)
+            screen.blit(cls.bouton_pause_images['play'],  cls.bouton_pause_pos)
         else:
-            screen.blit(self.bouton_pause_images['pause'], self.bouton_pause_pos)
+            screen.blit(cls.bouton_pause_images['pause'], cls.bouton_pause_pos)
 
     def vitesse_lecture(self, vitesse: int) -> None:
         '''Affiche l'icone si la lecture rapide/lente est en cours'''
         if vitesse > 30:
-            screen.blit(self.bouton_vitesse_lecture_image["rapide"], self.bouton_vitesse_lecture2_pos)
-            screen.blit(self.bouton_vitesse_lecture_image["rapide2"], self.bouton_vitesse_lecture_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["rapide"],
+                        self.bouton_vitesse_lecture2_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["rapide2"],
+                        self.bouton_vitesse_lecture_pos)
         elif vitesse == 30:
-            screen.blit(self.bouton_vitesse_lecture_image["normal"], self.bouton_vitesse_lecture2_pos)
-            screen.blit(self.bouton_vitesse_lecture_image["normal2"], self.bouton_vitesse_lecture_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["normal"],
+                        self.bouton_vitesse_lecture2_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["normal2"],
+                        self.bouton_vitesse_lecture_pos)
         elif vitesse < 30:
-            screen.blit(self.bouton_vitesse_lecture_image["lent"], self.bouton_vitesse_lecture2_pos)
-            screen.blit(self.bouton_vitesse_lecture_image["lent2"], self.bouton_vitesse_lecture_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["lent"],
+                        self.bouton_vitesse_lecture2_pos)
+            screen.blit(self.bouton_vitesse_lecture_image["lent2"],
+                        self.bouton_vitesse_lecture_pos)
         
     def zoom_slider(self) -> None:
-        '''Affichage et gestion du slider de zoom. Permet d'avoir le facteur de zoom actuel'''
+        '''Affichage et gestion du slider de zoom. Permet d'avoir le facteur de
+           zoom actuel'''
 
-        '''Partie "click and drag"'''
+        # Partie "click and drag"
         mouse = pygame.mouse.get_pos() # On récupère la position de la souris
-        # Si l'utilisateur clique sur le petit bouton du slider : (désolé pour la longueur)
-        # Ci-dessous, la version du code où il faut précisément cliquer sur le bouton pour le sélectionner
-        #if pygame.mouse.get_pressed()[0] and self.zoom_slider_current_x_pos <= mouse[0] <= self.zoom_slider_current_x_pos+4*self.zoom_slider_size_factor and self.zoom_slider_pos[1]+5*self.zoom_slider_size_factor <= mouse[1] <= self.zoom_slider_pos[1]+15*self.zoom_slider_size_factor and not self.zoom_slider_clicked:
-        # Ci-dessous, la version du code où il faut cliquer n'importe où sur la barre sur laquelle le bouton coulisse
-        if pygame.mouse.get_pressed()[0] and self.zoom_slider_pos[0]+20*self.zoom_slider_size_factor <= mouse[0] <= self.zoom_slider_pos[0]+100*self.zoom_slider_size_factor and self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor <= mouse[1] <= self.zoom_slider_pos[1]+16*self.zoom_slider_size_factor and not self.zoom_slider_clicked:
+        # Si l'utilisateur clique sur le petit bouton du slider : (désolé pour 
+        # la longueur) <------------- TKT, tu vas voir du beau code conditionnel
+        # Ci-dessous, la version du code où il faut précisément cliquer sur le 
+        # bouton pour le sélectionner
+        # if pygame.mouse.get_pressed()[0] and self.zoom_slider_current_x_pos <= mouse[0] <= self.zoom_slider_current_x_pos+4*self.zoom_slider_size_factor and self.zoom_slider_pos[1]+5*self.zoom_slider_size_factor <= mouse[1] <= self.zoom_slider_pos[1]+15*self.zoom_slider_size_factor and not self.zoom_slider_clicked:
+        # Ci-dessous, la version du code où il faut cliquer n'importe où sur la 
+        # barre sur laquelle le bouton coulisse
+        me = self
+        tool1 = lambda x, y : me.zoom_slider_pos[y]+x*me.zoom_slider_size_factor
+        cond1 = pygame.mouse.get_pressed()[0]
+        cond2 = tool1(20, 0) <= mouse[0] <= tool1(100, 0)
+        cond3 = tool1(4, 1) <= mouse[1] <= tool1(16, 1)
+        if cond1 and cond2 and cond3 and not self.zoom_slider_clicked:
             self.zoom_slider_clicked = True
         # Si l'utilisateur arrète de cliquer (donc "lache" le bouton) :
         elif not pygame.mouse.get_pressed()[0]:
             self.zoom_slider_clicked = False
-        # PS : pygame.mouse.get_pressed() = Bouton de la souris pressés ? -> (LMB, MMB, RMB) avec dans chacun des emplacement un boolean
+        # PS : pygame.mouse.get_pressed() = Bouton de la souris pressés ? ->
+        #            (LMB, MMB, RMB) avec dans chacun des emplacement un boolean
 
         '''Partie déplacement'''
-        mouse_x = mouse[0] - self.zoom_slider_size_factor*2 # Ajustement automatique
+        # Ajustement automatique
+        mouse_x = mouse[0] - self.zoom_slider_size_factor*2
         if self.zoom_slider_clicked:
             # Le bouton doit rester dans les limites du slider
             if mouse_x < self.zoom_slider_x_range[0]: # Limite gauche
@@ -215,19 +263,19 @@ class ecran():
     def barre_action(self) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et intéractions'''
         # pygame.draw.rect(screen, OR_STP, ((44, 0), (45, 600)))
-        pygame.draw.rect(screen, BLEU_STP, ((0, 0), (50, 600)))
-        pygame.draw.rect(screen, OR_STP, ((0, 120), (50, 50)))
-        pygame.draw.rect(screen, OR_STP, ((0, 270), (50, 50)))
-        pygame.draw.rect(screen, OR_STP, ((0, 420), (50, 50)))
-        pygame.draw.rect(screen, RED, ((0, 550),(50, 50)))
+        pygame.draw.rect(screen, BLEU_STP, ((0, 0),   (50, 600)))
+        pygame.draw.rect(screen, OR_STP,   ((0, 120), (50, 50)))
+        pygame.draw.rect(screen, OR_STP,   ((0, 270), (50, 50)))
+        pygame.draw.rect(screen, OR_STP,   ((0, 420), (50, 50)))
+        pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
         picto_astro = pygame.transform.scale(pygame.image.load(main_path+"images/pictoastro.png"), (46, 46))
         screen.blit(picto_astro, (2, 122))
 
         '''bouton menu'''
-        pygame.draw.rect(screen, GRAY, ((0, 0), (50, 50)))
-        pygame.draw.line(screen, WHITE, (10, 12),(40, 12), 3)
-        pygame.draw.line(screen, WHITE, (10, 25),(40, 25), 3)
-        pygame.draw.line(screen, WHITE, (10, 38),(40, 38), 3)
+        pygame.draw.rect(screen, GRAY,  ((0, 0),  (50, 50)))
+        pygame.draw.line(screen, WHITE, (10, 12), (40, 12), 3)
+        pygame.draw.line(screen, WHITE, (10, 25), (40, 25), 3)
+        pygame.draw.line(screen, WHITE, (10, 38), (40, 38), 3)
         
         '''bouton quitter'''
         quitter = grandfont.render("X", 1, BLACK)
@@ -238,9 +286,9 @@ class ecran():
         getsigne = signes.get(signe)
         if data == True:
             '''petite version si les données planètes sont affichées'''
-            pygame.draw.rect(screen, BLEU_STP, ((225, 200),(400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY, ((225, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED, ((225, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
+            pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED,      ((225, 200), (45,  45)),  0, 0, 10, 0, 0, 30)
             text = moyfont.render(getsigne[0], 1, OR_STP)
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
@@ -250,11 +298,11 @@ class ecran():
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
         if data == False:
-            '''version plus large si les données des palnèes ne sont pas à l'écran'''
-            pygame.draw.rect(screen, BLEU_FC, ((640, 200), (210, 200)), 0, 0, 0, 10, 0, 10)
-            pygame.draw.rect(screen, BLEU_STP, ((250, 200),(400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY, ((250, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED, ((250, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
+            '''version plus large si les données des planètes ne sont pas à l'écran'''
+            pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
+            pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY,     ((250, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED,      ((250, 200), (45,  45)),  0, 0, 10,  0, 0, 30)
             
             '''Pas sûr, mais le code suivant :'''
             # img_name = ""
@@ -305,9 +353,9 @@ class ecran():
 
     def confirmation(self) -> None:
         '''Dessine écran validation quitter'''
-        pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
-        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
-        pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
+        pygame.draw.rect(screen, GRAY,         ((340, 200), (400, 200)), 0, 5)
+        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300), (100, 50)),  0, 10)
+        pygame.draw.rect(screen, RED,          ((590, 300), (100, 50)),  0, 10)
         sur = moyfont.render("Sûr de vouloir quitter ?", 1, OR_STP)
         screen.blit(sur, (387, 233))
         quitter = moyfont.render("Oui", 1, WHITE)
