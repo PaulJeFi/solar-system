@@ -178,5 +178,5 @@ def astro_chn(Y, M, D):
 
 
 #PAUL là y a problème avec tes conversions. je te laisse regarder
-print(JJ(2000, 2, 6))
-print(gregorien(2451578.5))
+# print(JJ(2000, 2, 6))
+# print(gregorien(2451578.5))

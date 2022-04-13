@@ -45,7 +45,7 @@ grandfont = pygame.font.Font(None, 60)
 # pygame.mixer.music.load(main_path+"musique/musique.mp3")
 jouer = False
 
-#données palnètes
+"""données planètes"""
 
 data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j', 'température moyenne = 462°C', main_path+"images/mercure.png"],
                 'B' : ['Venus','poids = 4,867 5x10^24 kg', 'rayon = 6050 km', 'distance soleil = 104 mm km', 'temps de rotation = 243 j', 'température moyenne = 440°C',main_path+"images/venus.png"],
@@ -57,6 +57,8 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km', 'distance soleil = 4,5 md km', 'temps de rotation = 165 ans', 'température moyenne = -220°C',main_path+"images/neptune.png"],
                 'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',main_path+"images/pluton.png"],
                 'Z' : ['', '', '', '', '', '',""]}
+
+'''données signes astrologiques '''
 
 signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril", "Element : Feu"],
           'B': ["  Taureau ", "21 Avril - 21 Mai", "Element : Terre"],
@@ -211,13 +213,15 @@ class ecran():
         pygame.draw.rect(screen, RED, ((self.zoom_slider_current_x_pos, int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)), (int(4*self.zoom_slider_size_factor), int(12*self.zoom_slider_size_factor))), 0, int(2*self.zoom_slider_size_factor))
 
     def barre_action(self) -> None:
-        '''Créer une barre sur la gauche pour ajouter boutons et actions'''
+        '''Créer une barre sur la gauche pour ajouter boutons et intéractions'''
         # pygame.draw.rect(screen, OR_STP, ((44, 0), (45, 600)))
         pygame.draw.rect(screen, BLEU_STP, ((0, 0), (50, 600)))
         pygame.draw.rect(screen, OR_STP, ((0, 120), (50, 50)))
         pygame.draw.rect(screen, OR_STP, ((0, 270), (50, 50)))
         pygame.draw.rect(screen, OR_STP, ((0, 420), (50, 50)))
         pygame.draw.rect(screen, RED, ((0, 550),(50, 50)))
+        picto_astro = pygame.transform.scale(pygame.image.load("simulator\images\pictoastro.png"), (46, 46))
+        screen.blit(picto_astro, (2, 122))
 
         '''bouton menu'''
         pygame.draw.rect(screen, GRAY, ((0, 0), (50, 50)))
@@ -230,8 +234,7 @@ class ecran():
         screen.blit(quitter, (11, 557))
 
     def signe_astro(self, signe, data):
-        """"affiche le signe asrtrologique plus une petite phares"""
-        # work in progress .....
+        """"affiche le signe asrtrologique et ses informations"""
         getsigne = signes.get(signe)
         if data == True:
             '''petite version si les données planètes sont affichées'''
@@ -252,6 +255,15 @@ class ecran():
             pygame.draw.rect(screen, BLEU_STP, ((250, 200),(400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY, ((250, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
             pygame.draw.rect(screen, RED, ((250, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
+            img_name = ""
+            for i in getsigne[0]:
+                if i == " ":
+                    continue
+                else: 
+                    img_name += i
+            img = pygame.image.load("./simulator/images/"+ img_name +".png")
+            img = pygame.transform.scale(img, (175, 125))
+            screen.blit(img, (660, 240))
             text = moyfont.render(getsigne[0], 1, OR_STP)
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
@@ -298,6 +310,7 @@ class ecran():
         screen.blit(non, (615, 312))
 
     def wallE(self):
+        '''fait apparaitre et deplace Wall-E   :)'''
         img = pygame.transform.scale(pygame.image.load(main_path+"images/wallE.png"), (350, 175))
         img = pygame.transform.rotate(img, self.wallE_rotation)
         screen.blit(img, (self.wallE_x, self.wallE_y))
@@ -447,10 +460,12 @@ class Text_Input:
         return temps # Si rien n'est touché
 
     def retour_date(self):
+        '''renvoie la date convertie en jour juliens'''
         date = Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
         return date
 
     def retour_date_complete(self):
+        '''renvoie la date complète (pour usages spécifiques'''
         date = [int(self.text[4:]), int(self.text[2:4]), int(self.text[:2])]
         return date
         
@@ -573,13 +588,14 @@ def main() -> None:
                     
                     if event.key == pygame.K_a:
                         signe_astro = not signe_astro
-                
+
                 # On arrète de suivre la planète
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE and time_set.selected == False:
                     planetes.unfollow_all()
-                    camera_true_pos = list(camera_pos)
+                    camera_true_pos = [0, 0]
                     camera_focus = [0, 0]
                     is_following = False
+                    data = False
 
         # Actions à faire tant que la touche est pressée
         pressed = pygame.key.get_pressed()
@@ -727,14 +743,15 @@ def main() -> None:
 
             '''bouton signe astrologique grégorien'''
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 120 and pos_souris[1] < 170:
-                signe_astro = not signe_astro
+                if time_set.selected == True:
+                    signe_astro = not signe_astro
 
             '''bouton fermeture signe astrologique avec data ouverte'''
             if signe_astro == True and data == True:
                 if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
                     signe_astro = False
 
-                '''bouton fermeture signe astrologique avec data fermé'''
+            '''bouton fermeture signe astrologique avec data fermé'''
             if signe_astro == True and data == False:
                 if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
                     signe_astro = False
