@@ -39,6 +39,7 @@ pygame.display.set_icon(pygame.image.load(main_path+'images/logo.png'))
 screen.fill(BLACK)
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 25)
+font2 = pygame.font.Font(None, 30)
 moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
 # pygame.mixer.music.load(main_path+"musique/musique.mp3")
@@ -58,17 +59,17 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'Z' : ['', '', '', '', '', '',""]}
 
 signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril", "Element : Feu"],
-         'B': ["  Taureau ", "21 Avril - 21 Mai", "Element : Terre"],
-         'C': ["  Gémaux  ", "22 Mai- 21 Juin", "Element : Air"],
-         'D': ["  Cancer  ", "22 Juin - 22 Juillet", "Element : Eau"],
-         'E': ["   Lion   ", "23 Juillet - 22 Août", "Element : Feu"],
-         'F': ["  Vierge  ", "23 Août - 22 Septembre", "Element : Terre"],
-         'G': ["  Balance ", "23 Septembre - 22 Octobre", "Element : Air"],
-         'H': [" Scorpion ", "23 Octobre - 22 Novembre", "Element : Feu"],
-         'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Element : Feu"],
-         'J': ["Capricorne", "22 Décembre - 20 Janvier", "Element : Terre"],
-         'K': ["  Verseau ", "21 Janvier - 18 Février", "Element : Air"],
-         'L': ["  Poisson ", "19 Février - 20 Mars", "Element : Eau"]}
+          'B': ["  Taureau ", "21 Avril - 21 Mai", "Element : Terre"],
+          'C': ["  Gémaux  ", "22 Mai- 21 Juin", "Element : Air"],
+          'D': ["  Cancer  ", "22 Juin - 22 Juillet", "Element : Eau"],
+          'E': ["    Lion  ", "23 Juillet - 22 Août", "Element : Feu"],
+          'F': ["  Vierge  ", "23 Août - 22 Septembre", "Element : Terre"],
+          'G': ["  Balance ", "23 Septembre - 22 Octobre", "Element : Air"],
+          'H': [" Scorpion ", "23 Octobre - 22 Novembre", "Element : Feu"],
+          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Element : Feu"],
+          'J': ["Capricorne", "22 Décembre - 20 Janvier", "Element : Terre"],
+          'K': ["  Verseau ", "21 Janvier - 18 Février", "Element : Air"],
+          'L': ["  Poisson ", "19 Février - 20 Mars", "Element : Eau"]}
 
 
 
@@ -233,18 +234,32 @@ class ecran():
         # work in progress .....
         getsigne = signes.get(signe)
         if data == True:
-            pygame.draw.rect(screen, GRAY, ((225, 200),(400, 200)), 0, 10)
-            pygame.draw.rect(screen, RED, ((225, 200), (40, 40)), 0, 0, 10, 0, 0, 30)
-            text = grandfont.render(getsigne[0], 1, OR_STP)
+            '''petite version si les données planètes sont affichées'''
+            pygame.draw.rect(screen, BLEU_STP, ((225, 200),(400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY, ((225, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED, ((225, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
+            text = moyfont.render(getsigne[0], 1, OR_STP)
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
-            screen.blit(text, (300, 215))
+            croix = moyfont.render("X", 1, WHITE)
+            screen.blit(text, (350, 210))
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
+            screen.blit(croix, (235, 210))
         if data == False:
-            pygame.draw.rect(screen, GRAY, ((250, 200),(600, 200)), 0, 10)
+            '''version plus large si les données des palnèes ne sont pas à l'écran'''
+            pygame.draw.rect(screen, BLEU_FC, ((640, 200), (210, 200)), 0, 0, 0, 10, 0, 10)
+            pygame.draw.rect(screen, BLEU_STP, ((250, 200),(400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY, ((250, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED, ((250, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
             text = moyfont.render(getsigne[0], 1, OR_STP)
-            screen.blit(text, (500, 225))
+            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
+            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
+            croix = moyfont.render("X", 1, WHITE)
+            screen.blit(text, (400, 210))
+            screen.blit(text2, (265, 280))
+            screen.blit(text3, (265, 330))
+            screen.blit(croix, (260, 210))
         
         
     def ecriture(self, planete) -> None:
@@ -632,6 +647,9 @@ def main() -> None:
         if signe_astro == True:
             saisie = time_set.retour_date_complete()
             HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
+            if time_set.selected:
+                signe_astro = False
+
 
         if jouer:
             temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
@@ -706,6 +724,21 @@ def main() -> None:
                 is_following, camera_focus = planetes.follow()
                 if is_following:
                     camera_true_pos = [0, 0]
+
+            '''bouton signe astrologique grégorien'''
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 120 and pos_souris[1] < 170:
+                signe_astro = not signe_astro
+
+            '''bouton fermeture signe astrologique avec data ouverte'''
+            if signe_astro == True and data == True:
+                if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
+                    signe_astro = False
+
+                '''bouton fermeture signe astrologique avec data fermé'''
+            if signe_astro == True and data == False:
+                if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
+                    signe_astro = False
+
         
         elif not pygame.mouse.get_pressed()[0]:
             can_press_button = True
