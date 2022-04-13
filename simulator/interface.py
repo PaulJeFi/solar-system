@@ -9,7 +9,7 @@ import random
 from tools import main_path, Tuple, List
 import webbrowser
 
-webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
+# webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
                                       # stabilité (automatisation 
                                       # de la performance selon la puissance
                                       # disponnible de l'ordinateur).
@@ -57,18 +57,18 @@ data = {'A' :['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 'distance
                 'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km', 'distance soleil = 6 md km', 'temps de rotation = 248 ans', 'température moyenne = -225°C',main_path+"images/pluton.png"],
                 'Z' : ['', '', '', '', '', '',""]}
 
-signes = {'A': ["    Bélier", "21 Mars - 20 Avril", "Element : Feu"],
-         'B': ["   Taureau", "21 Avril - 21 Mai", "Element : Terre"],
-         'C': ["    Gémaux", "22 Mai- 21 Juin", "Element : Air"],
-         'D': ["    Cancer", "22 Juin - 22 Juillet", "Element : Eau"],
-         'E': ["      Lion", "23 Juillet - 22 Août", "Element : Feu"],
-         'F': ["    Vierge", "23 Août - 22 Septembre", "Element : Terre"],
-         'G': ["   Balance", "23 Septembre - 22 Octobre", "Element : Air"],
-         'H': ["  Scorpion", "23 Octobre - 22 Novembre", "Element : Feu"],
+signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril", "Element : Feu"],
+         'B': ["  Taureau ", "21 Avril - 21 Mai", "Element : Terre"],
+         'C': ["  Gémaux  ", "22 Mai- 21 Juin", "Element : Air"],
+         'D': ["  Cancer  ", "22 Juin - 22 Juillet", "Element : Eau"],
+         'E': ["   Lion   ", "23 Juillet - 22 Août", "Element : Feu"],
+         'F': ["  Vierge  ", "23 Août - 22 Septembre", "Element : Terre"],
+         'G': ["  Balance ", "23 Septembre - 22 Octobre", "Element : Air"],
+         'H': [" Scorpion ", "23 Octobre - 22 Novembre", "Element : Feu"],
          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Element : Feu"],
          'J': ["Capricorne", "22 Décembre - 20 Janvier", "Element : Terre"],
-         'K': ["   Verseau", "21 Janvier - 18 Février", "Element : Air"],
-         'L': ["   Poisson", "19 Février - 20 Mars", "Element : Eau"]}
+         'K': ["  Verseau ", "21 Janvier - 18 Février", "Element : Air"],
+         'L': ["  Poisson ", "19 Février - 20 Mars", "Element : Eau"]}
 
 
 
@@ -379,7 +379,7 @@ def get_followed_planet(gest: Gestion_Planete) :
         '''Permet de récupérer la planète suivie'''
         for planete in gest.planetes:
             if planete[gest.data_index][0]:
-                return 'Mercure Venus Terre Mars Jupiter Saturne Uranus Neptune'.split()[gest.planetes.index(planete)]
+                return 'A B C D E F G H'.split()[gest.planetes.index(planete)]
         return (0, 0) # Cas où aucune planète n'est suivie
 
 class Text_Input:
@@ -513,7 +513,7 @@ def main() -> None:
 
     while True:
 
-        print(get_followed_planet(planetes))
+        
         dt = clock.tick(144)
         #on creer un fond de couleur noir
         screen.fill(BLACK)
@@ -590,6 +590,7 @@ def main() -> None:
         if is_following:
             camera_focus = planetes.get_followed_pos()
             data = True
+            appel = get_followed_planet(planetes)
         
         camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
