@@ -220,7 +220,7 @@ class ecran():
         pygame.draw.rect(screen, OR_STP, ((0, 270), (50, 50)))
         pygame.draw.rect(screen, OR_STP, ((0, 420), (50, 50)))
         pygame.draw.rect(screen, RED, ((0, 550),(50, 50)))
-        picto_astro = pygame.transform.scale(pygame.image.load("simulator\images\pictoastro.png"), (46, 46))
+        picto_astro = pygame.transform.scale(pygame.image.load(main_path+"images/pictoastro.png"), (46, 46))
         screen.blit(picto_astro, (2, 122))
 
         '''bouton menu'''
