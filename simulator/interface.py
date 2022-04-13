@@ -375,6 +375,12 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete[self.data_index][0] = False
 
+def get_followed_planet(gest: Gestion_Planete) :
+        '''Permet de récupérer la planète suivie'''
+        for planete in gest.planetes:
+            if planete[gest.data_index][0]:
+                return 'Mercure Venus Terre Mars Jupiter Saturne Uranus Neptune'.split()[gest.planetes.index(planete)]
+        return (0, 0) # Cas où aucune planète n'est suivie
 
 class Text_Input:
 
@@ -507,6 +513,7 @@ def main() -> None:
 
     while True:
 
+        print(get_followed_planet(planetes))
         dt = clock.tick(144)
         #on creer un fond de couleur noir
         screen.fill(BLACK)
