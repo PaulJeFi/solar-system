@@ -255,13 +255,19 @@ class ecran():
             pygame.draw.rect(screen, BLEU_STP, ((250, 200),(400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY, ((250, 200), (400, 45)), 0, 0, 10, 10, 0, 0)
             pygame.draw.rect(screen, RED, ((250, 200), (45, 45)), 0, 0, 10, 0, 0, 30)
-            img_name = ""
-            for i in getsigne[0]:
-                if i == " ":
-                    continue
-                else: 
-                    img_name += i
-            img = pygame.image.load("./simulator/images/"+ img_name +".png")
+            
+            '''Pas sûr, mais le code suivant :'''
+            # img_name = ""
+            # for i in getsigne[0]:
+            #     if i == " ":
+            #         continue
+            #     else: 
+            #         img_name += i
+            '''devrait pouvoir aisément être remplacé par :'''
+            img_name = getsigne[0].replace(' ', '')
+
+
+            img = pygame.image.load(main_path+"images/"+ img_name +".png")
             img = pygame.transform.scale(img, (175, 125))
             screen.blit(img, (660, 240))
             text = moyfont.render(getsigne[0], 1, OR_STP)
