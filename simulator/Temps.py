@@ -1,7 +1,5 @@
 from math import floor
 
-from numpy import diff
-
 # Notes sur le temps :
 #
 #  - En France, le calendrier utilisé est le Grégorien.

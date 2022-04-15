@@ -9,7 +9,7 @@ import random
 from tools import main_path, Tuple, List
 import webbrowser
 
-# webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
+webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
 #                                       # stabilité (automatisation 
 #                                       # de la performance selon la puissance
 #                                       # disponnible de l'ordinateur).
