@@ -9,22 +9,24 @@ import random
 from tools import main_path, Tuple, List
 import webbrowser
 
-webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
-                                      # stabilité (automatisation 
-                                      # de la performance selon la puissance
-                                      # disponnible de l'ordinateur).
+# webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
+#                                       # stabilité (automatisation 
+#                                       # de la performance selon la puissance
+#                                       # disponnible de l'ordinateur).
 
 BLACK = (0, 0, 0)
 GRAY = (70, 70, 70)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 GREEN_CUSTOM = (25, 200, 25)
+MARRON = (179, 139, 109)
 RED = (200, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 BLEU_STP = (2, 75, 85)
 OR_STP = (211, 155, 0)
 BLEU_FC = (0, 0, 25)
+ORANGE = (255, 127, 0)
 
 #test couleurs
 #BLEU_STP(10, 50, 150)
@@ -306,13 +308,13 @@ class ecran():
             
             '''Pas sûr, mais le code suivant :'''
             # img_name = ""
-            # for i in getsigne[0]:
+            # for i in getsigne[0]:                       #----->   pas opti mais ça fonctionnais très bien paul
             #     if i == " ":
             #         continue
             #     else: 
             #         img_name += i
             '''devrait pouvoir aisément être remplacé par :'''
-            img_name = getsigne[0].replace(' ', '')
+            img_name = getsigne[0].replace(' ', '')    
 
 
             img = pygame.image.load(main_path+"images/"+ img_name +".png")
@@ -398,13 +400,13 @@ class Gestion_Planete:
     def __init__(self, mass_center: Tuple(int, int)) -> None :
 
         # Définition des planètes : 
-        #              [PLanète(   perigee,            apogee,              centre de masse,            angle perigee avec Mercure), date perigee,       periode orbitale]
-        self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63]
-        self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8]
-        self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8]
-        self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7]
-        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065]
-        self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76]
+        #              [PLanète(   perigee,            apogee,              centre de masse,            angle perigee avec Mercure), date perigee,       periode orbitale,   color]
+        self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63,     GRAY  ]
+        self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8,     ORANGE]
+        self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8,     BLUE  ]
+        self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7,     RED   ]
+        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     MARRON]
+        self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     GRAY]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
@@ -519,9 +521,22 @@ class Text_Input:
         return date
 
     def retour_date_complete(self):
-        '''renvoie la date complète (pour usages spécifiques'''
+        '''renvoie la date complète (pour usages spécifiques)'''
         date = [int(self.text[4:]), int(self.text[2:4]), int(self.text[:2])]
         return date
+        
+    def verif(self, signe_astro):
+        '''verifie si une date est entrée pour signe astro'''
+        if self.text[:2] != '00':
+            print("ok1")
+            if self.text[2:4] != '00':
+                print("ok2")
+                if self.text[4:5] != ' ':
+                    print("cette réponce n'a aucun sens (ligne 535)")
+                    signe_astro = True
+        else:
+            signe_astro = False
+        return signe_astro
         
     def display(self) -> None:
         '''Affichage de la barre d'input textuelle'''
@@ -713,7 +728,8 @@ def main() -> None:
         HUD.zoom_slider()
         time_set.display()
 
-    
+
+        '''affiche le signe astrologique'''
         if signe_astro == True:
             saisie = time_set.retour_date_complete()
             HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
@@ -774,7 +790,7 @@ def main() -> None:
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 550 and pos_souris[1] < 600:
                 validquit = True
 
-            # Si message pour quitter actif
+            '''Si message pour quitter actif'''
             if validquit:
                 # Si  quitter
                 if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
@@ -797,17 +813,16 @@ def main() -> None:
 
             '''bouton signe astrologique grégorien'''
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 120 and pos_souris[1] < 170:
-                if time_set.selected == True:
-                    signe_astro = not signe_astro
+                print(time_set.verif(signe_astro)) 
 
             '''bouton fermeture signe astrologique avec data ouverte'''
-            if signe_astro == True and data == True:
-                if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
+            if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
+                if signe_astro == True and data == True:
                     signe_astro = False
 
             '''bouton fermeture signe astrologique avec data fermé'''
-            if signe_astro == True and data == False:
-                if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
+            if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
+                if signe_astro == True and data == False:
                     signe_astro = False
 
         

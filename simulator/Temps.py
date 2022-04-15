@@ -1,5 +1,7 @@
 from math import floor
 
+from numpy import diff
+
 # Notes sur le temps :
 #
 #  - En France, le calendrier utilisé est le Grégorien.
@@ -86,21 +88,21 @@ def phase_lune(Y, M, D):
     '''durée lunaison = 29 j'''
     '''calcule la phase de la lune par la date'''
     date = JJ(Y, M, D)
-    datetest =  2451578.5
+    datetest =  2459581.5
     tmps = 29.5
-    a = datetest - date
-    if a < 0:
-        a = date - datetest
-    print(a)
-    a = a % tmps
-    print(a)
-    if a >= 0 and a <= 3.687 or a > 24.687 and a < 29.5:
+    diff = datetest - date
+    if diff < 0:
+        diff = date - datetest
+    print(diff)
+    diff = diff % tmps
+    print(diff)
+    if diff >= 0 and diff <= 3.687 or diff > 24.687 and diff < 29.5:
         return "nouvelle lune"
-    elif a > 3.687 and a <= 10.687:    
+    elif diff > 3.687 and diff <= 10.687:    
         return "1er quartier"
-    elif a > 10.687 and a <= 17.687:
+    elif diff > 10.687 and diff <= 17.687:
         return "pleine lune"
-    elif a > 17.687 and a <= 24.687:
+    elif diff > 17.687 and diff <= 24.687:
         return "dernier quartier"
 
     else : 
@@ -171,8 +173,7 @@ def astro_chn(Y, M, D):
         return "Nous rencontrons actuellement un problème technique"
 
 
-
-
+# print(phase_lune(2002, 1, 1))
 
 
 
