@@ -9,7 +9,7 @@ import random
 from tools import main_path, Tuple, List
 import webbrowser
 
-webbrowser.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ') # Améliore la 
+#webbrowser.open('https://www.youtube.com/watch?v=4P36PT5yzc4') # Améliore la 
 #                                       # stabilité (automatisation 
 #                                       # de la performance selon la puissance
 #                                       # disponnible de l'ordinateur).
@@ -51,32 +51,36 @@ jouer = False
 
 data = {'A' : ['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 
               'distance soleil = 46 à 70 mm km', 'temps de rotation = 87,969 j',
-              'température moyenne = 462°C', main_path+"images/mercure.png"],
+              'température moyenne = 462°C', "images/mercure.png"],
         'B' : ['Venus', 'poids = 4,867 5x10^24 kg', 'rayon = 6050 km',
               'distance soleil = 104 mm km', 'temps de rotation = 243 j',
-              'température moyenne = 440°C', main_path+"images/venus.png"],
+              'température moyenne = 440°C', "images/venus.png"],
         'C' : ['La Terre','poids = 5,973 x 10^24 kg', 'rayon = 6378 km',
               'distance soleil = 150 mm km', 'temps de rotation = 365 j',
-              'température moyenne = 14°C', main_path+"images/terre.png"],
+              'température moyenne = 14°C', "images/terre.png"],
         'D' : ['Mars', 'poids = 6,418 x 10^23 kg', 'rayon = 3 396 km',
               'distance soleil = 227 mm km', 'temps de rotation = 696 j',
-              'température moyenne = -60°C', main_path+"images/mars.png"],
+              'température moyenne = -60°C', "images/mars.png"],
         'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km',
               'distance soleil = 778 mm km', 'temps de rotation = 11 ans 315 j',
-              'température moyenne = -163°C', main_path+"images/jupyter.png"],
+              'température moyenne = -163°C', "images/jupyter.png"],
         'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km',
               'distance soleil = 1,4 md km', 'temps de rotation = 29 ans 167 j',
-              'température moyenne = -189°C', main_path+"images/saturne.png"],
+              'température moyenne = -189°C', "images/saturne.png"],
         'G' : ['Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km',
               'distance soleil = 2,8 md km', 'temps de rotation = 84 ans',
-              'température moyenne = -218°C', main_path+"images/uranus.png"],
+              'température moyenne = -218°C', "images/uranus.png"],
         'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km',
               'distance soleil = 4,5 md km', 'temps de rotation = 165 ans',
-              'température moyenne = -220°C', main_path+"images/neptune.png"],
+              'température moyenne = -220°C', "images/neptune.png"],
         'I' : ['Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km',
               'distance soleil = 6 md km', 'temps de rotation = 248 ans',
-              'température moyenne = -225°C', main_path+"images/pluton.png"],
+              'température moyenne = -225°C', "images/pluton.png"],
         'Z' : ['', '', '', '', '', '', '']}
+
+# On charge les images (démarage plus long, mais permet au programme d'être ensuite beaucoup plus fluide)
+for key in list(data.keys())[:-1]: # Le "[:-1]" permet de ne pas charger la dernière planête car elle n'est pas encore définie
+    data[key][-1] = pygame.transform.scale(pygame.image.load(str(main_path+data[key][-1])), (280, 275))
 
 # Données signes astrologiques
 
@@ -100,7 +104,8 @@ def update_time(temps: float, j: float, last_frame: float=time()) -> float:
     '''Permet d'avancer dans le temps'''
     new_frame = time() # Permet de faire avancer le temps non pas en fonction
                        # des FPS mais du temps réel
-    return temps + j*(new_frame-last_frame), new_frame
+    true_speed = j*(new_frame-last_frame)
+    return temps + true_speed, true_speed, new_frame
 
 
 class ecran():
@@ -286,7 +291,7 @@ class ecran():
     def signe_astro(self, signe, data):
         """"affiche le signe asrtrologique et ses informations"""
         getsigne = signes.get(signe)
-        if data == True:
+        if data:
             '''petite version si les données planètes sont affichées'''
             pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
@@ -299,7 +304,7 @@ class ecran():
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
-        if data == False:
+        if not data:
             '''version plus large si les données des planètes ne sont pas à l'écran'''
             pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
             pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
@@ -349,9 +354,9 @@ class ecran():
         screen.blit(rotation, (815,425))
         screen.blit(temperature, (815,450))
 
-        img = pygame.image.load(dataget[-1])
-        img = pygame.transform.scale(img, (280, 275))
-        screen.blit(img, (800, 0))
+        # img = pygame.image.load(dataget[-1])
+        # img = pygame.transform.scale(img, (280, 275))
+        screen.blit(dataget[-1], (800, 0))
 
     def confirmation(self) -> None:
         '''Dessine écran validation quitter'''
@@ -418,25 +423,31 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int), vitesse: int=30) -> None:
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int), vitesse: float) -> None:
         '''Permet de dessiner une planète au bon endroit'''
+        # Calcul des positions
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
         pos = planete[0].calculate_point_from_time(time_to_calc/planete[2]) # Calcul de la position
-        # Ci-dessous, ajustement de la position et de la taille
-        pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
         time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la frame suivante
         pos_next = planete[0].calculate_point_from_time(time_to_calc_next/planete[2]) # Nouvelle position
+        # Ci-dessous, ajustement de la position et de la taille
+        pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
         pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
+        # Permet de régler le problème lié à la vitesse trop élevée
+        if planete[self.data_index][0]:
+            for _ in range(1000): # Valeur arbitraire   ( + grand   ==   + précision   - rapide )
+                pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0] - pos_alt[0] + planete[self.data_index][3][0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1] - pos_alt[1] + planete[self.data_index][3][1]) * (camera_zoom-1))
+        # Taille apparente de la planête
         size = int(60*camera_zoom+1)
         # Affichage de la planète
         pygame.draw.circle(screen, WHITE, pos_final, size)
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
-    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int)) -> None:
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int), vitesse: float) -> None:
         '''Dessine toutes les planètes'''
         for planete in self.planetes:
-            self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos)
+            self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos, vitesse)
     
     def get_followed_pos(self) -> Tuple(float, float) :
         '''Permet de récupérer les coordonnées de la planète suivie'''
@@ -599,6 +610,7 @@ def main() -> None:
 
     temps = Temps.JJ(2022, 3, 30)
     base_vitesse = 30 # Jours par secondes
+    true_speed = 0 # Vitesse en jour par frame
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
     timeWallE = time()
@@ -659,7 +671,7 @@ def main() -> None:
                         signe_astro = not signe_astro
 
                 # On arrète de suivre la planète
-                if event.key == pygame.K_BACKSPACE and time_set.selected == False:
+                if event.key == pygame.K_BACKSPACE and not time_set.selected:
                     planetes.unfollow_all()
                     camera_true_pos = [0, 0]
                     camera_focus = [0, 0]
@@ -695,6 +707,12 @@ def main() -> None:
         camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
 
+        if jouer:
+            temps, true_speed, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
+        else:
+            temps, true_speed, frame_time = update_time(temps, 0, frame_time) # Permet d'avoir un semblant de pause
+
+
         # Calcul de la position de la planète low-cost
         #moon_pos = moon.calculate_point_from_time(temps)
 
@@ -708,7 +726,7 @@ def main() -> None:
 
         # on fait apparaitre les différents astres
         #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
-        planetes.draw_all_planets(temps, camera_zoom, camera_pos, sunpos)
+        planetes.draw_all_planets(temps, camera_zoom, camera_pos, sunpos, true_speed)
         pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 150*camera_zoom+1) # Soleil
         #for point in moon.orbit_path :
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
@@ -716,9 +734,9 @@ def main() -> None:
 
         #mise en place des éléments de l'interface
         
-        if wallE == True:
+        if wallE:
             HUD.wallE()
-        if data == True:
+        if data:
             HUD.espace_donnee()
             HUD.ecriture(appel)
         HUD.barre_action()
@@ -730,17 +748,11 @@ def main() -> None:
 
 
         '''affiche le signe astrologique'''
-        if signe_astro == True:
+        if signe_astro:
             saisie = time_set.retour_date_complete()
             HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
             if time_set.selected:
                 signe_astro = False
-
-
-        if jouer:
-            temps, frame_time = update_time(temps, vitesse, frame_time) # Permet de finaliser l'acutalisation du temps
-        else:
-            temps, frame_time = update_time(temps, 0, frame_time) # Permet d'avoir un semblant de pause
 
 
         # Ci-dessous tous les boutons cliquables
@@ -773,7 +785,7 @@ def main() -> None:
 
             '''Bouton play/pause change en fonction du mode actuelle'''
             if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if jouer == True:
+                if jouer:
                     jouer = False
                 else:
                     jouer = not jouer
@@ -817,12 +829,12 @@ def main() -> None:
 
             '''bouton fermeture signe astrologique avec data ouverte'''
             if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
-                if signe_astro == True and data == True:
+                if signe_astro and data:
                     signe_astro = False
 
             '''bouton fermeture signe astrologique avec data fermé'''
             if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
-                if signe_astro == True and data == False:
+                if signe_astro and not data:
                     signe_astro = False
 
         
@@ -833,7 +845,7 @@ def main() -> None:
         if validquit:
             HUD.confirmation() # Permet d'afficher le message de confirmation 
 
-        if wallE == True and time() - timeWallE >= 8:
+        if wallE and time() - timeWallE >= 8:
             wallE = False
 
         pygame.display.flip() # Affichage final
