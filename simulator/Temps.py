@@ -85,23 +85,19 @@ def siecles_juliens_epoch (jj: float) -> float :
 def phase_lune(Y, M, D):
     '''durée lunaison = 29 j'''
     '''calcule la phase de la lune par la date'''
-    date = JJ(Y, M, D)
-    datetest =  2459581.5
-    tmps = 29.5
-    diff = datetest - date
-    if diff < 0:
-        diff = date - datetest
-    print(diff)
+    saisie = JJ(Y, M, D)            #date saisie par l'utilisateur
+    reference =  2459581.5          #date de reference
+    tmps = 29.5                     #temps d'une lunaison
+    diff = (reference - saisie)
     diff = diff % tmps
-    print(diff)
     if diff >= 0 and diff <= 3.687 or diff > 24.687 and diff < 29.5:
-        return "nouvelle lune"
+        return "Nouvelle lune"
     elif diff > 3.687 and diff <= 10.687:    
         return "1er quartier"
     elif diff > 10.687 and diff <= 17.687:
-        return "pleine lune"
+        return "Pleine lune"
     elif diff > 17.687 and diff <= 24.687:
-        return "dernier quartier"
+        return "Dernier quartier"
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
@@ -157,7 +153,7 @@ def astro_chn(Y, M, D):
     if dif == 6: 
         return "Chien"
     if dif == 7: 
-        return "Porc"
+        return "Cochon"
     if dif == 8: 
         return "Rat"
     if dif == 9: 
@@ -171,7 +167,7 @@ def astro_chn(Y, M, D):
         return "Nous rencontrons actuellement un problème technique"
 
 
-# print(phase_lune(2002, 1, 1))
+print(phase_lune(2021, 1, 18))
 
 
 

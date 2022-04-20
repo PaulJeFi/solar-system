@@ -536,18 +536,32 @@ class Text_Input:
         date = [int(self.text[4:]), int(self.text[2:4]), int(self.text[:2])]
         return date
         
-    def verif(self, signe_astro):
-        '''verifie si une date est entrée pour signe astro'''
-        if self.text[:2] != '00':
-            print("ok1")
-            if self.text[2:4] != '00':
-                print("ok2")
-                if self.text[4:5] != ' ':
-                    print("cette réponce n'a aucun sens (ligne 535)")
-                    signe_astro = True
+    def verif(self):
+        '''verifie si la date est compatible avec les signes astrologiques'''
+        if len(self.text) > 4:
+            # Test pour voir si tous les chiffres sont valide
+            for index, letter in enumerate(self.text):
+                # Il ne peut y avoir de signe "-" qu'en 5ème position (année)
+                if index == 4 and len(self.text) > 5:
+                    if not letter in [str(x) for x in range(10)]+['-']:
+                        self.statut = -45
+                        Text_Input.display(self)
+                        return False # Erreur
+                else:
+                    if not letter in [str(x) for x in range(10)]:
+                        self.statut = -45
+                        Text_Input.display(self)
+                        return False # Erreur
+                # Le jour, mois ou année ne peut être égal à 0
+            if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
+                # Cas ou toutes les conditions sont remplises
+                self.statut = 45
+                Text_Input.display(self)
+                return True
         else:
-            signe_astro = False
-        return signe_astro
+            self.statut = -45
+            Text_Input.display(self)
+            return False # Erreur
         
     def display(self) -> None:
         '''Affichage de la barre d'input textuelle'''
@@ -825,7 +839,7 @@ def main() -> None:
 
             '''bouton signe astrologique grégorien'''
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 120 and pos_souris[1] < 170:
-                print(time_set.verif(signe_astro)) 
+                signe_astro = time_set.verif() 
 
             '''bouton fermeture signe astrologique avec data ouverte'''
             if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
