@@ -7,7 +7,7 @@ import Temps
 import pygame.mixer
 import random
 from tools import main_path, Tuple, List
-import webbrowser
+import random
 
 #webbrowser.open('https://www.youtube.com/watch?v=4P36PT5yzc4') # Améliore la 
 #                                       # stabilité (automatisation 
@@ -260,7 +260,7 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        self.zoom_factor = 2**((0.5)*(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[1]+1)/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+1)+1)
+        self.zoom_factor = 2**((0.5)*(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[1]+0.5)/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+0.5))
         # WARNING : le zoom ne doit pas être plus grand que 2 (sinon...)
 
     def display_zoom_slider(self) -> None:
@@ -414,10 +414,10 @@ class ecran():
         non = moyfont.render("Non", 1, WHITE)
         screen.blit(non, (615, 312))
 
-    def wallE(self):
-        '''fait apparaitre et deplace Wall-E   :)'''
-        img = pygame.transform.scale(pygame.image.load(main_path+"images/wallE.png"), (350, 175))
-        img = pygame.transform.rotate(img, self.wallE_rotation)
+    def wallE(self, objet, rotation):
+        '''fait apparaitre et deplace de l'objet demandé   :)'''
+        img = pygame.transform.scale(pygame.image.load(main_path+"images/"+ objet +".png"), (350, 175))
+        img = pygame.transform.rotate(img, self.wallE_rotation + rotation)
         screen.blit(img, (self.wallE_x, self.wallE_y))
         self.wallE_x -= 5
         self.wallE_rotation += 0.3
@@ -425,11 +425,17 @@ class ecran():
             self.wallE_y += 0.4
         if self.wallE_rotation >= 178 or self.wallE_rotation <= 180 or self.wallE_rotation >= 358 or self.wallE_rotation <= 0:
             self.wallE_y += 0.4
-        if self.wallE_x <= -300:
+        pass
+
+    def verif_object(self):
+        '''vérifie l'emplacement de l'objet pour l'arreter si son animation est fini et replacer au point de départ'''
+        if self.wallE_x == -300:
             self.wallE_x = 1080 #position x wall-E
             self.wallE_y = 25 #position y wall-E
             self.wallE_rotation  = 4
-        pass
+            return False
+        else: 
+            return True
 
 
 # class sons():
@@ -678,7 +684,9 @@ def main() -> None:
     appel = "C"
     # SON = sons()
     can_press_button = True
-    wallE = False
+    objet = False
+    sprite = "wallE"
+    rotation = 0
 
     time_set = Text_Input()
 
@@ -692,7 +700,6 @@ def main() -> None:
     true_speed = 0 # Vitesse en jour par frame
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
-    timeWallE = time()
     
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
@@ -700,6 +707,13 @@ def main() -> None:
     is_following = False # Permet de savoir si la caméra suit une planète
     camera_pos = list(sunpos) # Position finale de la caméra
     # SON.lecture()
+
+    #nom des objets à déplacer 
+    wallE = "wallE"
+    buzz = "buzz"
+    falcon = "falcon"
+    iss = "iss"
+    apollo = "apollo"
 
     while True:
 
@@ -744,7 +758,7 @@ def main() -> None:
                         vitesse *= 2
                     
                     if event.key == pygame.K_w:
-                        wallE = not wallE
+                        objet = not objet
                     
                     if event.key == pygame.K_a:
                         signe_astro = not signe_astro
@@ -814,10 +828,10 @@ def main() -> None:
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
 
+
         #mise en place des éléments de l'interface
-        
-        if wallE:
-            HUD.wallE()
+        if objet:
+            HUD.wallE(sprite, rotation)
         if data:
             HUD.espace_donnee()
             HUD.ecriture(appel)
@@ -884,9 +898,26 @@ def main() -> None:
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
                 if time_set.verif():
                     temps = time_set.retour_date()
+                    #Wall-E en 2008
                     if temps > 2454466 and temps < 2454832:
-                        wallE = True
-                        timeWallE = time()
+                        sprite = wallE
+                        rotation = 0
+                        objet = True
+                    #L'ISS en 2011
+                    elif temps > 2455561.5 and temps < 2455927.5:
+                        sprite = iss
+                        rotation = random.randint(0, 359)
+                        objet = True
+                    #Buzz l'éclaire en 1995
+                    elif temps > 2449717.5 and temps < 2450083.5:
+                        sprite = buzz
+                        rotation = 315
+                        objet = True
+                    #Star Wars ( Faucon Millénium ) en 1977
+                    elif temps > 2443143.5 and temps < 2443509.5:
+                        sprite = falcon
+                        rotation = 325
+                        objet = True
             
             '''Bouton quitter'''
             # Vérifie si la souris est sur le bouton et quitte appli si clic dans la zone
@@ -944,8 +975,8 @@ def main() -> None:
         if validquit:
             HUD.confirmation() # Permet d'afficher le message de confirmation 
 
-        if wallE and time() - timeWallE >= 8:
-            wallE = False
+        if objet:
+            objet = HUD.verif_object()
 
         pygame.display.flip() # Affichage final
 

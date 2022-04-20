@@ -6,4 +6,4 @@ Q       : Vitesse X0.5
 S       : Vitesse X1
 D       : Vitesse X2
 W       : Wall-E 
-A       : Activer/désactiver le signe astrologique
+A       : Activer/désactiver le signe astrologique  (attention à entrer une date)
