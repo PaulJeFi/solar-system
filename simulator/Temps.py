@@ -83,16 +83,16 @@ def siecles_juliens_epoch (jj: float) -> float :
 
     
 def phase_lune(Y, M, D):
-    '''durée lunaison = 29 j'''
     '''calcule la phase de la lune par la date'''
+    '''durée lunaison = 29 j'''
     date_saisie = JJ(Y, M, D)
-    datetest =  2459583.5  #ref de test   -->  18/01/2022
-    tmps = 29.53
+    datetest =  2459583.5   # Date de référence    -->  18/01/2022
+    tmps = 29.53            # Durrée d'une lunaison
     diff = (date_saisie - datetest)
 
-    modulo= diff % tmps
-    print("modulo",modulo)
-    
+    modulo = diff % tmps     # Calcule la différence 
+
+    # Utilise cette différence pour déduire phase actuelle de la Lune 
     if modulo >= 0 and modulo <= 3.687 or modulo > 24.687 and modulo < 29.5:
         return "nouvelle lune"
     elif modulo > 3.687 and modulo <= 10.687:    
@@ -109,6 +109,8 @@ def phase_lune(Y, M, D):
 
 def astro_fra(Y, M, D):
     '''calcule le signe du zodiac grégorien par la date'''
+    # Utilise Le numéro du mois et de l'année 
+
     if M == 2 and 20 < D < 29 or M == 3 and 1 < D < 20:
         return "L"
     if M == 3 and 21 < D < 31 or M == 4 and 1 < D < 20:
@@ -139,7 +141,10 @@ def astro_fra(Y, M, D):
 
 def astro_chn(Y, M, D):
     '''calcule le signe astrologique chinois par la date'''
+
     dif = (Y - 2000) % 12    #calcule la différence par rapport à l'année 2000 (année du dragon)
+
+    # Utilise le numéro de l'année pour en déduire le signe astrologique
     if dif < 0:
         dif = (Y - 2000) % 12
     if dif == 0:
@@ -169,13 +174,4 @@ def astro_chn(Y, M, D):
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
-
-
-
-
-
-
-
-#PAUL là y a problème avec tes conversions. je te laisse regarder
-# print(JJ(2000, 2, 6))
-# print(gregorien(2451578.5))
+        

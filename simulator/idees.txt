@@ -7,7 +7,7 @@
 
 
 <------------------------------------------------------------------------------------------------------------------------>
-- Calendrier lunaire                                           problème de calculs--->   
+ 
 - Affichage prochaines éclipses solaires (vu de la terre)
 - Musique fonctionnelle                                        prêt (problème pygame.mixer sur windows)
 - Ajouter Pluton par action cachée                             

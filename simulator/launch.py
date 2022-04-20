@@ -15,9 +15,6 @@ BLEU_STP = (2, 75, 85)
 OR_STP = (251, 175, 0)
 BLEU_FC = (0, 0, 25)
 
-#test couleurs
-#BLEU_STP(10, 50, 150)
-#OR_STP = (175, 135, 0)
 
 width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
 pygame.init()
@@ -36,6 +33,7 @@ class ecran:
         pass
 
     def affichage(self):
+
         """affichage image de fond"""
         background = pygame.image.load(main_path+"images/backmenu.jpg")
         background = pygame.transform.scale(background, (1080, 640))
@@ -56,6 +54,7 @@ class ecran:
         screen.blit(quitter, (733, 462))
 
     def quitter(self):
+
         """desine écran validation quitter"""
         pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
         pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
@@ -78,11 +77,10 @@ def main():
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
                 pygame.quit()
-                sys.exit()
+                sys.exit() 
 
-            # if 
+        HUD.affichage() # Affichage des élément 
 
-        HUD.affichage()
         """recupération coordonnées souris"""
         pos_souris = pygame.mouse.get_pos()
 
@@ -103,19 +101,18 @@ def main():
             """permet d'afficher le message de confirmation pour quitter"""
             HUD.quitter()
             pos_souris = pygame.mouse.get_pos()
+            '''pour quitter le programme ou revenir en arrière'''
             if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.quit()
+                    pygame.quit() # Quitte le programme
                     sys.exit()
+            
             elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    validquit = not validquit
+                    validquit = not validquit # Enlève le message de confirmation 
 
-        #création du fond
-        # background = pygame.image.load(main_path+"images/backmenu.jpg")
-        # background = pygame.transform.scale(background, (1080, 640))
-        # screen.blit(background, (0, -20))
-        pygame.display.flip()
+        
+        pygame.display.flip() # Affichage final
     
 
 if __name__ == '__main__':

@@ -9,10 +9,6 @@ import random
 from tools import main_path, Tuple, List
 import random
 
-#webbrowser.open('https://www.youtube.com/watch?v=4P36PT5yzc4') # Améliore la 
-#                                       # stabilité (automatisation 
-#                                       # de la performance selon la puissance
-#                                       # disponnible de l'ordinateur).
 
 BLACK = (0, 0, 0)
 GRAY = (70, 70, 70)
@@ -28,9 +24,7 @@ OR_STP = (211, 155, 0)
 BLEU_FC = (0, 0, 25)
 ORANGE = (255, 127, 0)
 
-#test couleurs
-#BLEU_STP(10, 50, 150)
-#OR_STP = (175, 135, 0)
+
 
 width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
 pygame.init()
@@ -453,7 +447,7 @@ class ecran():
 class Gestion_Planete:
 
     def __init__(self, mass_center: Tuple(int, int)) -> None :
-
+        '''initialisation des planètes'''
         # Définition des planètes : 
         #              [PLanète(   perigee,            apogee,              centre de masse,            angle perigee avec Mercure), date perigee,       periode orbitale,   color]
         self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63,     GRAY  ]
@@ -530,6 +524,7 @@ def get_followed_planet(gest: Gestion_Planete) :
 class Text_Input:
 
     def __init__(self) -> None:
+        '''initialisation'''
         self.pos = [830, 568] # Position de la barre d'input textuelle
         self.text = '' # Le contenu de la barre d'input textuelle
         self.bg_text = 'JJ / MM / AAAA' # Le texte "place holder"
@@ -600,15 +595,19 @@ class Text_Input:
                     if not letter in [str(x) for x in range(10)]:
                         self.statut = -45
                         return False # Erreur
+
             # Le jour, mois ou année ne peut être égal à 0, ni suppérieur à 31 ou 12 
             if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
-                #Verifie le nombre de jour pour le mois de fevrier 
+
+                # Verifie le nombre de jour pour le mois de fevrier 
                 if int(self.text[2:4]) == 2:
+                    # En fonction des années bissextiles 
                     if (int(self.text[4:]) - 2016) % 4 == 0:
                         print((int(self.text[4:]) - 2016) % 4)
                         if int(self.text[:2]) <= 29:
                             self.statut = 45
                             return True
+                    # Et non bissextiles
                     elif (int(self.text[4:]) - 2016) % 4 >= 0 or (int(self.text[4:]) % 4) - 2016 <= 4:
                         (int(self.text[4:]) - 2016) % 4
                         if int(self.text[:2]) <= 28:
@@ -630,6 +629,7 @@ class Text_Input:
                         self.statut = 45
                         return True
 
+        # Sinon renvoie une erreur 
         self.statut = -45
         return False # Erreur
         
@@ -763,7 +763,7 @@ def main() -> None:
                     if event.key == pygame.K_a:
                         signe_astro = not signe_astro
 
-                    if event.key == pygame.K_q:
+                    if event.key == pygame.K_c:
                         signe_astro_ch = not signe_astro_ch
 
                 # On arrète de suivre la planète
@@ -945,27 +945,33 @@ def main() -> None:
                 if is_following:
                     camera_true_pos = [0, 0]
 
+            # Bouton de signes astrologiques
             '''bouton signe astrologique grégorien'''
             if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 120 and pos_souris[1] < 170:
+                signe_astro_ch = False
                 signe_astro = time_set.verif() 
 
-            '''bouton fermeture signe astrologique avec data ouverte'''
+            '''bouton signe astrologique chinois'''
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 270 and pos_souris[1] < 320:
+                signe_astro = False
+                signe_astro_ch = time_set.verif()
+
+            # Bouton fermeture ( Croix ) signe astrologique ( tous ) en fonction de data 
+            '''bouton fermeture signe astrologique (tous) avec data ouverte'''
             if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
                 if signe_astro and data:
                     signe_astro = False
                 elif signe_astro_ch and data:
                     signe_astro_ch = False
 
-            '''bouton fermeture signe astrologique avec data fermé'''
+            '''bouton fermeture signe astrologique ( tous ) avec data fermé'''
             if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
                 if signe_astro and not data:
                     signe_astro = False
                 elif signe_astro_ch and not data:
                     signe_astro_ch = False
 
-            '''bouton signe astrologique chinois'''
-            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 270 and pos_souris[1] < 320:
-                signe_astro_ch = time_set.verif()
+            
 
         
         elif not pygame.mouse.get_pressed()[0]:
@@ -975,8 +981,9 @@ def main() -> None:
         if validquit:
             HUD.confirmation() # Permet d'afficher le message de confirmation 
 
+        # Verifie si un objet se deplace 
         if objet:
-            objet = HUD.verif_object()
+            objet = HUD.verif_object() #Arrete l'objet à l'arrivée
 
         pygame.display.flip() # Affichage final
 

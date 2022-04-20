@@ -6,4 +6,5 @@ Q       : Vitesse X0.5
 S       : Vitesse X1
 D       : Vitesse X2
 W       : Wall-E 
-A       : Activer/désactiver le signe astrologique  (attention à entrer une date)
+A       : Activer/désactiver le signe astrologique Grégorien  (attention à entrer une date)
+C       : Activer/désactiver le signe astrologique Chinois (attention à entrer une date)
