@@ -95,8 +95,19 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
           'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu"],
           'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre"],
           'K': ["  Verseau ", "21 Janvier - 18 Février",   "Élément : Air"],
-          'L': ["  Poisson ", "19 Février - 20 Mars",      "Élément : Eau"]}
-
+          'L': ["  Poisson ", "19 Février - 20 Mars",      "Élément : Eau"],
+          'M': ["  Dragon  ", "Dernière Année : 2012",     "Prochaine : 2024"],
+          'N': ["  serpent ", "Dernière Année : 2013",     "Prochaine : 2025"],
+          'O': ["  Cheval  ", "Dernière Année : 2014",     "Prochaine : 2026"],
+          'P': ["  Mouton  ", "Dernière Année : 2015",     "Prochaine : 2027"],
+          'Q': ["   Singe  ", "Dernière Année : 2016",     "Prochaine : 2028"],
+          'R': ["    Coq   ", "Dernière Année : 2017",     "Prochaine : 2029"],
+          'S': ["   Chien  ", "Dernière Année : 2018",     "Prochaine : 2030"],
+          'T': ["  Cochon  ", "Dernière Année : 2019",     "Prochaine : 2031"],
+          'U': ["    Rat   ", "Dernière Année : 2020",     "Prochaine : 2032"],
+          'V': ["   Boeuf  ", "Dernière Année : 2021",     "Prochaine : 2033"],
+          'W': ["   Tigre  ", "Dernière Année : 2022",     "Prochaine : 2034"],
+          'X': ["  Lièvre  ", "Dernière Année : 2023",     "Prochaine : 2035"]}
 
 
 
@@ -277,6 +288,8 @@ class ecran():
         pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
         picto_astro = pygame.transform.scale(pygame.image.load(main_path+"images/pictoastro.png"), (46, 46))
         screen.blit(picto_astro, (2, 122))
+        picto_astro_ch = pygame.transform.scale(pygame.image.load(main_path+"images/pictofire.png"), (42, 42))
+        screen.blit(picto_astro_ch, (2, 273))
 
         '''bouton menu'''
         pygame.draw.rect(screen, GRAY,  ((0, 0),  (50, 50)))
@@ -310,25 +323,56 @@ class ecran():
             pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY,     ((250, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
             pygame.draw.rect(screen, RED,      ((250, 200), (45,  45)),  0, 0, 10,  0, 0, 30)
-            
-            '''Pas sûr, mais le code suivant :'''
-            # img_name = ""
-            # for i in getsigne[0]:                       #----->   pas opti mais ça fonctionnais très bien paul
-            #     if i == " ":
-            #         continue
-            #     else: 
-            #         img_name += i
-            '''devrait pouvoir aisément être remplacé par :'''
             img_name = getsigne[0].replace(' ', '')    
-
-
+            '''images'''
             img = pygame.image.load(main_path+"images/"+ img_name +".png")
             img = pygame.transform.scale(img, (175, 125))
             screen.blit(img, (660, 240))
+            '''textes'''
             text = moyfont.render(getsigne[0], 1, OR_STP)
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
             croix = moyfont.render("X", 1, WHITE)
+            '''affichage final'''
+            screen.blit(text, (400, 210))
+            screen.blit(text2, (265, 280))
+            screen.blit(text3, (265, 330))
+            screen.blit(croix, (260, 210))
+
+
+    def signe_astro_ch(self, signe, data):
+        """"affiche le signe asrtrologique et ses informations"""
+        getsigne = signes.get(signe)
+        if data:
+            '''petite version si les données planètes sont affichées'''
+            pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED,      ((225, 200), (45,  45)),  0, 0, 10, 0, 0, 30)
+            text = moyfont.render(getsigne[0], 1, OR_STP)
+            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
+            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
+            croix = moyfont.render("X", 1, WHITE)
+            screen.blit(text, (350, 210))
+            screen.blit(text2, (250, 280))
+            screen.blit(text3, (250, 330))
+            screen.blit(croix, (235, 210))
+        if not data:
+            '''version plus large si les données des planètes ne sont pas à l'écran'''
+            pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
+            pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
+            pygame.draw.rect(screen, GRAY,     ((250, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
+            pygame.draw.rect(screen, RED,      ((250, 200), (45,  45)),  0, 0, 10,  0, 0, 30)
+            img_name = getsigne[0].replace(' ', '')    
+            '''images'''
+            img = pygame.image.load(main_path+"images/"+ img_name +".jpg")
+            img = pygame.transform.scale(img, (175, 175))
+            screen.blit(img, (662, 213))
+            '''textes'''
+            text = moyfont.render(getsigne[0], 1, OR_STP)
+            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
+            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
+            croix = moyfont.render("X", 1, WHITE)
+            '''affichage final'''
             screen.blit(text, (400, 210))
             screen.blit(text2, (265, 280))
             screen.blit(text3, (265, 330))
@@ -545,38 +589,58 @@ class Text_Input:
                 if index == 4 and len(self.text) > 5:
                     if not letter in [str(x) for x in range(10)]+['-']:
                         self.statut = -45
-                        Text_Input.display(self)
                         return False # Erreur
                 else:
                     if not letter in [str(x) for x in range(10)]:
                         self.statut = -45
-                        Text_Input.display(self)
                         return False # Erreur
-                # Le jour, mois ou année ne peut être égal à 0
+            # Le jour, mois ou année ne peut être égal à 0, ni suppérieur à 31 ou 12 
             if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
-                # Cas ou toutes les conditions sont remplises
-                self.statut = 45
-                Text_Input.display(self)
-                return True
-        else:
-            self.statut = -45
-            Text_Input.display(self)
-            return False # Erreur
+                #Verifie le nombre de jour pour le mois de fevrier 
+                if int(self.text[2:4]) == 2:
+                    if (int(self.text[4:]) - 2016) % 4 == 0:
+                        print((int(self.text[4:]) - 2016) % 4)
+                        if int(self.text[:2]) <= 29:
+                            self.statut = 45
+                            return True
+                    elif (int(self.text[4:]) - 2016) % 4 >= 0 or (int(self.text[4:]) % 4) - 2016 <= 4:
+                        (int(self.text[4:]) - 2016) % 4
+                        if int(self.text[:2]) <= 28:
+                            self.statut = 45
+                            return True
+                    else: 
+                        self.statue = 45
+                        return False
+
+                #verifie le nombre de jour pour les mois de 30 j 
+                if int(self.text[2:4]) == 4 or int(self.text[2:4]) == 6 or int(self.text[2:4]) == 9 or int(self.text[2:4]) == 11:
+                    if int(self.text[:2]) < 31:
+                        self.statut = 45
+                        return True
+                
+                #verifie le nombre de jour pour les mois de 31 j 
+                if int(self.text[2:4]) == 1 or int(self.text[2:4]) == 3 or int(self.text[2:4]) == 5 or int(self.text[2:4]) == 7 or int(self.text[2:4]) == 8 or int(self.text[2:4]) == 10 or int(self.text[2:4]) == 12:
+                    if int(self.text[:2]) < 32:
+                        self.statut = 45
+                        return True
+
+        self.statut = -45
+        return False # Erreur
         
     def display(self) -> None:
         '''Affichage de la barre d'input textuelle'''
         # Encadrement de la barre d'input textuelle
         if self.selected:
-            # Choix de la couleur lors de l'encadrement de la barre d'input textuelle
             color = OR_STP
-            if abs(self.statut) % 30 < 15:
+        else:
+            color = BLEU_STP
+        # Choix de la couleur lors de l'encadrement de la barre d'input textuelle
+        if abs(self.statut) % 30 < 15:
                 if self.statut > 0:
                     color = GREEN
                 elif self.statut < 0:
                     color = RED
-            pygame.draw.rect(screen, color, self.rect, 5)
-        else:
-            pygame.draw.rect(screen, BLEU_STP, self.rect, 5)
+        pygame.draw.rect(screen, color, self.rect, 5)
         # Création du texte affiché (on met en forme et en fait une surface affichable)
         if len(self.text) > 4:
             text_list = [self.text[:2], self.text[2:4], self.text[4:]]
@@ -610,6 +674,7 @@ def main() -> None:
     jouer = True
     validquit = False
     signe_astro = False
+    signe_astro_ch = False
     appel = "C"
     # SON = sons()
     can_press_button = True
@@ -684,10 +749,13 @@ def main() -> None:
                     if event.key == pygame.K_a:
                         signe_astro = not signe_astro
 
+                    if event.key == pygame.K_q:
+                        signe_astro_ch = not signe_astro_ch
+
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE and not time_set.selected:
                     planetes.unfollow_all()
-                    camera_true_pos = [0, 0]
+                    camera_true_pos = list(sunpos)
                     camera_focus = [0, 0]
                     is_following = False
                     data = False
@@ -761,13 +829,21 @@ def main() -> None:
         time_set.display()
 
 
-        '''affiche le signe astrologique'''
+        '''affiche le signe astrologique grégorien'''
         if signe_astro:
+            signe_astro_ch = False
             saisie = time_set.retour_date_complete()
             HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
             if time_set.selected:
                 signe_astro = False
 
+        '''affiche le signe astrologique chinois'''
+        if signe_astro_ch:
+            signe_astro = False
+            saisie = time_set.retour_date_complete()
+            HUD.signe_astro_ch(Temps.astro_chn(saisie[0], saisie[1], saisie[2]), data)
+            if time_set.selected:
+                signe_astro_ch = False
 
         # Ci-dessous tous les boutons cliquables
 
@@ -806,10 +882,11 @@ def main() -> None:
 
             """valide la date et change les planètes de places"""
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
-                temps = time_set.retour_date()
-                if temps > 2454466 and temps < 2454832:
-                    wallE = True
-                    timeWallE = time()
+                if time_set.verif():
+                    temps = time_set.retour_date()
+                    if temps > 2454466 and temps < 2454832:
+                        wallE = True
+                        timeWallE = time()
             
             '''Bouton quitter'''
             # Vérifie si la souris est sur le bouton et quitte appli si clic dans la zone
@@ -845,11 +922,19 @@ def main() -> None:
             if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
                 if signe_astro and data:
                     signe_astro = False
+                elif signe_astro_ch and data:
+                    signe_astro_ch = False
 
             '''bouton fermeture signe astrologique avec data fermé'''
             if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
                 if signe_astro and not data:
                     signe_astro = False
+                elif signe_astro_ch and not data:
+                    signe_astro_ch = False
+
+            '''bouton signe astrologique chinois'''
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 270 and pos_souris[1] < 320:
+                signe_astro_ch = time_set.verif()
 
         
         elif not pygame.mouse.get_pressed()[0]:

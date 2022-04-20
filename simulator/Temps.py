@@ -89,7 +89,7 @@ def phase_lune(Y, M, D):
     reference =  2459581.5          #date de reference
     tmps = 29.5                     #temps d'une lunaison
     diff = (reference - saisie)
-    diff = diff % tmps
+    diff = diff % tmps              #modulo calcule la difference 
     if diff >= 0 and diff <= 3.687 or diff > 24.687 and diff < 29.5:
         return "Nouvelle lune"
     elif diff > 3.687 and diff <= 10.687:    
@@ -135,33 +135,33 @@ def astro_fra(Y, M, D):
 
 def astro_chn(Y, M, D):
     '''calcule le signe astrologique chinois par la date'''
-    dif = (2000 - Y) % 12
+    dif = (Y - 2000) % 12    #calcule la différence par rapport à l'année 2000 (année du dragon)
     if dif < 0:
         dif = (Y - 2000) % 12
     if dif == 0:
-        return "Dragon"
+        return "M"  #"Dragon"
     if dif == 1: 
-        return "Serpent"
+        return "N"  #"Serpent"
     if dif == 2: 
-        return "Cheval"
+        return "O"  #"Cheval"
     if dif == 3: 
-        return "Mouton"
+        return "p"  #"Mouton"
     if dif == 4: 
-        return "Singe"
+        return "Q"  #"Singe"
     if dif == 5: 
-        return "Coq"
+        return "R"  #"Coq"
     if dif == 6: 
-        return "Chien"
+        return "S"  #"Chien"
     if dif == 7: 
-        return "Cochon"
+        return "T"  #"Cochon"
     if dif == 8: 
-        return "Rat"
+        return "U"  #"Rat"
     if dif == 9: 
-        return "Boeuf"
+        return "V"  #"Boeuf"
     if dif == 10: 
-        return "Tigre"
+        return "W"  #"Tigre"
     if dif == 11: 
-        return "Lièvre"
+        return "X"  #"Lièvre"
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
