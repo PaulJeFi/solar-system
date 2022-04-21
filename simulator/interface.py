@@ -1,3 +1,7 @@
+from cmath import phase
+import math
+import math
+from os import times
 import kepler as kp
 import pygame
 import sys
@@ -12,7 +16,9 @@ import random
 
 BLACK = (0, 0, 0)
 GRAY = (70, 70, 70)
+DARK_GRAY = (20, 20, 20)
 WHITE = (255, 255, 255)
+SOFT_WHITE = (200, 200, 200)
 GREEN = (0, 255, 0)
 GREEN_CUSTOM = (25, 200, 25)
 MARRON = (179, 139, 109)
@@ -158,6 +164,7 @@ class ecran():
         # Affichage des données
         pygame.draw.rect(screen, WHITE,    ((800, 275), (1080, 600)))
         # Lignes de séparation
+        pygame.draw.line(screen, OR_STP,    (800, 276), (1080, 276), 3)
         pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
         pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
 
@@ -295,10 +302,10 @@ class ecran():
         quitter = grandfont.render("X", 1, BLACK)
         screen.blit(quitter, (11, 557))
 
-    def signe_astro(self, signe, data):
+    def signe_astro(self, signe, data, lunaison):
         """"affiche le signe asrtrologique et ses informations"""
         getsigne = signes.get(signe)
-        if data:
+        if data or lunaison:
             '''petite version si les données planètes sont affichées'''
             pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
@@ -311,7 +318,7 @@ class ecran():
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
-        if not data:
+        if not data and not lunaison:
             '''version plus large si les données des planètes ne sont pas à l'écran'''
             pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
             pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
@@ -334,10 +341,10 @@ class ecran():
             screen.blit(croix, (260, 210))
 
 
-    def signe_astro_ch(self, signe, data):
+    def signe_astro_ch(self, signe, data, lunaison):
         """"affiche le signe asrtrologique et ses informations"""
         getsigne = signes.get(signe)
-        if data:
+        if data or lunaison:
             '''petite version si les données planètes sont affichées'''
             pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
             pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
@@ -350,7 +357,7 @@ class ecran():
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
-        if not data:
+        if not data and not lunaison:
             '''version plus large si les données des planètes ne sont pas à l'écran'''
             pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
             pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
@@ -373,7 +380,7 @@ class ecran():
             screen.blit(croix, (260, 210))
         
         
-    def ecriture(self, planete) -> None:
+    def ecriture(self, planete, dist) -> None:
         '''Fait apparaitre les données de la planète choisie'''
         # Cherche dans le dictionnaire ==> (work in progress)
         dataget = data.get(planete)
@@ -381,7 +388,7 @@ class ecran():
         text = font.render(dataget[0], 1, BLACK)
         poids = font.render(dataget[1], 1, BLACK)
         rayon = font.render(dataget[2], 1, BLACK)
-        distance = font.render(dataget[3], 1, BLACK)
+        distance = font.render("distance = " + dist + " Ua", 1, BLACK)
         rotation = font.render(dataget[4], 1, BLACK)
         temperature = font.render(dataget[5], 1, BLACK)
         # Affichage des données
@@ -395,6 +402,59 @@ class ecran():
         # img = pygame.image.load(dataget[-1])
         # img = pygame.transform.scale(img, (280, 275))
         screen.blit(dataget[-1], (800, 0))
+
+    def lunaison(self):
+        '''dessine la zone de texte por les infos de la lune avec le gif'''
+        # affichage gif 
+        pygame.draw.rect(screen, BLEU_FC,  ((800,   0), (1080, 275)))
+        # Affichage espace données
+        pygame.draw.rect(screen, WHITE,    ((800, 275), (1080, 600)))
+        pygame.draw.rect(screen, DARK_GRAY,     ((800, 381), (1080, 498)))
+        # Lignes de séparation
+        pygame.draw.line(screen, OR_STP,    (800, 276), (1080, 276), 3)
+        pygame.draw.line(screen, OR_STP,    (800, 380), (1080, 380), 3)
+        pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
+        pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
+
+    def ecriture_lune(self, temps): 
+        '''Fait apparaitre les données de la planète choisie'''
+        TLune = Temps.phase_lune(temps)
+        # Affichage informations complémentaire
+        text = moyfont.render("La Lune", 1, BLACK)
+        pourcentage = font2.render("Pourcentage = " + str(TLune) + "%", 1, BLEU_FC)
+        # Utilise cette différence pour déduire phase actuelle de la Lune 
+        if TLune >= 0 and TLune <= 12:
+            lunaison = font2.render("Nouvelle lune", 1 , BLEU_STP)
+        elif 12 < TLune < 25:
+            lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
+        elif 20 < TLune <= 30:   
+            lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
+        elif 30 < TLune <= 45:
+            lunaison = font2.render("Gibbeuse Croissante", 1 , BLEU_STP)
+        elif 45 < TLune <= 55:
+            lunaison = font2.render("pleine lune", 1 , BLEU_STP)
+        elif 55 < TLune <= 70:
+            lunaison = font2.render("Gibbeuse Déroissante", 1 , BLEU_STP)
+        elif 70 < TLune <= 80:
+            lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
+        elif 80 < TLune <= 95:
+            lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
+        elif 95 < TLune <= 101:
+            lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+        else:
+            lunaison = font2.render("Erreur", 1 , BLEU_STP)
+        distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
+        rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
+        temperature = font.render("temperature = -230°C / 120°C", 1, SOFT_WHITE)
+        # Affichage final des données
+        screen.blit(text, (880, 285))
+        screen.blit(lunaison, (815, 325))
+        screen.blit(pourcentage, (815, 352))
+        screen.blit(distance, (815, 400))
+        screen.blit(rotation, (815,430))
+        screen.blit(temperature, (815,460))
+        pass
+
 
     def confirmation(self) -> None:
         '''Dessine écran validation quitter'''
@@ -514,12 +574,17 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete[self.data_index][0] = False
 
+    def distance(self, sunpos, camera_focus):
+        distance = math.sqrt(abs((camera_focus[0]**2 - sunpos[0]**2) + (camera_focus[1]**2 - sunpos[1]**2)))# Calcule distance entre les deux points 
+        return str(round(distance))
+
 def get_followed_planet(gest: Gestion_Planete) :
         '''Permet de récupérer la planète suivie'''
         for planete in gest.planetes:
             if planete[gest.data_index][0]:
                 return 'A B C D E F G H'.split()[gest.planetes.index(planete)]
         return (0, 0) # Cas où aucune planète n'est suivie
+
 
 class Text_Input:
 
@@ -684,6 +749,7 @@ def main() -> None:
     appel = "C"
     # SON = sons()
     can_press_button = True
+    lunaison = False
     objet = False
     sprite = "wallE"
     rotation = 0
@@ -700,6 +766,7 @@ def main() -> None:
     true_speed = 0 # Vitesse en jour par frame
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
+    vitesse_lente = vitesse / 6 # Rallentissement pour observer phases lunaires
     
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
@@ -833,8 +900,16 @@ def main() -> None:
         if objet:
             HUD.wallE(sprite, rotation)
         if data:
+            lunaison = False
             HUD.espace_donnee()
-            HUD.ecriture(appel)
+            HUD.ecriture(appel, planetes.distance(sunpos, camera_focus))
+        if lunaison:
+            vitesse = vitesse_lente
+            data = False
+            HUD.lunaison()
+            HUD.ecriture_lune(temps)
+        else:
+            vitesse = base_vitesse
         HUD.barre_action()
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
@@ -847,7 +922,7 @@ def main() -> None:
         if signe_astro:
             signe_astro_ch = False
             saisie = time_set.retour_date_complete()
-            HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data)
+            HUD.signe_astro(Temps.astro_fra(saisie[0], saisie[1], saisie[2]), data, lunaison)
             if time_set.selected:
                 signe_astro = False
 
@@ -855,7 +930,7 @@ def main() -> None:
         if signe_astro_ch:
             signe_astro = False
             saisie = time_set.retour_date_complete()
-            HUD.signe_astro_ch(Temps.astro_chn(saisie[0], saisie[1], saisie[2]), data)
+            HUD.signe_astro_ch(Temps.astro_chn(saisie[0], saisie[1], saisie[2]), data, lunaison)
             if time_set.selected:
                 signe_astro_ch = False
 
@@ -898,25 +973,30 @@ def main() -> None:
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
                 if time_set.verif():
                     temps = time_set.retour_date()
-                    #Wall-E en 2008
+                    # Wall-E en 2008
                     if temps > 2454466 and temps < 2454832:
                         sprite = wallE
                         rotation = 0
                         objet = True
-                    #L'ISS en 2011
+                    # L'ISS en 2011
                     elif temps > 2455561.5 and temps < 2455927.5:
                         sprite = iss
                         rotation = random.randint(0, 359)
                         objet = True
-                    #Buzz l'éclaire en 1995
+                    # Buzz l'éclaire en 1995
                     elif temps > 2449717.5 and temps < 2450083.5:
                         sprite = buzz
                         rotation = 315
                         objet = True
-                    #Star Wars ( Faucon Millénium ) en 1977
+                    # Star Wars ( Faucon Millénium ) en 1977
                     elif temps > 2443143.5 and temps < 2443509.5:
                         sprite = falcon
                         rotation = 325
+                        objet = True
+                    # Fusée apollo 11 en 1969
+                    elif temps > 2440221.5 and temps < 2440587.5:
+                        sprite = apollo
+                        rotation = 50
                         objet = True
             
             '''Bouton quitter'''
@@ -959,17 +1039,26 @@ def main() -> None:
             # Bouton fermeture ( Croix ) signe astrologique ( tous ) en fonction de data 
             '''bouton fermeture signe astrologique (tous) avec data ouverte'''
             if pos_souris[0] > 225 and pos_souris[0] < 270 and pos_souris[1] > 200 and pos_souris[1] < 245:
-                if signe_astro and data:
+                if signe_astro and data or signe_astro and lunaison:
                     signe_astro = False
-                elif signe_astro_ch and data:
+                elif signe_astro_ch and data or signe_astro_ch and lunaison:
                     signe_astro_ch = False
 
             '''bouton fermeture signe astrologique ( tous ) avec data fermé'''
             if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
-                if signe_astro and not data:
+                if signe_astro and not data or signe_astro and not lunaison:
                     signe_astro = False
-                elif signe_astro_ch and not data:
+                elif signe_astro_ch and not data or signe_astro_ch and not lunaison:
                     signe_astro_ch = False
+
+            '''bouton affichage lunaison et info'''
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 420 and pos_souris[1] < 470:
+                planetes.unfollow_all()
+                camera_true_pos = list(sunpos)
+                camera_focus = [0, 0]
+                is_following = False
+                data = False
+                lunaison = not lunaison
 
             
 

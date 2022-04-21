@@ -82,29 +82,30 @@ def siecles_juliens_epoch (jj: float) -> float :
 
 
     
-def phase_lune(Y, M, D):
+def phase_lune(temps):
     '''calcule la phase de la lune par la date'''
     '''durée lunaison = 29 j'''
-    date_saisie = JJ(Y, M, D)
+    # date_saisie = JJ(Y, M, D)
     datetest =  2459583.5   # Date de référence    -->  18/01/2022
-    tmps = 29.53            # Durrée d'une lunaison
-    diff = (date_saisie - datetest)
+    lune = 29.53            # Durrée d'une lunaison
+    diff = (temps - datetest)
 
-    modulo = diff % tmps     # Calcule la différence 
+    modulo = diff % lune     # Calcule la différence 
 
+    if 0.0 <= modulo <= 30.0:
+        return round((modulo * 100)/29)
     # Utilise cette différence pour déduire phase actuelle de la Lune 
-    if modulo >= 0 and modulo <= 3.687 or modulo > 24.687 and modulo < 29.5:
-        return "nouvelle lune"
-    elif modulo > 3.687 and modulo <= 10.687:    
-        return "1er quartier"
-    elif modulo > 10.687 and modulo <= 17.687:
-        return "pleine lune"
-    elif modulo > 17.687 and modulo <= 24.687:
-        return "dernier quartier"
+    # if modulo >= 0 and modulo <= 3.687 or modulo > 24.687 and modulo < 29.5:
+    #     return "nouvelle lune"
+    # elif modulo > 3.687 and modulo <= 10.687:    
+    #     return "1er quartier"
+    # elif modulo > 10.687 and modulo <= 17.687:
+    #     return "pleine lune"
+    # elif modulo > 17.687 and modulo <= 24.687:
+    #     return "dernier quartier"
+    else :
+        return "Erreur"
 
-    else : 
-        return "Nous rencontrons actuellement un problème technique"
-    
 
 
 def astro_fra(Y, M, D):
