@@ -174,19 +174,19 @@ class ecran():
         pygame.draw.rect(screen, GRAY,     ((800, 550), (1080, 600)))
         # Bouton pour valider la date
         pygame.draw.rect(screen, OR_STP,   ((990, 550), (  90, 600)))
-        # Lignes de séparation (x3)
+        # Lignes de séparation (x4)
         pygame.draw.line(screen, WHITE,     (513, 551), (1080, 551), 3)
         pygame.draw.line(screen, WHITE,     (513, 550), ( 513, 600), 3)
         pygame.draw.line(screen, WHITE,     (798, 550), ( 798, 600), 3)
+        pygame.draw.line(screen, WHITE,     (991, 550), ( 991, 600), 3)
         # Barre de contrôle du temps
         pygame.draw.rect(screen, BLEU_STP, ((800, 500), ( 280,  50)))
         # Bouton sens inverse
         pygame.draw.rect(screen, GRAY,     ((800, 500), (  90,  50)))
-        # Bouton du vitesse
+        # Bouton pour la vitesse
         pygame.draw.rect(screen, GRAY,     ((990, 500), ( 280,  50)))
-        pygame.draw.line(screen, GRAY,      (990, 553), ( 990, 600), 3)
-        ok = grandfont.render("OK", 1, BLACK)
-        screen.blit(ok, (1003, 558))
+        # Bouton OK pour l'imput de date
+        screen.blit(grandfont.render("OK", 1, BLACK), (1003, 558))
         
     def display_bouton_pause(cls, jeu_en_marche: bool) -> None:
         '''Affichage du bouton pause dans son état "pause" ou "play"'''
@@ -261,8 +261,9 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        self.zoom_factor = 2**((0.5)*(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[1]+0.5)/(self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0]+0.5))
-        # WARNING : le zoom ne doit pas être plus grand que 2 (sinon...)
+        # Le facteur de zoom va de 1x à 64x
+        self.zoom_factor = 0.005*((self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])/(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])+1)**6
+        # WARNING : le zoom ne doit pas être plus grand que 1 (sinon...)
 
     def display_zoom_slider(self) -> None:
         '''Affichage du slider de zoom'''
@@ -479,7 +480,6 @@ class ecran():
             self.wallE_y += 0.4
         if self.wallE_rotation >= 178 or self.wallE_rotation <= 180 or self.wallE_rotation >= 358 or self.wallE_rotation <= 0:
             self.wallE_y += 0.4
-        pass
 
     def verif_object(self):
         '''vérifie l'emplacement de l'objet pour l'arreter si son animation est fini et replacer au point de départ'''
@@ -606,35 +606,26 @@ class Text_Input:
 
     def check_input(self, event: pygame.KEYDOWN, temps: float) -> float:
         '''Fonction permettant d'écrire dans la barre d'input textuelle et renvoyer le temps si nécessaire'''
+        
         # Valider l'input
         if event.key == pygame.K_RETURN:
-            # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
-            if len(self.text) > 4:
-                # Test pour voir si tous les chiffres sont valide
-                for index, letter in enumerate(self.text):
-                    # Il ne peut y avoir de signe "-" qu'en 5ème position (année)
-                    if index == 4 and len(self.text) > 5:
-                        if not letter in [str(x) for x in range(10)]+['-']:
-                            self.statut = -45
-                            return temps # Erreur
-                    else:
-                        if not letter in [str(x) for x in range(10)]:
-                            self.statut = -45
-                            return temps # Erreur
-                    # Le jour, mois ou année ne peut être égal à 0
-                if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
-                    # Cas ou toutes les conditions sont remplises
-                    self.statut = 45
-                    return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
-            self.statut = -45
-            return temps # Erreur
+            # On vérifie que l'imput et valide
+            if self.verif():
+                # Cas où l'imput est valide
+                return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
+            # Cas échéant (else:)
+            return temps
+        
         # Retour en arrière
         elif event.key == pygame.K_BACKSPACE:
             self.text = self.text[:-1]
+        
         # Input
         else:
             self.text += str(event.unicode)
-        return temps # Si rien n'est touché
+        
+        # Si rien n'est touché
+        return temps
 
     def retour_date(self):
         '''renvoie la date convertie en jour juliens'''
@@ -648,6 +639,7 @@ class Text_Input:
         
     def verif(self):
         '''verifie si la date est compatible avec les signes astrologiques'''
+        # Si on a bien : JJ / MM / AAAA avec AAAA contenant au moins 1 chiffre
         if len(self.text) > 4:
             # Test pour voir si tous les chiffres sont valide
             for index, letter in enumerate(self.text):
@@ -664,35 +656,41 @@ class Text_Input:
             # Le jour, mois ou année ne peut être égal à 0, ni suppérieur à 31 ou 12 
             if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
 
-                # Verifie le nombre de jour pour le mois de fevrier 
+                # Vérifie le nombre de jour pour le mois de fevrier 
                 if int(self.text[2:4]) == 2:
                     # En fonction des années bissextiles 
                     if (int(self.text[4:]) - 2016) % 4 == 0:
-                        print((int(self.text[4:]) - 2016) % 4)
                         if int(self.text[:2]) <= 29:
                             self.statut = 45
                             return True
                     # Et non bissextiles
-                    elif (int(self.text[4:]) - 2016) % 4 >= 0 or (int(self.text[4:]) % 4) - 2016 <= 4:
-                        (int(self.text[4:]) - 2016) % 4
-                        if int(self.text[:2]) <= 28:
-                            self.statut = 45
-                            return True
-                    else: 
-                        self.statue = 45
-                        return False
+                    elif int(self.text[:2]) <= 28:
+                        self.statut = 45
+                        return True
+                    # Cas échéant (else:)
+                    self.statut = -45
+                    return False
 
-                #verifie le nombre de jour pour les mois de 30 j 
-                if int(self.text[2:4]) == 4 or int(self.text[2:4]) == 6 or int(self.text[2:4]) == 9 or int(self.text[2:4]) == 11:
+                # Vérifie le nombre de jour pour les mois de 30 j 
+                elif int(self.text[2:4]) == 4 or int(self.text[2:4]) == 6 or int(self.text[2:4]) == 9 or int(self.text[2:4]) == 11:
                     if int(self.text[:2]) < 31:
                         self.statut = 45
                         return True
+                    # Cas échéant (else:)
+                    self.statut = -45
+                    return False
                 
-                #verifie le nombre de jour pour les mois de 31 j 
-                if int(self.text[2:4]) == 1 or int(self.text[2:4]) == 3 or int(self.text[2:4]) == 5 or int(self.text[2:4]) == 7 or int(self.text[2:4]) == 8 or int(self.text[2:4]) == 10 or int(self.text[2:4]) == 12:
-                    if int(self.text[:2]) < 32:
-                        self.statut = 45
-                        return True
+                # Condition déjà testé lors de   -->   if 32 > int(self.text[:2]) != 0 and 13 > int(self.text[2:4]) != 0 and int(self.text[4:]) != 0:
+                #
+                # Vérifie le nombre de jour pour les mois de 31 j 
+                # if int(self.text[2:4]) == 1 or int(self.text[2:4]) == 3 or int(self.text[2:4]) == 5 or int(self.text[2:4]) == 7 or int(self.text[2:4]) == 8 or int(self.text[2:4]) == 10 or int(self.text[2:4]) == 12:
+                #     if int(self.text[:2]) < 32:
+                #         self.statut = 45
+                #         return True
+
+                # Tous les autres cas sont bons (else:)
+                self.statut = 45
+                return True
 
         # Sinon renvoie une erreur 
         self.statut = -45
@@ -706,7 +704,7 @@ class Text_Input:
         else:
             color = BLEU_STP
         # Choix de la couleur lors de l'encadrement de la barre d'input textuelle
-        if abs(self.statut) % 30 < 15:
+        if abs(self.statut) % 30 <= 15:
                 if self.statut > 0:
                     color = GREEN
                 elif self.statut < 0:
@@ -760,7 +758,7 @@ class Trainee:
         '''Affichage plus actualisation des points'''
         for point in self.all_points:
             if point[1] > 0:
-                screen.set_at(point[0], [point[1]]*3)
+                screen.set_at(point[0], [255 - abs(point[1] * 2 - 255)] * 3)
                 if not self.current_frame:
                     point[1] -= 1
             else:
@@ -770,7 +768,7 @@ class Trainee:
 def main() -> None:
 
     HUD = ecran()
-    trainee = Trainee(15, True)
+    trainee = Trainee(5, True)
     data = False
     jouer = True
     validquit = False
@@ -798,7 +796,7 @@ def main() -> None:
     vitesse = base_vitesse
     vitesse_lente = vitesse / 6 # Rallentissement pour observer phases lunaires
     
-    cam_speed = 1
+    cam_speed = 5 # Vitesse de déplacement de la caméra
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
     camera_focus = (0, 0) # Postion de l'objet à suivre
@@ -836,7 +834,36 @@ def main() -> None:
                 if time_set.selected:
                     # Input pour la barre d'input textuelle
                     temps = time_set.check_input(event, temps)
-                
+                    
+                    # J'ai "Ctrl + C" puis "Ctrl + V" le code plus bas pour ajouter cette condition
+                    if event.key == pygame.K_RETURN:
+                        if time_set.verif():
+                            temps = time_set.retour_date()
+                            # Wall-E en 2008
+                            if temps > 2454466 and temps < 2454832:
+                                sprite = wallE
+                                rotation = 0
+                                objet = True
+                            # L'ISS en 2011
+                            elif temps > 2455561.5 and temps < 2455927.5:
+                                sprite = iss
+                                rotation = random.randint(0, 359)
+                                objet = True
+                            # Buzz l'éclaire en 1995
+                            elif temps > 2449717.5 and temps < 2450083.5:
+                                sprite = buzz
+                                rotation = 315
+                                objet = True
+                            # Star Wars ( Faucon Millénium ) en 1977
+                            elif temps > 2443143.5 and temps < 2443509.5:
+                                sprite = falcon
+                                rotation = 325
+                                objet = True
+                            # Fusée apollo 11 en 1969
+                            elif temps > 2440221.5 and temps < 2440587.5:
+                                sprite = apollo
+                                rotation = 50
+                                objet = True
                 else:
                     # Affichage ou non des informations sur la planête
                     if event.key == pygame.K_z:
@@ -874,18 +901,23 @@ def main() -> None:
 
         # Actions à faire tant que la touche est pressée
         pressed = pygame.key.get_pressed()
+        # On définit la vitesse
+        if is_following:
+            speed = (cam_speed/camera_zoom)**0.5
+        else:
+            speed = (cam_speed/camera_zoom**2)**0.5
         # Déplacement vers le haut
         if pressed[pygame.K_UP]:
-            camera_true_pos[1] -= cam_speed/camera_zoom
+            camera_true_pos[1] -= speed
         # Déplacement vers le bas
         if pressed[pygame.K_DOWN]:
-            camera_true_pos[1] += cam_speed/camera_zoom
+            camera_true_pos[1] += speed
         # Déplacement vers la gauche
         if pressed[pygame.K_LEFT]:
-            camera_true_pos[0] -= cam_speed/camera_zoom
+            camera_true_pos[0] -= speed
         # Déplacement vers la droite
         if pressed[pygame.K_RIGHT]:
-            camera_true_pos[0] += cam_speed/camera_zoom
+            camera_true_pos[0] += speed
         
 
         # Actualisation de la position finale de la caméra
@@ -893,10 +925,8 @@ def main() -> None:
             camera_focus = planetes.get_followed_pos()
             data = True
             appel = get_followed_planet(planetes)
-            cam_speed = 0.1
-        else:
-            cam_speed = 1
         
+
         camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
 
