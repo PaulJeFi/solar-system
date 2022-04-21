@@ -1,15 +1,15 @@
                                             Pour les idées de trucs à ajouter 
                                      <--------------------------------------------->
 
-- Ajouter la lune                                    --> pas une option
-- Implementer système de GIF pour les infos sur la lune --> pas une option
+- Ajouter la lune                                           --> pas une option
+- Implementer système de GIF pour les infos sur la lune     --> pas une option
 - Changer couleurs planètes
 - Ecrire le cahier des charge du projet 
 
 
 <------------------------------------------------------------------------------------------------------------------------>
  
-- calculer la distanc planète - soleil en temps réel
+- calculer la distanc planète - soleil en temps réel           prêt (à convertir en unités astronomiques)
 - Affichage prochaines éclipses solaires (vu de la terre)
 - Musique fonctionnelle                                        prêt (problème pygame.mixer sur windows)
 - Ajouter Pluton par action cachée 
