@@ -261,7 +261,13 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        # Le facteur de zoom va de 1x à 64x
+        # Le facteur de zoom va de 1x à 64x (soit de 0.005 (min) à 0.32 (max))
+        # En détail :
+        #   0.005 est le facteur minimum (1x avec x = 0.005)
+        #   6 est la puissance de 2 maximale par laquelle on peut multiplier le facteur minimum (2**6x <=> 64x)
+        #   L'équation au milieu donne un résultat compris entre 1 et 2
+        # Au final, on a :
+        #   self.zoom_factor = facteur minimum * (équation ** puissance)
         self.zoom_factor = 0.005*((self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])/(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])+1)**6
         # WARNING : le zoom ne doit pas être plus grand que 1 (sinon...)
 
