@@ -672,10 +672,40 @@ class Text_Input:
             self.statut -= 1
 
 
+class Trainee:
+    def __init__(self, anim_speed: int=1, init_now: bool=False):
+        self.anim_speed = anim_speed
+        self.current_frame = 0
+        self.all_points = [] # Argument : [pos x y, durée de vie]
+        if init_now:
+            self.pre_start()
+    
+    def pre_start(self):
+        for i in range(255):
+            self.all_points.append([(random.randint(0, width), random.randint(0, height)), 255-i])
+    
+    def add_point(self, pos: Tuple(float, float)):
+        '''Ajouter un point à afficher'''
+        if not self.current_frame:
+            self.all_points.append([pos, 255])
+            self.current_frame = self.anim_speed
+        self.current_frame -= 1
+
+    def display(self):
+        '''Affichage plus actualisation des points'''
+        for point in self.all_points:
+            if point[1] > 0:
+                screen.set_at(point[0], [point[1]]*3)
+                if not self.current_frame:
+                    point[1] -= 1
+            else:
+                self.all_points.remove(point)
+
 
 def main() -> None:
 
     HUD = ecran()
+    trainee = Trainee(15, True)
     data = False
     jouer = True
     validquit = False
@@ -701,6 +731,7 @@ def main() -> None:
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
     vitesse = base_vitesse
     
+    cam_speed = 1
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
     camera_focus = (0, 0) # Postion de l'objet à suivre
@@ -778,20 +809,16 @@ def main() -> None:
         pressed = pygame.key.get_pressed()
         # Déplacement vers le haut
         if pressed[pygame.K_UP]:
-            camera_true_pos[1] -= 1/camera_zoom
-            #moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[1] -= cam_speed/camera_zoom
         # Déplacement vers le bas
         if pressed[pygame.K_DOWN]:
-            camera_true_pos[1] += 1/camera_zoom
-            #moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[1] += cam_speed/camera_zoom
         # Déplacement vers la gauche
         if pressed[pygame.K_LEFT]:
-            camera_true_pos[0] -= 1/camera_zoom
-            #moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[0] -= cam_speed/camera_zoom
         # Déplacement vers la droite
         if pressed[pygame.K_RIGHT]:
-            camera_true_pos[0] += 1/camera_zoom
-            #moon.compute_orbit_path(camera_zoom, camera_pos)
+            camera_true_pos[0] += cam_speed/camera_zoom
         
 
         # Actualisation de la position finale de la caméra
@@ -799,6 +826,9 @@ def main() -> None:
             camera_focus = planetes.get_followed_pos()
             data = True
             appel = get_followed_planet(planetes)
+            cam_speed = 0.1
+        else:
+            cam_speed = 1
         
         camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
@@ -809,8 +839,9 @@ def main() -> None:
             temps, true_speed, frame_time = update_time(temps, 0, frame_time) # Permet d'avoir un semblant de pause
 
 
-        # Calcul de la position de la planète low-cost
-        #moon_pos = moon.calculate_point_from_time(temps)
+        trainee.add_point((random.randint(0, width), random.randint(0, height)))
+        trainee.display()
+
 
         # Formule simplifiée utilisé pour le zoom :
         # centre_ecran + (pos_initialle - pos_camera) * zoom_camera
@@ -984,6 +1015,7 @@ def main() -> None:
         # Verifie si un objet se deplace 
         if objet:
             objet = HUD.verif_object() #Arrete l'objet à l'arrivée
+        
 
         pygame.display.flip() # Affichage final
 
