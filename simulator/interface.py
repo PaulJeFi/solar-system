@@ -568,11 +568,14 @@ class Gestion_Planete:
     
     def follow(self) -> tuple:
         '''Permet de commencer à suivre une planète'''
-        mouse = pygame.mouse.get_pos()
+        mouse = pygame.mouse.get_pos() # On récupère la position du curseur
         for planete in self.planetes:
-            if ((mouse[0]-planete[self.data_index][1][0])**2 + (mouse[1]-planete[self.data_index][1][1])**2)**0.5 <= planete[self.data_index][2]:
+            # Le +5 à la fin de la condition ci-dessous permet de pouvoir cliquer plus facilement sur une planète
+            if ((mouse[0]-planete[self.data_index][1][0])**2 + (mouse[1]-planete[self.data_index][1][1])**2)**0.5 <= planete[self.data_index][2] + 5:
+                # Cas où une planète est cliquée
                 planete[self.data_index][0] = True
                 return True, planete[self.data_index][3]
+        # Cas où aucune planète n'est cliquée (else:)
         return False, (0, 0)
     
     def unfollow_all(self) -> None:
