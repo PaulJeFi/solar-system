@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <h1>Rapport du projet Spacior</h1>
+        <h1>Rapport du projet <i>Spacior</i></h1>
         <h2>Introduction</h2>
         <p>
             <i>Spacior</i> est un simulateur de Système Solaire développé par :
@@ -20,7 +20,39 @@
             <a href="https://github.com/PaulJeFi/solar-system">ici</a>, et la
             page de présentation du projet est disponnible
             <a href="../index.html">ici</a>. 
+            <br>
+            Le but de <i>Spacior</i> est (outre le fait d'avoir une bonne note)
+            de prédire les positions des planètes à une date donnée.
         </p>
+        <br>
+        <h2>Objectifs</h2>
+        <h2>Paradigme</h2>
+
+        <!--
+            Ci dessous un bloc pour l'affichage en Markdonwn dans un fichier
+            HTML sur GitHub Pages. MarkDown est utilisé pour les diagrammes
+            mermaid afin de réaliser le scémas du POO.
+            sources :
+            https://stackoverflow.com/questions/29368902/how-can-i-wrap-my-markdown-in-an-html-div
+            https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/
+        -->
+        <div class="tip" markdown="1">
+            Mauvais diagramme temporaire : 
+            ```mermaid
+            sequenceDiagram
+                participant dotcom
+                participant iframe
+                participant viewscreen
+                dotcom->>iframe: loads html w/ iframe url
+                iframe->>viewscreen: request template
+                viewscreen->>iframe: html & javascript
+                iframe->>dotcom: iframe ready
+                dotcom->>iframe: set mermaid data on iframe
+                iframe->>iframe: render mermaid
+            ```
+
+        </div>
+            
     </body>
 
 </html>
