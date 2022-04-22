@@ -429,7 +429,7 @@ class ecran():
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
         pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
-        pourcentage = font2.render(f"Pourcentage = {pourcent}%", 1, BLEU_FC)
+        pourcentage = font2.render(f"Pourcentage = {round(pourcent, 2)} %", 1, BLEU_FC)
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
