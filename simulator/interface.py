@@ -30,7 +30,7 @@ OR_STP = (211, 155, 0)
 BLEU_FC = (0, 0, 25)
 ORANGE = (255, 127, 0)
 
-
+luneSur100 = 29.53 / 100
 
 width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
 pygame.init()
@@ -428,25 +428,26 @@ class ecran():
         TLune = Temps.phase_lune(temps)
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
-        pourcentage = font2.render("Pourcentage = " + str(TLune) + "%", 1, BLEU_FC)
+        pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
+        pourcentage = font2.render(f"Pourcentage = {pourcent}%", 1, BLEU_FC)
         # Utilise cette différence pour déduire phase actuelle de la Lune 
-        if TLune >= 0 and TLune <= 12:
-            lunaison = font2.render("Nouvelle lune", 1 , BLEU_STP)
-        elif 12 < TLune < 25:
+        if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
+            lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+        elif 12 * luneSur100 < TLune < 25 * luneSur100:
             lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
-        elif 20 < TLune <= 30:   
+        elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
             lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
-        elif 30 < TLune <= 45:
-            lunaison = font2.render("Gibbeuse Croissante", 1 , BLEU_STP)
-        elif 45 < TLune <= 55:
-            lunaison = font2.render("pleine lune", 1 , BLEU_STP)
-        elif 55 < TLune <= 70:
-            lunaison = font2.render("Gibbeuse Déroissante", 1 , BLEU_STP)
-        elif 70 < TLune <= 80:
+        elif 30 * luneSur100 < TLune <= 45 * luneSur100:
+            lunaison = font2.render("Lune Gibbeuse Croissante", 1 , BLEU_STP)
+        elif 45 * luneSur100 < TLune <= 55 * luneSur100:
+            lunaison = font2.render("Pleine Lune", 1 , BLEU_STP)
+        elif 55 * luneSur100 < TLune <= 70 * luneSur100:
+            lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
+        elif 70 * luneSur100 < TLune <= 80 * luneSur100:
             lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
-        elif 80 < TLune <= 95:
+        elif 80 * luneSur100 < TLune <= 95 * luneSur100:
             lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
-        elif 95 < TLune <= 101:
+        elif 95 * luneSur100 < TLune <= 101 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)

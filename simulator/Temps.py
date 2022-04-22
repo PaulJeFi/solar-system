@@ -90,7 +90,10 @@ def phase_lune(temps):
     lune = 29.53            # Durrée d'une lunaison
     diff = (temps - datetest)
 
-    modulo = diff % lune     # Calcule la différence 
+    modulo = diff % lune     # Calcule la différence depuis la date de référence
+                             # modulo lunaison pour obtenir l'âge de la Lune 
+                             # depuis la dernière Nouvelle Lune
+    return modulo
 
     if 0.0 <= modulo <= 30.0:
         return round((modulo * 100)/29)
