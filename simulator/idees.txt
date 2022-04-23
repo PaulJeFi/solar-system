@@ -4,7 +4,7 @@
 - Ajouter la lune                                           --> pas une option
 - Implementer système de GIF pour les infos sur la lune     --> pas une option
 - Changer couleurs planètes
-- Ecrire le cahier des charge du projet 
+- Ecrire le cahier des charge du projet                     --> En cours mais pas une option
 
 
 <------------------------------------------------------------------------------------------------------------------------>
@@ -14,8 +14,7 @@
 - Musique fonctionnelle                                        prêt (problème pygame.mixer sur windows)
 - Ajouter Pluton par action cachée 
 - Creer une page HTML pour présenter le projet 
-- Faire des crédits accessible depuis le menu 
-- Faire un tuturiel pour paul                             
+- Faire des crédits accessible depuis le menu                         
 
 >––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––<
                           OPTIMISATIONS POSSIBLES

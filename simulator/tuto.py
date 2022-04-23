@@ -1,6 +1,5 @@
 import pygame
 import sys
-import interface
 from tools import main_path
 import launch
 
@@ -102,9 +101,11 @@ def main():
     HUD = ecran()
     validquit = False
     appel = 1
-    quitter = False
    
     while True:
+
+        """recupération coordonnées souris"""
+        pos_souris = pygame.mouse.get_pos()  
 
         for event in pygame.event.get() :
             if event.type == pygame.QUIT :
@@ -121,12 +122,15 @@ def main():
                         launch.main()
             
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if validquit:
+                    """vérifie si souris sur le boton quitter et quitte tuto si clique dans la zone"""
+                    if pos_souris[0] > 465 and pos_souris[0] < 605 and pos_souris[1] > 440 and pos_souris[1] < 490:
+                        launch.main()
                 appel += 1
-                """recupération coordonnées souris"""
-                pos_souris = pygame.mouse.get_pos()  
-                """vérifie si souris sur le boton quitter et quitte tuto si clique dans la zone"""
-                if pos_souris[0] > 465 and pos_souris[0] < 605 and pos_souris[1] > 440 and pos_souris[1] < 490:
-                    launch.main()
+                if appel == 8:
+                    HUD.bravo()
+                    validquit = True
+                    
             
 
         if appel <= 7:

@@ -746,6 +746,7 @@ class Text_Input:
 
 
 class Trainee:
+
     def __init__(self, anim_speed: int=1, init_now: bool=False):
         self.anim_speed = anim_speed
         self.current_frame = 0
@@ -896,10 +897,12 @@ def main() -> None:
                         objet = not objet
                     
                     if event.key == pygame.K_a:
-                        signe_astro = not signe_astro
+                        if time_set.verif():
+                            signe_astro = not signe_astro
 
                     if event.key == pygame.K_c:
-                        signe_astro_ch = not signe_astro_ch
+                        if time_set.verif():
+                            signe_astro_ch = not signe_astro_ch
 
                 # On arrète de suivre la planète
                 if event.key == pygame.K_BACKSPACE and not time_set.selected:

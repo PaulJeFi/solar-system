@@ -2,12 +2,15 @@ import pygame
 import sys
 import interface
 from tools import main_path
+import tuto
 
 BLACK = (0, 0, 0)
 GRAY = (75, 75, 75)
 WHITE = (255, 255, 255)
+SOFT_WHITE = (240, 240, 240)
 GREEN = (0, 255, 0)
 GREEN_CUSTOM = (25, 200, 25)
+GREEN_CUSTOM2 = (25, 150, 25)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
@@ -23,6 +26,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Spacior - Menu")
 pygame.display.set_icon(pygame.image.load(main_path+'images/logo.png'))
 font = pygame.font.Font(None, 40)
+moyfont = pygame.font.Font(None, 50)
 grandfont = pygame.font.Font(None, 75)
 validquit = False
 
@@ -43,15 +47,20 @@ class ecran:
         welcome = grandfont.render("Bienvenue sur Spacior", 1, WHITE)
         screen.blit(welcome, (250, 100))
 
-        """bouton lancement"""
+        """bouton lancement tutoriel"""
         pygame.draw.rect(screen, OR_STP, ((210, 450),(150, 50)), 0, 10)
-        play = font.render("START", 1, BLEU_STP)
-        screen.blit(play, (240, 462))
+        tuto = font.render("Tutoriel", 1, BLEU_STP)
+        screen.blit(tuto, (230, 462))
         
         """bouton quitter"""
         pygame.draw.rect(screen, OR_STP, ((720, 450),(150, 50)), 0, 10)
         quitter = font.render("QUITTER", 1, BLEU_STP)
         screen.blit(quitter, (733, 462))
+
+        """bouton lancement système"""
+        pygame.draw.rect(screen, GREEN_CUSTOM2, ((460, 440),(170, 70)), 0, 10)
+        start = moyfont.render("START", 1, SOFT_WHITE)
+        screen.blit(start, (490, 460))
 
     def quitter(self):
 
@@ -88,13 +97,18 @@ def main():
         if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.time.wait(100)
-                interface.main()
+                tuto.main()
                 
         
         """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
         if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 validquit = True
+
+        """vérifie sourie pour le bouton de lancement"""
+        if pos_souris[0] > 460 and pos_souris[0] < 630 and pos_souris[1] > 440 and pos_souris[1] < 510:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                interface.main()
                 
 
         if validquit == True:

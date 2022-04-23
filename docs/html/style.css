@@ -1,0 +1,28 @@
+/* élément de la banière */
+
+header.ban{
+    color: gray;
+    padding: none;
+    height: 150px;
+    background-color: #024b55;
+    margin: -10px;
+    margin-bottom: 0px;
+}
+div.nomduprojet h1{
+    margin-left: 25px;
+    font-weight: 5px;
+    font-size: 70px;
+}
+
+div.ligne{
+    height: 5px;
+    background-color: #fbaf00;
+    margin-left: -10px;
+    margin-right: -10px;
+    box-shadow: 0px 0px 10px 0px;
+}
+
+h2.titre{
+    background-color: #141414;
+    color: whitesmoke;
+}
