@@ -178,4 +178,3 @@ def astro_chn(Y, M, D):
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
-        

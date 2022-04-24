@@ -12,6 +12,8 @@ import pygame.mixer
 import random
 from tools import main_path, Tuple, List
 import random
+from PIL import Image
+from PIL import GifImagePlugin as Gif
 
 
 BLACK = (0, 0, 0)
@@ -298,6 +300,8 @@ class ecran():
         screen.blit(picto_astro, (2, 122))
         picto_astro_ch = pygame.transform.scale(pygame.image.load(main_path+"images/pictofire.png"), (42, 42))
         screen.blit(picto_astro_ch, (2, 273))
+        pictolune = pygame.transform.scale(pygame.image.load(main_path+"images/pictolune.png"), (65, 50))
+        screen.blit(pictolune, (-10, 420))
 
         '''bouton menu'''
         pygame.draw.rect(screen, GRAY,  ((0, 0),  (50, 50)))
@@ -308,6 +312,24 @@ class ecran():
         '''bouton quitter'''
         quitter = grandfont.render("X", 1, BLACK)
         screen.blit(quitter, (11, 557))
+
+    def date_actiuelle(self, time):
+        '''affiche la date actuelle du système à gauche du slider zoom'''
+        date = Temps.gregorien(time)
+        if round(date[2]) < 10: 
+            jour = "0" + str(round(date[2]))
+        else:
+            jour = str(round(date[2]))
+        if(date[1]) < 10: 
+            mois = "0" + str(date[1])
+        else:
+            mois = str(date[1])
+        année = str(date[0])
+        pygame.draw.rect(screen, GRAY,  ((50, 550),  (462, 50)))
+        pygame.draw.line(screen, WHITE, (50, 551),  (600, 551), 3)
+        pygame.draw.line(screen, WHITE, (51, 550),  (51, 600), 3)
+        affichage = moyfont.render("Date actuelle : " + jour + "/" + mois + "/" + année, 1, BLACK)
+        screen.blit(affichage, (100, 565))
 
     def signe_astro(self, signe, data, lunaison):
         """"affiche le signe asrtrologique et ses informations"""
@@ -426,6 +448,7 @@ class ecran():
     def ecriture_lune(self, temps): 
         '''Fait apparaitre les données de la planète choisie'''
         TLune = Temps.phase_lune(temps)
+        gif = Image.open(main_path + "images/gif_lune/lune.gif")
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
         pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
@@ -433,22 +456,31 @@ class ecran():
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+            gif = gif.seek(1)
         elif 12 * luneSur100 < TLune < 25 * luneSur100:
             lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
+            gif = gif.seek(4)
         elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
             lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
+            gif = gif.seek(8)
         elif 30 * luneSur100 < TLune <= 45 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Croissante", 1 , BLEU_STP)
+            gif = gif.seek(12)
         elif 45 * luneSur100 < TLune <= 55 * luneSur100:
             lunaison = font2.render("Pleine Lune", 1 , BLEU_STP)
+            gif = gif.seek(16)
         elif 55 * luneSur100 < TLune <= 70 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
+            gif = gif.seek(20)
         elif 70 * luneSur100 < TLune <= 80 * luneSur100:
             lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
+            gif = gif.seek(24)
         elif 80 * luneSur100 < TLune <= 95 * luneSur100:
             lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
+            gif = gif.seek(28)
         elif 95 * luneSur100 < TLune <= 101 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+            gif = gif.seek(32)
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)
         distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
@@ -461,6 +493,10 @@ class ecran():
         screen.blit(distance, (815, 400))
         screen.blit(rotation, (815,430))
         screen.blit(temperature, (815,460))
+        # Gif lune
+        lune = pygame.image.load_basic(gif)
+        lune = pygame.transform.scale(gif, (280, 280))
+        screen.blit(lune, (800, 0))
         pass
 
 
@@ -804,8 +840,11 @@ def main() -> None:
     base_vitesse = 30 # Jours par secondes
     true_speed = 0 # Vitesse en jour par frame
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
+
     vitesse = base_vitesse
-    vitesse_lente = vitesse / 6 # Rallentissement pour observer phases lunaires
+    vitesse_lente = vitesse / 10 # Rallentissement pour observer phases lunaires
+    vitesse_zero_cinq = vitesse / 2
+    vitesse_deux = vitesse * 2
     
     cam_speed = 5 # Vitesse de déplacement de la caméra
     camera_zoom = 1 # Facteur de zoom sur la simulation
@@ -989,6 +1028,7 @@ def main() -> None:
         HUD.vitesse_lecture(vitesse)
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
+        HUD.date_actiuelle(temps)
         time_set.display()
 
 
@@ -1024,17 +1064,19 @@ def main() -> None:
 
             '''Bouton vitesse lente change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if vitesse == base_vitesse/2 :
+                if vitesse == vitesse_zero_cinq :
                     vitesse = base_vitesse
                 else:
-                    vitesse = base_vitesse/2
+                    vitesse = vitesse_zero_cinq
 
             '''Bouton vitesse rapide change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if vitesse == base_vitesse*2 :
+                print(vitesse)
+                if vitesse == vitesse_deux:
                     vitesse = base_vitesse
                 else:
-                    vitesse = base_vitesse*2
+                    vitesse = vitesse_deux
+                print(vitesse)
 
             '''Bouton play/pause change en fonction du mode actuelle'''
             if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
