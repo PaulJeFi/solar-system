@@ -4,9 +4,11 @@ header.ban{
     color: gray;
     padding: none;
     height: 150px;
-    background-color: #024b55;
     margin: -10px;
     margin-bottom: 0px;
+    display: inline-block;
+    display: flex;
+    background-color: #024b55;
 }
 div.nomduprojet h1{
     margin-left: 25px;
