@@ -12,8 +12,8 @@ import pygame.mixer
 import random
 from tools import main_path, Tuple, List
 import random
-from PIL import Image
-from PIL import GifImagePlugin as Gif
+from PIL import Image as Image
+
 
 
 BLACK = (0, 0, 0)
@@ -483,6 +483,7 @@ class ecran():
             gif = gif.seek(32)
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)
+            gif = gif.seek(0)
         distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
         rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
         temperature = font.render("temperature = -230°C / 120°C", 1, SOFT_WHITE)
@@ -494,7 +495,10 @@ class ecran():
         screen.blit(rotation, (815,430))
         screen.blit(temperature, (815,460))
         # Gif lune
-        lune = pygame.image.load_basic(gif)
+        Image.show(gif)
+        gif.convert("RGBA")
+        data = gif.tobytes("raw", "RGBA")
+        gif = pygame.image.fromstring(data, (256, 256), "RGBA")
         lune = pygame.transform.scale(gif, (280, 280))
         screen.blit(lune, (800, 0))
         pass
@@ -546,6 +550,7 @@ class ecran():
 
 #     def pause(self):
 #         pygame.mixer.music.pause()
+
 
 class Gestion_Planete:
 
