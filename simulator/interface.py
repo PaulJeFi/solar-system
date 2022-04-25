@@ -478,7 +478,7 @@ class ecran():
         # gif = Image.open(main_path + "images/gif_lune/lune.gif")
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
-        pourcent = 100 - (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else 100 - (200 * (29.53-TLune) / 29.53)
+        pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
         pourcentage = font2.render(f"Pourcentage = {round(pourcent, 2)} %", 1, BLEU_FC)
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
@@ -511,7 +511,7 @@ class ecran():
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)
             # gif = gif.seek(0)
-        gif = IMAGES_LUNE[round(TLune/29.53*(len(IMAGES_LUNE)-1))]
+        gif = IMAGES_LUNE[round((TLune/29.53*(len(IMAGES_LUNE)-1)) + (len(IMAGES_LUNE)-1)/2) % (len(IMAGES_LUNE)-1)]
         distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
         rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
         temperature = font.render("temperature = -230°C / 120°C", 1, SOFT_WHITE)
