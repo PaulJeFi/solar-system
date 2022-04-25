@@ -603,7 +603,7 @@ class Gestion_Planete:
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0)]) # Argument ajouté
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int), vitesse: float) -> None:
+    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int), vitesse: float) -> None:
         '''Permet de dessiner une planète au bon endroit'''
         # Calcul des positions
         time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
@@ -611,12 +611,8 @@ class Gestion_Planete:
         time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la frame suivante
         pos_next = planete[0].calculate_point_from_time(time_to_calc_next/planete[2]) # Nouvelle position
         # Ci-dessous, ajustement de la position et de la taille
-        pos_final = (int(sun_pos[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * camera_zoom), int(sun_pos[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * camera_zoom))
-        pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1]) * (camera_zoom-1))
-        # Permet de régler le problème lié à la vitesse trop élevée
-        if planete[self.data_index][0]:
-            for _ in range(1000): # Valeur arbitraire   ( + grand   ==   + précision   - rapide )
-                pos_alt = (sun_pos[0] + (pos_next[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_pos[0] - pos_alt[0] + planete[self.data_index][3][0]) * (camera_zoom-1), sun_pos[1] + (pos_next[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_pos[1] - pos_alt[1] + planete[self.data_index][3][1]) * (camera_zoom-1))
+        pos_final = (int(sun_pos[0] + camera_focus[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_true_pos[0]) * camera_zoom), int(sun_pos[1] + camera_focus[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_true_pos[1]) * camera_zoom))
+        pos_alt = (int((sun_pos[0] - pos_next[0]) * camera_zoom*3000), int((sun_pos[1] - pos_next[1]) * camera_zoom*3000))
         # Taille apparente de la planête
         size = int(60*camera_zoom+1)
         # Affichage de la planète
@@ -624,10 +620,10 @@ class Gestion_Planete:
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
-    def draw_all_planets(self, date: int, camera_zoom: float, camera_pos: List(float, float), sun_pos: List(int, int), vitesse: float) -> None:
+    def draw_all_planets(self, date: int, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int), vitesse: float) -> None:
         '''Dessine toutes les planètes'''
         for planete in self.planetes:
-            self.draw_planet(date, planete, camera_zoom, camera_pos, sun_pos, vitesse)
+            self.draw_planet(date, planete, camera_zoom, camera_true_pos, camera_focus, sun_pos, vitesse)
     
     def get_followed_pos(self) -> Tuple(float, float) :
         '''Permet de récupérer les coordonnées de la planète suivie'''
@@ -874,15 +870,14 @@ def main() -> None:
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
 
     vitesse = vitesse_normale
-    vitesse_lente = vitesse / 10
-    vitesse_rapide = vitesse * 10
+    vitesse_lente = vitesse / 4
+    vitesse_rapide = vitesse * 4
     
     cam_speed = 5 # Vitesse de déplacement de la caméra
     camera_zoom = 1 # Facteur de zoom sur la simulation
     camera_true_pos = list(sunpos) # Position théorique de la caméra
     camera_focus = (0, 0) # Postion de l'objet à suivre
     is_following = False # Permet de savoir si la caméra suit une planète
-    camera_pos = list(sunpos) # Position finale de la caméra
     # SON.lecture()
 
     #nom des objets à déplacer 
@@ -984,11 +979,10 @@ def main() -> None:
 
         # Actions à faire tant que la touche est pressée
         pressed = pygame.key.get_pressed()
+
         # On définit la vitesse
-        if is_following:
-            speed = (cam_speed/camera_zoom)**0.5
-        else:
-            speed = (cam_speed/camera_zoom**2)**0.5
+        speed = cam_speed/camera_zoom
+
         # Déplacement vers le haut
         if pressed[pygame.K_UP]:
             camera_true_pos[1] -= speed
@@ -1008,9 +1002,6 @@ def main() -> None:
             camera_focus = planetes.get_followed_pos()
             data = True
             appel = get_followed_planet(planetes)
-        
-
-        camera_pos = (camera_true_pos[0] + camera_focus[0], camera_true_pos[1] + camera_focus[1])
 
 
         if jouer:
@@ -1033,8 +1024,8 @@ def main() -> None:
 
         # on fait apparaitre les différents astres
         #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
-        planetes.draw_all_planets(temps, camera_zoom, camera_pos, sunpos, true_speed)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + (sunpos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (sunpos[1] - camera_pos[1]) * camera_zoom)], 150*camera_zoom+1) # Soleil
+        planetes.draw_all_planets(temps, camera_zoom, camera_true_pos, camera_focus, sunpos, true_speed)
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom)], 150*camera_zoom+1) # Soleil
         #for point in moon.orbit_path :
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
@@ -1167,7 +1158,7 @@ def main() -> None:
             if not is_following:
                 is_following, camera_focus = planetes.follow()
                 if is_following:
-                    camera_true_pos = [0, 0]
+                    camera_true_pos = list(sunpos)
 
             # Bouton de signes astrologiques
             '''bouton signe astrologique grégorien'''
