@@ -1,20 +1,28 @@
 /* élément de la banière */
 
 header.ban{
-    color: gray;
+    color: rgb(236, 199, 32);
     padding: none;
-    height: 150px;
+    height: 210px;
     margin: -10px;
     margin-bottom: 0px;
     display: inline-block;
     display: flex;
     background-color: #024b55;
 }
-div.nomduprojet h1{
-    margin-left: 25px;
-    font-weight: 5px;
-    font-size: 70px;
+div.logo{
+    margin-top: 5px;
+    margin-left: 300px;
+    height: 145px;
+    /* width: 150px; */
 }
+div.nomduprojet h1{
+    margin-top: 25px;
+    margin-left: 20px;
+    font-weight: 5px;
+    font-size: 115px;
+}
+
 
 div.ligne{
     height: 5px;
@@ -24,7 +32,98 @@ div.ligne{
     box-shadow: 0px 0px 10px 0px;
 }
 
+/* affichge titre principal */
+h1.titre{
+    color: #024b55;
+    text-align: center;
+    font-size: 50px;
+}
+
+/* affichage titre des parties */
 h2.titre{
-    background-color: #141414;
+    margin-top: 25px;
+    background-color: #024b55;
     color: whitesmoke;
+    font-size: 27px;
+    padding-top: 10px;
+    height: 40px;
+    text-align: center;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 15px 15px 0 0;
+}
+
+/* partie d'introduction */
+div.intro{
+    background-color: blanchedalmond;
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+div.intro p{
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+}
+div.intro br li {
+    text-decoration: none;
+    text-align: center;
+    padding-left: 250px;
+}
+
+/* partie de developpement avec paradigme */
+h2.tip{
+    background-color: blanchedalmond; 
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+div.tip{
+    background-color: blanchedalmond;
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+/* partie fonctionalités */
+div.fontionalite p{
+    background-color: blanchedalmond;
+    height: 100px;
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+
+/* bas de page */
+div.fonctionalites{
+    background-color: blanchedalmond;
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+div.fonctionalites p{
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: justify;
+    padding: 5px;
+    font-size: 20px;
+}
+
+p.accroche{
+    text-align: center;
+    padding: 10px;
+    font-size: 25px;
+}
+
+
+body{
+    background-color: #272727;
 }
