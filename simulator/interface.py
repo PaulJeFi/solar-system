@@ -22,6 +22,7 @@ DARK_GRAY = (20, 20, 20)
 WHITE = (255, 255, 255)
 SOFT_WHITE = (200, 200, 200)
 GREEN = (0, 255, 0)
+GREEN_CUSTOM2 = (25, 150, 25)
 GREEN_CUSTOM = (25, 200, 25)
 MARRON = (179, 139, 109)
 RED = (200, 0, 0)
@@ -169,13 +170,13 @@ class ecran():
     def __init__(self) -> None:
         # Paramètres du bouton pause
         self.bouton_pause_pos  = (915, 503) # Position du bouton pause
-        self.bouton_pause_size = ( 50,  43) # Dimensions du bouton pause
+        self.bouton_pause_size = ( 45,  43) # Dimensions du bouton pause
         self.bouton_pause_images = { # Sprites du bouton pause
                                     "play": pygame.transform.scale(pygame.image.load(main_path+"images/play.png"), self.bouton_pause_size),
                                     "pause": pygame.transform.scale(pygame.image.load(main_path+"images/pause.png"), self.bouton_pause_size)}
         # Paramètres des boutons de vitesse de lecture
         self.bouton_vitesse_lecture_pos = (820, 502)
-        self.bouton_vitesse_lecture_size = (50, 45)
+        self.bouton_vitesse_lecture_size = (45, 45 )
         self.bouton_vitesse_lecture2_pos = (1012, 503)
         self.bouton_vitesse_lecture_image = {"normal": pygame.transform.scale(pygame.image.load(main_path+"images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
                                              "rapide": pygame.transform.scale(pygame.image.load(main_path+"images/vitessecours.png"), self.bouton_vitesse_lecture_size),
@@ -212,6 +213,7 @@ class ecran():
         pygame.draw.line(screen, OR_STP,    (800, 276), (1080, 276), 3)
         pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
         pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
+        pygame.draw.line(screen, OR_STP,    (798, 495), ( 1080, 495), 3)
 
     def play_pause_date(self) -> None:
         '''Dessine la zone pour entrer la date '''
@@ -224,6 +226,8 @@ class ecran():
         pygame.draw.line(screen, WHITE,     (513, 550), ( 513, 600), 3)
         pygame.draw.line(screen, WHITE,     (798, 550), ( 798, 600), 3)
         pygame.draw.line(screen, WHITE,     (991, 550), ( 991, 600), 3)
+        pygame.draw.line(screen, WHITE,     (800, 498), (1080, 498), 3)
+        pygame.draw.line(screen, WHITE,     (798, 497), ( 798, 550), 3)
         # Barre de contrôle du temps
         pygame.draw.rect(screen, BLEU_STP, ((800, 500), ( 280,  50)))
         # Bouton sens inverse
@@ -331,13 +335,26 @@ class ecran():
         # Le bouton
         pygame.draw.rect(screen, RED, ((self.zoom_slider_current_x_pos, int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)), (int(4*self.zoom_slider_size_factor), int(12*self.zoom_slider_size_factor))), 0, int(2*self.zoom_slider_size_factor))
 
-    def barre_action(self) -> None:
+    def barre_action(self, gre, chn, lune) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et intéractions'''
-        # pygame.draw.rect(screen, OR_STP, ((44, 0), (45, 600)))
+        # Change la couleur en fonction de l'activation du module
+        if chn:
+            color_chn = GREEN
+        else:
+            color_chn = OR_STP 
+        if gre:
+            color_gre = GREEN
+        else:
+            color_gre = OR_STP
+        if lune:
+            color_lune = GREEN
+        else:
+            color_lune = OR_STP
+        # Fais apparaitre les differents boutons 
         pygame.draw.rect(screen, BLEU_STP, ((0, 0),   (50, 600)))
-        pygame.draw.rect(screen, OR_STP,   ((0, 120), (50, 50)))
-        pygame.draw.rect(screen, OR_STP,   ((0, 270), (50, 50)))
-        pygame.draw.rect(screen, OR_STP,   ((0, 420), (50, 50)))
+        pygame.draw.rect(screen, color_gre,   ((0, 120), (50, 50)))
+        pygame.draw.rect(screen, color_chn,   ((0, 270), (50, 50)))
+        pygame.draw.rect(screen, color_lune,   ((0, 420), (50, 50)))
         pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
         picto_astro = pygame.transform.scale(pygame.image.load(main_path+"images/pictoastro.png"), (46, 46))
         screen.blit(picto_astro, (2, 122))
@@ -487,6 +504,7 @@ class ecran():
         pygame.draw.line(screen, OR_STP,    (800, 380), (1080, 380), 3)
         pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
         pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
+        pygame.draw.line(screen, OR_STP,    (798, 495), (1080, 495), 3)
 
     def ecriture_lune(self, temps): 
         '''Fait apparaitre les données de la planète choisie'''
@@ -499,34 +517,24 @@ class ecran():
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
-            # gif = gif.seek(1)
         elif 12 * luneSur100 < TLune < 25 * luneSur100:
             lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
-            # gif = gif.seek(4)
         elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
             lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
-            # gif = gif.seek(8)
         elif 30 * luneSur100 < TLune <= 45 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Croissante", 1 , BLEU_STP)
-            # gif = gif.seek(12)
         elif 45 * luneSur100 < TLune <= 55 * luneSur100:
             lunaison = font2.render("Pleine Lune", 1 , BLEU_STP)
-            # gif = gif.seek(16)
         elif 55 * luneSur100 < TLune <= 70 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
-            # gif = gif.seek(20)
         elif 70 * luneSur100 < TLune <= 80 * luneSur100:
             lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
-            # gif = gif.seek(24)
         elif 80 * luneSur100 < TLune <= 95 * luneSur100:
             lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
-            # gif = gif.seek(28)
         elif 95 * luneSur100 < TLune <= 101 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
-            # gif = gif.seek(32)
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)
-            # gif = gif.seek(0)
         gif = IMAGES_LUNE[round((TLune/29.53*(len(IMAGES_LUNE)-1)) + (len(IMAGES_LUNE)-1)/2) % (len(IMAGES_LUNE)-1)]
         distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
         rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
@@ -539,11 +547,6 @@ class ecran():
         screen.blit(rotation, (815,430))
         screen.blit(temperature, (815,460))
         # Gif lune
-        # Image.show(gif)
-        # screen.blit(gif, (500, 200))
-        # gif.convert("RGBA")
-        # data = gif.tobytes("raw", "RGBA")
-        # gif = pygame.image.fromstring(data, (256, 256), "RGBA")
         lune = pygame.transform.scale(gif, (280, 280))
         screen.blit(lune, (800, 0))
 
@@ -1048,6 +1051,7 @@ def main() -> None:
 
 
         #mise en place des éléments de l'interface
+        
         if objet:
             HUD.wallE(sprite, rotation)
         if data:
@@ -1060,7 +1064,7 @@ def main() -> None:
             HUD.lunaison()
             HUD.ecriture_lune(temps)
 
-        HUD.barre_action()
+        HUD.barre_action(signe_astro, signe_astro_ch, lunaison)
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
         HUD.display_bouton_pause(jouer)
@@ -1210,6 +1214,8 @@ def main() -> None:
                 is_following = False
                 data = False
                 lunaison = not lunaison
+                if not lunaison:
+                    vitesse = vitesse_normale
 
             
 
