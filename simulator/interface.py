@@ -5,7 +5,7 @@ from os import times
 import kepler as kp
 import pygame
 import sys
-from time import time
+from time import time, gmtime
 import launch
 import Temps
 import pygame.mixer
@@ -868,16 +868,14 @@ def main() -> None:
 
     #moon = kp.Planete(periapsis=100, apoapsis=450, center_of_mass=sunpos)
     planetes = Gestion_Planete(sunpos)
-
-    temps = Temps.JJ(2022, 3, 30)
-    base_vitesse = 30 # Jours par secondes
+    temps = Temps.JJ(*list(gmtime(time()))[:3]) # Date actuelle
+    vitesse_normale = 30 # Jours par secondes
     true_speed = 0 # Vitesse en jour par frame
     frame_time = time() # Permet d'évaluer les fps de l'ordi afin d'adapter la vitesse
 
-    vitesse = base_vitesse
-    vitesse_lente = vitesse / 10 # Rallentissement pour observer phases lunaires
-    vitesse_zero_cinq = vitesse / 2
-    vitesse_deux = vitesse * 2
+    vitesse = vitesse_normale
+    vitesse_lente = vitesse / 10
+    vitesse_rapide = vitesse * 10
     
     cam_speed = 5 # Vitesse de déplacement de la caméra
     camera_zoom = 1 # Facteur de zoom sur la simulation
@@ -960,7 +958,7 @@ def main() -> None:
                         vitesse /= 2
                         
                     if event.key == pygame.K_s:
-                        vitesse = base_vitesse
+                        vitesse = vitesse_normale
 
                     if event.key == pygame.K_d:
                         vitesse *= 2
@@ -1050,12 +1048,11 @@ def main() -> None:
             HUD.espace_donnee()
             HUD.ecriture(appel, planetes.distance(sunpos, camera_focus))
         if lunaison:
-            vitesse = vitesse_lente
+            vitesse = 1
             data = False
             HUD.lunaison()
             HUD.ecriture_lune(temps)
-        else:
-            vitesse = base_vitesse
+
         HUD.barre_action()
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
@@ -1097,19 +1094,17 @@ def main() -> None:
 
             '''Bouton vitesse lente change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 800 and pos_souris[0] < 890 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                if vitesse == vitesse_zero_cinq :
-                    vitesse = base_vitesse
+                if vitesse == vitesse_lente :
+                    vitesse = vitesse_normale
                 else:
-                    vitesse = vitesse_zero_cinq
+                    vitesse = vitesse_lente
 
             '''Bouton vitesse rapide change en fonction de la vitesse actuelle'''
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 502 and pos_souris[1] < 547:
-                print(vitesse)
-                if vitesse == vitesse_deux:
-                    vitesse = base_vitesse
+                if vitesse == vitesse_rapide:
+                    vitesse = vitesse_normale
                 else:
-                    vitesse = vitesse_deux
-                print(vitesse)
+                    vitesse = vitesse_rapide
 
             '''Bouton play/pause change en fonction du mode actuelle'''
             if pos_souris[0] > 890 and pos_souris[0] < 990 and pos_souris[1] > 502 and pos_souris[1] < 547:
