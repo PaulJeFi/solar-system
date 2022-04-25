@@ -1,7 +1,7 @@
 from cmath import phase
 import math
 import math
-from os import times
+from os import times, walk
 import kepler as kp
 import pygame
 import sys
@@ -112,7 +112,7 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
           'X': ["  Lièvre  ", "Dernière Année : 2023",     "Prochaine : 2035"]}
 
 
-def extract_gif(gif_path: str) -> list:
+def extract_gif(gif_path: str) -> List(pygame.Surface):
     '''Permet de séparer un GIF en une liste d'images'''
     
     gif = Image.open(gif_path) # On ouvre le GIF
@@ -137,7 +137,23 @@ def extract_gif(gif_path: str) -> list:
     return images # On retourne la liste d'images
 
 
-IMAGES_LUNE = extract_gif(main_path + "images/gif_lune/lune.gif")[1:]
+def load_folder(folder_path: str) -> List(pygame.Surface):
+    '''Permet de charger l'ensemble des images contenues dans un dossier'''
+
+    images = [] # On créer une liste vide
+
+    # On parcours le dossier
+    for filename in next(walk(folder_path), (None, None, []))[2]:
+
+        # On charge l'image
+        images.append(pygame.image.load(str(folder_path + filename)))
+    
+    return images # On retourne la liste d'images
+        
+
+
+# IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
+IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
 
 
 def update_time(temps: float, j: float, last_frame: float=time()) -> float:
