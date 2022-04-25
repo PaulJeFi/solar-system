@@ -118,7 +118,7 @@ def extract_gif(gif_path: str) -> list:
     gif = Image.open(gif_path) # On ouvre le GIF
     images = [] # On créer une liste vide
     
-    # On parcour les frames du GIF
+    # On parcourt les frames du GIF
     for i in range(gif.n_frames):
         gif.seek(i) # On cherche la frame actuelle
         image = gif.copy() # On la copie
