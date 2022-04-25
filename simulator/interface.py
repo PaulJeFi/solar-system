@@ -12,7 +12,7 @@ import pygame.mixer
 import random
 from tools import main_path, Tuple, List
 import random
-from PIL import Image as Image
+from PIL import Image
 
 
 
@@ -111,6 +111,33 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
           'W': ["   Tigre  ", "Dernière Année : 2022",     "Prochaine : 2034"],
           'X': ["  Lièvre  ", "Dernière Année : 2023",     "Prochaine : 2035"]}
 
+
+def extract_gif(gif_path: str) -> list:
+    '''Permet de séparer un GIF en une liste d'images'''
+    
+    gif = Image.open(gif_path) # On ouvre le GIF
+    images = [] # On créer une liste vide
+    
+    # On parcour les frames du GIF
+    for i in range(gif.n_frames):
+        gif.seek(i) # On cherche la frame actuelle
+        image = gif.copy() # On la copie
+        
+        # On garde en mémoire ses informations
+        mode = image.mode
+        size = image.size
+        data = image.tobytes()
+        
+        # On la convertie en image pygame
+        py_image = pygame.image.fromstring(data, size, mode)
+        
+        # On ajoute cette nouvelle image à notre liste
+        images.append(py_image)
+    
+    return images # On retourne la liste d'images
+
+
+IMAGES_LUNE = extract_gif(main_path + "images/gif_lune/lune.gif")[1:]
 
 
 def update_time(temps: float, j: float, last_frame: float=time()) -> float:
@@ -320,7 +347,7 @@ class ecran():
             jour = "0" + str(round(date[2]))
         else:
             jour = str(round(date[2]))
-        if(date[1]) < 10: 
+        if date[1] < 10: 
             mois = "0" + str(date[1])
         else:
             mois = str(date[1])
@@ -448,7 +475,7 @@ class ecran():
     def ecriture_lune(self, temps): 
         '''Fait apparaitre les données de la planète choisie'''
         TLune = Temps.phase_lune(temps)
-        gif = Image.open(main_path + "images/gif_lune/lune.gif")
+        # gif = Image.open(main_path + "images/gif_lune/lune.gif")
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
         pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
@@ -456,34 +483,35 @@ class ecran():
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
-            gif = gif.seek(1)
+            # gif = gif.seek(1)
         elif 12 * luneSur100 < TLune < 25 * luneSur100:
             lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
-            gif = gif.seek(4)
+            # gif = gif.seek(4)
         elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
             lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
-            gif = gif.seek(8)
+            # gif = gif.seek(8)
         elif 30 * luneSur100 < TLune <= 45 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Croissante", 1 , BLEU_STP)
-            gif = gif.seek(12)
+            # gif = gif.seek(12)
         elif 45 * luneSur100 < TLune <= 55 * luneSur100:
             lunaison = font2.render("Pleine Lune", 1 , BLEU_STP)
-            gif = gif.seek(16)
+            # gif = gif.seek(16)
         elif 55 * luneSur100 < TLune <= 70 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
-            gif = gif.seek(20)
+            # gif = gif.seek(20)
         elif 70 * luneSur100 < TLune <= 80 * luneSur100:
             lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
-            gif = gif.seek(24)
+            # gif = gif.seek(24)
         elif 80 * luneSur100 < TLune <= 95 * luneSur100:
             lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
-            gif = gif.seek(28)
+            # gif = gif.seek(28)
         elif 95 * luneSur100 < TLune <= 101 * luneSur100:
             lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
-            gif = gif.seek(32)
+            # gif = gif.seek(32)
         else:
             lunaison = font2.render("Erreur", 1 , BLEU_STP)
-            gif = gif.seek(0)
+            # gif = gif.seek(0)
+        gif = IMAGES_LUNE[round(TLune/29.53*(len(IMAGES_LUNE)-1))]
         distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
         rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
         temperature = font.render("temperature = -230°C / 120°C", 1, SOFT_WHITE)
@@ -495,13 +523,13 @@ class ecran():
         screen.blit(rotation, (815,430))
         screen.blit(temperature, (815,460))
         # Gif lune
-        Image.show(gif)
-        gif.convert("RGBA")
-        data = gif.tobytes("raw", "RGBA")
-        gif = pygame.image.fromstring(data, (256, 256), "RGBA")
+        # Image.show(gif)
+        # screen.blit(gif, (500, 200))
+        # gif.convert("RGBA")
+        # data = gif.tobytes("raw", "RGBA")
+        # gif = pygame.image.fromstring(data, (256, 256), "RGBA")
         lune = pygame.transform.scale(gif, (280, 280))
         screen.blit(lune, (800, 0))
-        pass
 
 
     def confirmation(self) -> None:

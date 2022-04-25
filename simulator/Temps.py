@@ -54,7 +54,7 @@ def gregorien (jj: float) -> tuple :
     D = floor(365.25 * C)
     E = floor( (B - D) / 30.6001 )
 
-    D = B - D - floor(30.6001 * E) + F
+    D = floor(B - D - floor(30.6001 * E) + F)
     if E < 14 :
         M = E - 1
     elif (E == 14) or (E == 15) :
