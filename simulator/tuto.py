@@ -30,12 +30,14 @@ grandfont = pygame.font.Font(None, 100)
 validquit = False
 
 donnees = {1 : ["Bienvenue sur le tutoriel", "images/backmenu.jpg"],
-           2 : ["Acceder au menu principal", "images/WallE.png"],
-           3 : ["  Quitter l'application  ", "images/WallE.png"],
-           4 : ["     Mettre en pause     ", "images/WallE.png"],
-           5 : ["   Pour entrer une date  ", "images/WallE.png"],
-           6 : ["Acces signe astrologiques", "images/WallE.png"],
-           7 : ["  Acces phases lunaires  ", "images/WallE.png"]}
+           2 : ["Acceder au menu principal", "images/ImageTuto/tuto0.png"],
+           3 : ["  Quitter l'application  ", "images/ImageTuto/tuto1.png"],
+           4 : ["     Mettre en pause     ", "images/mageTuto/tuto2.png"],
+           5 : [" Pour suivre une planète ", "images/mageTuto/tuto7.png"],
+           6 : ["   Pour entrer une date  ", "images/ImageTuto/tuto3.png"],
+           7 : ["Accès signe astrologiques", "images/ImageTuto/tuto4.png"],
+           8 : ["Signe astrologiques Chinois", "images/ImageTuto/tuto5.png"],
+           9 : ["  Acces phases lunaires  ", "images/ImageTuto/tuto6.png"]}
 
 
 class ecran:

@@ -88,42 +88,42 @@ def main():
                 pygame.quit()
                 sys.exit() 
 
-        HUD.affichage() # Affichage des élément 
+            HUD.affichage() # Affichage des élément 
 
-        """recupération coordonnées souris"""
-        pos_souris = pygame.mouse.get_pos()
-
-        """vérifie si souris sur le boton et lance appli si clique dans la zone"""
-        if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pygame.time.wait(100)
-                tuto.main()
-                
-        
-        """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
-        if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                validquit = True
-
-        """vérifie sourie pour le bouton de lancement"""
-        if pos_souris[0] > 460 and pos_souris[0] < 630 and pos_souris[1] > 440 and pos_souris[1] < 510:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                interface.main()
-                
-
-        if validquit == True:
-            """permet d'afficher le message de confirmation pour quitter"""
-            HUD.quitter()
+            """recupération coordonnées souris"""
             pos_souris = pygame.mouse.get_pos()
-            '''pour quitter le programme ou revenir en arrière'''
-            if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
+
+            """vérifie si souris sur le boton et lance appli si clique dans la zone"""
+            if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.quit() # Quitte le programme
-                    sys.exit()
+                    pygame.time.wait(100)
+                    tuto.main()
+                    
             
-            elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
+            """vérifie si souris sur le boton et quitte appli si clique dans la zone"""
+            if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    validquit = not validquit # Enlève le message de confirmation 
+                    validquit = True
+
+            """vérifie sourie pour le bouton de lancement"""
+            if pos_souris[0] > 460 and pos_souris[0] < 630 and pos_souris[1] > 440 and pos_souris[1] < 510:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    interface.main()
+                    
+
+            if validquit == True:
+                """permet d'afficher le message de confirmation pour quitter"""
+                HUD.quitter()
+                pos_souris = pygame.mouse.get_pos()
+                '''pour quitter le programme ou revenir en arrière'''
+                if pos_souris[0] > 400 and pos_souris[0] < 500 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pygame.quit() # Quitte le programme
+                        sys.exit()
+                
+                elif pos_souris[0] > 600 and pos_souris[0] < 700 and pos_souris[1] > 300 and pos_souris[1] < 350:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        validquit = not validquit # Enlève le message de confirmation 
 
         
         pygame.display.flip() # Affichage final
