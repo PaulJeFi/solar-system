@@ -604,13 +604,13 @@ class Gestion_Planete:
     def __init__(self, mass_center: Tuple(int, int)) -> None :
         '''initialisation des planètes'''
         # Définition des planètes : 
-        #              [PLanète(   perigee,            apogee,              centre de masse,            angle perigee avec Mercure), date perigee,       periode orbitale,   color]
-        self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63,     GRAY  ]
-        self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8,     ORANGE]
-        self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8,     BLUE  ]
-        self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7,     RED   ]
-        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     MARRON]
-        self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     GRAY]
+        #              [PLanète   (perigée,            apogée,              centre de masse,            angle perigée avec Mercure), date perigee,       periode orbitale,  couleur,         taille]
+        self.mercury = [kp.Planete(0.3055966332078965, 0.46842943478058124, center_of_mass=mass_center, angle=0),                    2459507.4984667003, 87.969_349_63,     (110, 120,  80), 63    ]
+        self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8,     (255, 130,  10), 91    ]
+        self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8,     ( 40, 130, 250), 96    ]
+        self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7,     (165, 110,  35), 51    ]
+        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     (220, 190, 140), 120   ]
+        self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     (190, 180, 160), 170   ]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
 
@@ -633,9 +633,9 @@ class Gestion_Planete:
         pos_final = (int(sun_pos[0] + camera_focus[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_true_pos[0]) * camera_zoom), int(sun_pos[1] + camera_focus[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_true_pos[1]) * camera_zoom))
         pos_alt = (int((sun_pos[0] - pos_next[0]) * camera_zoom*3000), int((sun_pos[1] - pos_next[1]) * camera_zoom*3000))
         # Taille apparente de la planête
-        size = int(60*camera_zoom+1)
+        size = int(planete[4]*camera_zoom+1)
         # Affichage de la planète
-        pygame.draw.circle(screen, WHITE, pos_final, size)
+        pygame.draw.circle(screen, planete[3], pos_final, size)
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt]
 
@@ -899,12 +899,15 @@ def main() -> None:
     is_following = False # Permet de savoir si la caméra suit une planète
     # SON.lecture()
 
-    #nom des objets à déplacer 
+    # Nom des objets à déplacer 
     wallE = "wallE"
     buzz = "buzz"
     falcon = "falcon"
     iss = "iss"
     apollo = "apollo"
+
+    # Variable utilisée pour le "click and drag"
+    mouse_current_pos = (0, 0)
 
     while True:
 
@@ -1015,6 +1018,11 @@ def main() -> None:
         if pressed[pygame.K_RIGHT]:
             camera_true_pos[0] += speed
         
+        # Click and drag
+        if not can_press_button and not HUD.zoom_slider_clicked:
+            mouse = pygame.mouse.get_pos()
+            camera_true_pos = [camera_true_pos[0] - (mouse[0] - mouse_current_pos[0]) / camera_zoom, camera_true_pos[1] - (mouse[1] - mouse_current_pos[1]) / camera_zoom]
+            mouse_current_pos = mouse
 
         # Actualisation de la position finale de la caméra
         if is_following:
@@ -1044,7 +1052,7 @@ def main() -> None:
         # on fait apparaitre les différents astres
         #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
         planetes.draw_all_planets(temps, camera_zoom, camera_true_pos, camera_focus, sunpos, true_speed)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom)], 150*camera_zoom+1) # Soleil
+        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom)], 200*camera_zoom+1) # Soleil
         #for point in moon.orbit_path :
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
@@ -1124,7 +1132,7 @@ def main() -> None:
                 else:
                     jouer = not jouer
 
-            """valide la date et change les planètes de places"""
+            '''valide la date et change les planètes de places'''
             if pos_souris[0] > 990 and pos_souris[0] < 1080 and pos_souris[1] > 552 and pos_souris[1] < 600:
                 if time_set.verif():
                     temps = time_set.retour_date()
@@ -1216,9 +1224,9 @@ def main() -> None:
                 lunaison = not lunaison
                 if not lunaison:
                     vitesse = vitesse_normale
-
             
-
+            # Variable utilisée pour le "click and drag"
+            mouse_current_pos = pygame.mouse.get_pos()
         
         elif not pygame.mouse.get_pressed()[0]:
             can_press_button = True

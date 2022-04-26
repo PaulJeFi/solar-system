@@ -2,9 +2,9 @@
 
 Z       : Activer/désactiver les données
 Espace  : Play/Pause
-Q       : Vitesse X0.5
+Q       : Vitesse X0.25
 S       : Vitesse X1
-D       : Vitesse X2
+D       : Vitesse X4
 W       : Wall-E 
 A       : Activer/désactiver le signe astrologique Grégorien  (attention à entrer une date)
 C       : Activer/désactiver le signe astrologique Chinois (attention à entrer une date)
