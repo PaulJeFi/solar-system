@@ -29,15 +29,16 @@ moyfont = pygame.font.Font(None, 45)
 grandfont = pygame.font.Font(None, 100)
 validquit = False
 
-donnees = {1 : ["Bienvenue sur le tutoriel", "images/backmenu.jpg"],
-           2 : ["Acceder au menu principal", "images/ImageTuto/tuto0.png"],
-           3 : ["  Quitter l'application  ", "images/ImageTuto/tuto1.png"],
-           4 : ["     Mettre en pause     ", "images/mageTuto/tuto2.png"],
-           5 : [" Pour suivre une planète ", "images/mageTuto/tuto7.png"],
-           6 : ["   Pour entrer une date  ", "images/ImageTuto/tuto3.png"],
-           7 : ["Accès signe astrologiques", "images/ImageTuto/tuto4.png"],
-           8 : ["Signe astrologiques Chinois", "images/ImageTuto/tuto5.png"],
-           9 : ["  Acces phases lunaires  ", "images/ImageTuto/tuto6.png"]}
+donnees = {1 :  ["Bienvenue sur le tutoriel", "images/backmenu.jpg"],
+           2 :  ["Acceder au menu principal", "images/ImageTuto/menu.JPEG"],
+           3 :  ["  Quitter l'application  ", "images/ImageTuto/quit.jpeg"],
+           4 :  ["     Mettre en pause     ", "images/TmageTuto/pause.jpeg"],
+           5 :  ["    Changer la vitesse   ", "images/TmageTuto/pause.jpeg"],
+           6 :  ["   Pour entrer une date  ", "images/ImageTuto/entree.jpeg"],
+           7 :  [" Pour suivre une planète ", "images/TmageTuto/suivi.jpeg"],
+           8 :  ["Accès signe astrologiques", "images/ImageTuto/grego.jpeg"],
+           9 :  ["Signe astrologiques Chinois", "images/ImageTuto/chn.jpeg"],
+           10 : ["  Acces phases lunaires  ", "images/ImageTuto/lune.jpeg"]}
 
 
 class ecran:
@@ -118,9 +119,9 @@ def main():
 
                 if event.key == pygame.K_RETURN:
                     appel += 1
-                    if appel == 8:
+                    if appel == 11:
                         HUD.bravo()
-                    if appel == 9:
+                    if appel == 12:
                         launch.main()
             
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -129,7 +130,7 @@ def main():
                     if pos_souris[0] > 465 and pos_souris[0] < 605 and pos_souris[1] > 440 and pos_souris[1] < 490:
                         launch.main()
                 appel += 1
-                if appel == 8:
+                if appel == 11:
                     HUD.bravo()
                     validquit = True
                     
