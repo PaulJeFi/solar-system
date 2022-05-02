@@ -12,7 +12,7 @@ header.ban{
 }
 div.logo{
     margin-top: 5px;
-    margin-left: 300px;
+    margin-left: 23%;
     height: 145px;
     /* width: 150px; */
 }
@@ -55,7 +55,7 @@ h2.titre{
 
 /* partie d'introduction */
 div.intro{
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
     margin-top: -25px;
     margin-left: 25px;
     margin-right: 25px;
@@ -68,15 +68,26 @@ div.intro p{
     padding: 5px;
     font-size: 20px;
 }
-div.intro br li {
-    text-decoration: none;
+div.intro li{
     text-align: center;
-    padding-left: 250px;
+}
+div.intro li a{
+    text-decoration: none;
+    font-size: 18px;
+}
+
+div.intro a.lien{
+    text-decoration: none;
+    color: white;
+    background-color: rgb(228, 0, 0);
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 /* partie de developpement avec paradigme */
 h2.tip{
-    background-color: blanchedalmond; 
+    background-color: whitesmoke; 
     margin-top: -25px;
     margin-left: 25px;
     margin-right: 25px;
@@ -85,15 +96,27 @@ h2.tip{
     text-align: center;
 }
 div.tip{
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
     margin-top: -25px;
     margin-left: 25px;
     margin-right: 25px;
+    margin-bottom: 25px;
+}
+
+div.inter-titre{
+    background-color: whitesmoke;
+    margin: 25px;
+}
+
+div.inter-titre p.reference{
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 15px;
 }
 
 /* partie fonctionalités */
 div.fontionalite p{
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
     height: 100px;
     margin-top: -25px;
     margin-left: 25px;
@@ -103,7 +126,7 @@ div.fontionalite p{
 
 /* bas de page */
 div.fonctionalites{
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
     margin-top: -25px;
     margin-left: 25px;
     margin-right: 25px;
@@ -117,13 +140,40 @@ div.fonctionalites p{
     font-size: 20px;
 }
 
-p.accroche{
-    text-align: center;
+p.accroche u{
     padding: 10px;
     font-size: 25px;
+}
+div.fonctionalites p{
+    font-size: 22px;
 }
 
 
 body{
     background-color: #272727;
+}
+
+div.lignefinale{
+    margin-top: 50px;
+    height: 5px;
+    background-color: #fbaf00;
+    margin-left: -10px;
+    margin-right: -10px;
+    box-shadow: 0px 0px 10px 0px;
+}
+
+/* mise en page lien vers rapport sur page d'accueil */
+
+div.lien{
+    height: 50px;
+    font-size: 40px;
+    text-align: center;
+    background-color: rgb(221, 0, 0);
+    margin: 50px;
+    border: 20px;
+    border-radius: 10px;
+}
+div.lien a{
+    color: white;
+    text-decoration: none;
 }
