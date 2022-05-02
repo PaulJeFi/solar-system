@@ -30,15 +30,15 @@ grandfont = pygame.font.Font(None, 100)
 validquit = False
 
 donnees = {1 :  ["Bienvenue sur le tutoriel", "images/backmenu.jpg"],
-           2 :  ["Acceder au menu principal", "images/ImageTuto/menu.JPEG"],
-           3 :  ["  Quitter l'application  ", "images/ImageTuto/quit.jpeg"],
-           4 :  ["     Mettre en pause     ", "images/TmageTuto/pause.jpeg"],
-           5 :  ["    Changer la vitesse   ", "images/TmageTuto/pause.jpeg"],
-           6 :  ["   Pour entrer une date  ", "images/ImageTuto/entree.jpeg"],
-           7 :  [" Pour suivre une planète ", "images/TmageTuto/suivi.jpeg"],
-           8 :  ["Accès signe astrologiques", "images/ImageTuto/grego.jpeg"],
-           9 :  ["Signe astrologiques Chinois", "images/ImageTuto/chn.jpeg"],
-           10 : ["  Acces phases lunaires  ", "images/ImageTuto/lune.jpeg"]}
+           2 :  ["Acceder au menu principal", "images/ImagesTuto/menu.jpeg"],
+           3 :  ["  Quitter l'application  ", "images/ImagesTuto/quit.jpeg"],
+           4 :  ["     Mettre en pause     ", "images/ImagesTuto/pause.jpeg"],
+           5 :  ["    Changer la vitesse   ", "images/ImagesTuto/vitesse.jpeg"],
+           6 :  ["   Pour entrer une date  ", "images/ImagesTuto/entree.jpeg"],
+           7 :  [" Pour suivre une planète ", "images/ImagesTuto/suivi.jpeg"],
+           8 :  ["Accès signe astrologiques", "images/ImagesTuto/grego.jpeg"],
+           9 :  ["Signe astrologiques Chinois", "images/ImagesTuto/chn.jpeg"],
+           10 : ["  Acces phases lunaires  ", "images/ImagesTuto/lune.jpeg"]}
 
 
 class ecran:
@@ -136,7 +136,7 @@ def main():
                     
             
 
-        if appel <= 7:
+        if appel <= 10:
             HUD.affichage(appel) # Affichage des élément 
 
         
