@@ -611,8 +611,10 @@ class Gestion_Planete:
         self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7,     (165, 110,  35), 51    ]
         self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     (220, 190, 140), 120   ]
         self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     (190, 180, 160), 170   ]
+        # Les deux planètes qui suivent ont des données imprécises :
+        self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 500   ]
 
-        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne]
+        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus]
 
         # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
         #                               Sa position
