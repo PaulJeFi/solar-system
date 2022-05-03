@@ -613,6 +613,7 @@ class Gestion_Planete:
         self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     (190, 180, 160), 170   ]
         # Les deux planètes qui suivent ont des données imprécises :
         self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 500   ]
+        self.neptune = [kp.Planete(           0000000,             00000,   center_of_mass=mass_center, angle=000000000           ),  000000000,         60 216.8,          (104, 111, 255), 3000  ]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus]
 
