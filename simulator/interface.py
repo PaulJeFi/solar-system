@@ -310,15 +310,14 @@ class ecran():
         # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
 
         '''Partie utilitaire'''
-        # Le facteur de zoom va de 1x à 64x (soit de 0.005 (min) à 0.32 (max))
+        # Le facteur de zoom va de 1x à 128x (soit de 0.002 (min) à 0.256 (max))
         # En détail :
-        #   0.005 est le facteur minimum (1x avec x = 0.005)
-        #   6 est la puissance de 2 maximale par laquelle on peut multiplier le facteur minimum (2**6x <=> 64x)
+        #   0.002 est le facteur minimum (1x avec x = 0.002)
+        #   7 est la puissance de 2 maximale par laquelle on peut multiplier le facteur minimum (2**7 * x <=> 128x)
         #   L'équation au milieu donne un résultat compris entre 1 et 2
         # Au final, on a :
         #   self.zoom_factor = facteur minimum * (équation ** puissance)
-        self.zoom_factor = 0.005*((self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])/(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])+1)**6
-        # WARNING : le zoom ne doit pas être plus grand que 1 (sinon...)
+        self.zoom_factor = 0.002*((self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])/(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])+1)**7
 
     def display_zoom_slider(self) -> None:
         '''Affichage du slider de zoom'''
@@ -609,13 +608,13 @@ class Gestion_Planete:
         self.venus   = [kp.Planete(0.7096395277449469, 0.73676134561161,    center_of_mass=mass_center, angle=0.42216048217738344),  2459378.050801399,  224.700_818_8,     (255, 130,  10), 91    ]
         self.terre   = [kp.Planete(0.9759349503905891, 1.0231627778961105,  center_of_mass=mass_center, angle=0.15288811480428713),  2459217.95935868,   365.259_635_8,     ( 40, 130, 250), 96    ]
         self.mars    = [kp.Planete(1.3892063960381649, 1.6568787018388922,  center_of_mass=mass_center, angle=0.1933828995017202),   2459064.98384513,   686.995_785_7,     (165, 110,  35), 51    ]
-        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     (220, 190, 140), 120   ]
+        self.jupiter = [kp.Planete(4.959802875063826,  5.454701809756877,   center_of_mass=mass_center, angle=0.059062298186004995), 2459969.8332017004, 4_332.897_065,     (220, 190, 140), 210   ]
         self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     (190, 180, 160), 170   ]
         # Les deux planètes qui suivent ont des données imprécises :
-        self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 500   ]
-        self.neptune = [kp.Planete(           0000000,             00000,   center_of_mass=mass_center, angle=000000000           ),  000000000,         60 216.8,          (104, 111, 255), 3000  ]
+        self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 150   ]
+        self.neptune = [kp.Planete(                40,                42,   center_of_mass=mass_center, angle=0.69),                  0,                 60_216.8,          (104, 111, 255), 135  ]
 
-        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus]
+        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus, self.neptune]
 
         # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
         #                               Sa position
