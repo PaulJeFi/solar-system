@@ -47,8 +47,12 @@ font = pygame.font.Font(None, 25)
 font2 = pygame.font.Font(None, 30)
 moyfont = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
-# pygame.mixer.music.load(main_path+"musique/musique.mp3")
 jouer = False
+
+musique = False
+
+if musique:
+    pygame.mixer.music.load(main_path+"musique/musique.mp3")
 
 # Données planètes
 
@@ -596,17 +600,17 @@ class ecran():
         screen.blit(txt, (148 - 6*len(valeur), 480))
 
 
-# class sons():
+class sons():
 
-#     def __init__(self) -> None:
-#         pygame.mixer.init()
+    def __init__(self) -> None:
+        pygame.mixer.init()
         
-#     def lecture(self):
-#         sound = pygame.mixer.Sound(main_path+"musique/musiques.mp3")
-#         pygame.mixer.Sound.play(sound)
+    def lecture(self):
+        sound = pygame.mixer.Sound(main_path+"musique/musiques.mp3")
+        pygame.mixer.Sound.play(sound)
 
-#     def pause(self):
-#         pygame.mixer.music.pause()
+    def pause(self):
+        pygame.mixer.music.pause()
 
 
 class Gestion_Planete:
@@ -881,7 +885,8 @@ def main() -> None:
     signe_astro = False
     signe_astro_ch = False
     appel = "C"
-    # SON = sons()
+    if musique:
+        SON = sons()
     can_press_button = True
     lunaison = False
     objet = False
@@ -909,7 +914,9 @@ def main() -> None:
     camera_focus = (0, 0) # Postion de l'objet à suivre
     is_following = False # Permet de savoir si la caméra suit une planète
     p_dist = 0 # Distance de la planète suivie au Soleil en UA
-    # SON.lecture()
+    
+    if musique:
+        SON.lecture()
 
     # Nom des objets à déplacer 
     wallE = "wallE"
