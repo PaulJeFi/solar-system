@@ -12,7 +12,7 @@ import pygame.mixer
 import random
 from tools import main_path, Tuple, List
 import random
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 
@@ -627,9 +627,14 @@ class Gestion_Planete:
         self.saturne = [kp.Planete(9.034936763609108,  10.072123061732313,  center_of_mass=mass_center, angle=0.0062405892185779),   2452830.12,         10_764.216_76,     (190, 180, 160), 170   ]
         # Les deux planètes qui suivent ont des données imprécises :
         self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 150   ]
-        self.neptune = [kp.Planete(                40,                42,   center_of_mass=mass_center, angle=0.69),                  0,                 60_216.8,          (104, 111, 255), 135  ]
+        self.neptune = [kp.Planete(40,                 42,                  center_of_mass=mass_center, angle=0.69),                  0,                 60_216.8,          (104, 111, 255), 135   ]
 
         self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus, self.neptune]
+
+        #           [Astre père,     temps orbite, angle initial, distance astre père, couleur,         taille]
+        self.lune = [self.terre[:3], 27.32,        5.22,          300,                 (225, 225, 225), 32    ]
+
+        self.lunes = [self.lune]
 
         # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
         #                               Sa position
@@ -658,8 +663,44 @@ class Gestion_Planete:
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt, dist]
 
+    def draw_lune(self, date: int, lune: list, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int)) -> None:
+        '''Permet de dessiner une lune au bon endroit'''
+        # On calcule d'abord la position de la planète dont l'astre en question est la lune
+        time_to_calc = date - lune[0][1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
+        pos = lune[0][0].calculate_point_from_time(time_to_calc/lune[0][2]) # Calcul de la position
+        pos_planete = (int(sun_pos[0] + camera_focus[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_true_pos[0]) * camera_zoom), int(sun_pos[1] + camera_focus[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_true_pos[1]) * camera_zoom))
+        # On calcule la position de l'astre (lune)
+        orbit_angle = (date % lune[1])/lune[1] * 2*math.pi + lune[2] # Angle (en radiant) de la lune par rapport à la planète
+        pos_lune = (math.cos(orbit_angle)*lune[3]*camera_zoom, math.sin(orbit_angle)*lune[3]*camera_zoom)
+        pos_final = (pos_planete[0] + pos_lune[0], pos_planete[1] + pos_lune[1])
+        # Taille apparente de la lune
+        size = int(lune[5]*camera_zoom+1)*2
+        rect = ((pos_final[0] - int(size/2), pos_final[1] - int(size/2)), (size, size))
+        # Calcul de l'angle par rapport au Soleil
+        true_pos_sun = (sun_pos[0] + camera_focus[0] + (sun_pos[0] - camera_true_pos[0]) * camera_zoom, sun_pos[1] + camera_focus[1] + (sun_pos[1] - camera_true_pos[1]) * camera_zoom)
+        dif_pos = ((true_pos_sun[0] - pos_final[0])/camera_zoom, (true_pos_sun[1] - pos_final[1])/camera_zoom) # Différence de position (pour centrer le repère)
+        dist_sun = (dif_pos[0]**2 + dif_pos[1]**2)**0.5 # Distance (pour avoir un cercle trigo de rayon 1)
+        angle = math.acos(dif_pos[0]/dist_sun)/math.pi*180 # Calcul de l'angle grâce à arc cos
+        if math.asin(dif_pos[1]/dist_sun) < 0:
+            angle = -angle # Ajustement (pour avoir 360° au lieu de seulement 180°)
+        # Création d'un demi-cercle (compliqué) avec PIL (pygame ne sait pas faire ça)
+        pil_image = Image.new("RGBA", (size, size))
+        pil_draw = ImageDraw.Draw(pil_image)
+        pil_draw.pieslice((0, 0, size-1, size-1), angle+90, angle-90, fill=(int(lune[4][0]/10), int(lune[4][1]/10), int(lune[4][2]/10))) # Lune partie ombragée
+        pil_draw.pieslice((0, 0, size-1, size-1), angle-90, angle+90, fill=lune[4]) # Lune partie éclairée
+        # On convertie cette image en image pygame
+        mode = pil_image.mode
+        data = pil_image.tobytes()
+        image = pygame.image.fromstring(data, (size, size), mode)
+        # Affichage de la lune
+        screen.blit(image, pos_final)
+
     def draw_all_planets(self, date: int, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int), vitesse: float) -> None:
-        '''Dessine toutes les planètes'''
+        '''Dessine toutes les planètes et lunes'''
+        # Affichage des lunes
+        for lune in self.lunes:
+            self.draw_lune(date, lune, camera_zoom, camera_true_pos, camera_focus, sun_pos)
+        # Affichage des planètes
         for planete in self.planetes:
             self.draw_planet(date, planete, camera_zoom, camera_true_pos, camera_focus, sun_pos, vitesse)
     
