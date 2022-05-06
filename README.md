@@ -16,6 +16,6 @@ flowchart TD
     
     AP -- Entrées utilisateur ---> A;
     I -- affichage ----> AP;
-    C -- affichage ----> AP;
+    C -- affichage -----> AP;
     B -- affichage ----> AP;
 ```
