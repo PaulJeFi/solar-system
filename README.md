@@ -13,9 +13,13 @@ flowchart TD
     E -- signes astologiques chinois --> G(def astro_chn);
     E -- niveau de zoom --> H(def zoom_slider);
     A -- affichage de l'arrière plan --> I(class Trainee);
+    J(def update_time) -- actualise le temps --> A;
+    A -- appelle à chaque frame --> J;
+    A -- demande à chaque frame --> K(def vitesse_lecture);
+    K -- indique la vitesse de lecture --> A;
     
-    AP -- Entrées utilisateur ---> A;
-    I -- affichage ----> AP;
-    C -- affichage -----> AP;
-    B -- affichage ----> AP;
+    AP -- Entrées utilisateur --> A;
+    I -- affichage --> AP;
+    C -- affichage --> AP;
+    B -- affichage --> AP;
 ```
