@@ -14,8 +14,8 @@ flowchart TD
     E -- niveau de zoom --> H(def zoom_slider);
     A -- affichage de l'arrière plan --> I(class Trainee);
     
-    AP -- Entrées utilisateur --> A;
-    I -- affichage --> AP;
-    C -- affichage --> AP;
-    B -- affichage --> AP;
+    AP -- Entrées utilisateur ---> A;
+    I -- affichage ----> AP;
+    C -- affichage ----> AP;
+    B -- affichage ----> AP;
 ```
