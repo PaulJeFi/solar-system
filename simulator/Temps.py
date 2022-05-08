@@ -100,29 +100,29 @@ def astro_fra(Y, M, D):
     '''calcule le signe du zodiac grégorien par la date'''
 
     # Utilise Le numéro du mois et de l'année 
-    if M == 2 and 18.9 < D < 29 or M == 3 and 1 < D < 20:
+    if M == 2 and 18.9 < D < 29 or M == 3 and 0 < D < 20:
         return "L"  # Poisson
-    if M == 3 and 20.9 < D < 31 or M == 4 and 1 < D < 21:
+    if M == 3 and 20.9 < D < 31 or M == 4 and 0 < D < 21:
         return "A"  # Bélier
-    if M == 4 and 20.9 < D < 30 or M == 5 and 1 < D < 22:
+    if M == 4 and 20.9 < D < 30 or M == 5 and 0 < D < 22:
         return "B"  # Taureau
-    if M == 5 and 21.9 < D < 31 or M == 6 and 1 < D < 22:
+    if M == 5 and 21.9 < D < 31 or M == 6 and 0 < D < 22:
         return "C"  # Gémaux
-    if M == 6 and 21.9 < D < 30 or M == 7 and 1 < D < 23:
+    if M == 6 and 21.9 < D < 30 or M == 7 and 0 < D < 23:
         return "D"  #  Cancer
-    if M == 7 and 22.9 < D < 31 or M == 8 and 1 < D < 23:
+    if M == 7 and 22.9 < D < 31 or M == 8 and 0 < D < 23:
         return "E"  # Lion
-    if M == 8 and 22.9 < D < 31 or M == 9 and 1 < D < 23:
+    if M == 8 and 22.9 < D < 31 or M == 9 and 0 < D < 23:
         return "F"  # Vierge
-    if M == 9 and 22.9 < D < 30 or M == 10 and 1 < D < 23:
+    if M == 9 and 22.9 < D < 30 or M == 10 and 0 < D < 23:
         return "G"  # Balance
-    if M == 10 and 22.9 < D < 31 or M == 11 and 1 < D < 23:
+    if M == 10 and 22.9 < D < 31 or M == 11 and 0 < D < 23:
         return "H"  # Scorpion
-    if M == 11 and 22.9 < D < 30 or M == 12 and 1 < D < 22:
+    if M == 11 and 22.9 < D < 30 or M == 12 and 0 < D < 22:
         return "I"  # Sagittaire
-    if M == 12 and 21.9 < D < 31 or M == 1 and 1 < D < 21:
+    if M == 12 and 21.9 < D < 31 or M == 1 and 0 < D < 21:
         return "J"  # Capricorne
-    if M == 1 and 20.9 < D < 31 or M == 2 and 1 < D < 19:
+    if M == 1 and 20.9 < D < 31 or M == 2 and 0 < D < 19:
         return "K"  # Verseau
 
     else : 

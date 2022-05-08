@@ -118,7 +118,7 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
           'U': ["    Rat   ", "Dernière Année : 2020",     "Prochaine : 2032"],
           'V': ["   Boeuf  ", "Dernière Année : 2021",     "Prochaine : 2033"],
           'W': ["   Tigre  ", "Dernière Année : 2022",     "Prochaine : 2034"],
-          'X': ["  Lièvre  ", "Dernière Année : 2023",     "Prochaine : 2035"]}
+          'X': ["  Lièvre  ", "Dernière Année : 2011",     "Prochaine : 2023"]}
 
 
 def extract_gif(gif_path: str) -> List(pygame.Surface):
