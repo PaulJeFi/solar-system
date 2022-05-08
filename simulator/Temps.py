@@ -77,6 +77,7 @@ def jour_semaine (Y: int, M: int, D: float) -> int :
 
 def siecles_juliens_epoch (jj: float) -> float :
     '''Renvoie le temps T, mesuré en siècles juliens à partir de l'Epoch'''
+
     T = (jj - 2_451_545) / 36_525
     return T
 
@@ -84,10 +85,9 @@ def siecles_juliens_epoch (jj: float) -> float :
     
 def phase_lune(temps):
     '''calcule la phase de la lune par la date'''
-    '''durée lunaison = 29 j'''
-    # date_saisie = JJ(Y, M, D)
-    datetest =  2459583.5   # Date de référence    -->  18/01/2022
-    lune = 29.53            # Durrée d'une lunaison
+    
+    datetest =  2459583.5   # Date de référence      -->  18/01/2022
+    lune = 29.53            # Durrée d'une lunaison  -->  29 jours
     diff = (temps - datetest)
 
     modulo = diff % lune     # Calcule la différence depuis la date de référence
@@ -95,58 +95,44 @@ def phase_lune(temps):
                              # depuis la dernière Nouvelle Lune
     return modulo
 
-    if 0.0 <= modulo <= 30.0:
-        return round((modulo * 100)/29)
-    # Utilise cette différence pour déduire phase actuelle de la Lune 
-    # if modulo >= 0 and modulo <= 3.687 or modulo > 24.687 and modulo < 29.5:
-    #     return "nouvelle lune"
-    # elif modulo > 3.687 and modulo <= 10.687:    
-    #     return "1er quartier"
-    # elif modulo > 10.687 and modulo <= 17.687:
-    #     return "pleine lune"
-    # elif modulo > 17.687 and modulo <= 24.687:
-    #     return "dernier quartier"
-    else :
-        return "Erreur"
-
-
 
 def astro_fra(Y, M, D):
     '''calcule le signe du zodiac grégorien par la date'''
-    # Utilise Le numéro du mois et de l'année 
 
-    if M == 2 and 20 < D < 29 or M == 3 and 1 < D < 20:
-        return "L"
-    if M == 3 and 21 < D < 31 or M == 4 and 1 < D < 20:
-        return "A"
-    if M == 4 and 21 < D < 30 or M == 5 and 1 < D < 21:
-        return "B" 
-    if M == 5 and 22 < D < 31 or M == 6 and 1 < D < 21:
-        return "C"
-    if M == 6 and 22 < D < 30 or M == 7 and 1 < D < 22:
-        return "D"
-    if M == 7 and 23 < D < 31 or M == 8 and 1 < D < 22:
-        return "E"
-    if M == 8 and 23 < D < 31 or M == 9 and 1 < D < 22:
-        return "F"
-    if M == 9 and 23 < D < 30 or M == 10 and 1 < D < 22:
-        return "G"
-    if M == 10 and 23 < D < 31 or M == 11 and 1 < D < 22:
-        return "H"
-    if M == 11 and 23 < D < 30 or M == 12 and 1 < D < 21:
-        return "I"
-    if M == 12 and 22 < D < 31 or M == 1 and 1 < D < 20:
-        return "J"
-    if M == 1 and 21 < D < 31 or M == 2 and 1 < D < 19:
-        return "K"
+    # Utilise Le numéro du mois et de l'année 
+    if M == 2 and 18.9 < D < 29 or M == 3 and 1 < D < 20:
+        return "L"  # Poisson
+    if M == 3 and 20.9 < D < 31 or M == 4 and 1 < D < 21:
+        return "A"  # Bélier
+    if M == 4 and 20.9 < D < 30 or M == 5 and 1 < D < 22:
+        return "B"  # Taureau
+    if M == 5 and 21.9 < D < 31 or M == 6 and 1 < D < 22:
+        return "C"  # Gémaux
+    if M == 6 and 21.9 < D < 30 or M == 7 and 1 < D < 23:
+        return "D"  #  Cancer
+    if M == 7 and 22.9 < D < 31 or M == 8 and 1 < D < 23:
+        return "E"  # Lion
+    if M == 8 and 22.9 < D < 31 or M == 9 and 1 < D < 23:
+        return "F"  # Vierge
+    if M == 9 and 22.9 < D < 30 or M == 10 and 1 < D < 23:
+        return "G"  # Balance
+    if M == 10 and 22.9 < D < 31 or M == 11 and 1 < D < 23:
+        return "H"  # Scorpion
+    if M == 11 and 22.9 < D < 30 or M == 12 and 1 < D < 22:
+        return "I"  # Sagittaire
+    if M == 12 and 21.9 < D < 31 or M == 1 and 1 < D < 21:
+        return "J"  # Capricorne
+    if M == 1 and 20.9 < D < 31 or M == 2 and 1 < D < 19:
+        return "K"  # Verseau
 
     else : 
         return "Nous rencontrons actuellement un problème technique"
 
+
 def astro_chn(Y, M, D):
     '''calcule le signe astrologique chinois par la date'''
 
-    dif = (Y - 2000) % 12    #calcule la différence par rapport à l'année 2000 (année du dragon)
+    dif = (Y - 2000) % 12    # Calcule la différence par rapport à l'année 2000 (année du dragon)
 
     # Utilise le numéro de l'année pour en déduire le signe astrologique
     if dif < 0:

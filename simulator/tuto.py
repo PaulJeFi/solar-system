@@ -18,17 +18,24 @@ BLEU_FC = (0, 0, 25)
 
 
 width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
+
+# Initialisation des éléments pygame
 pygame.init()
 pygame.mouse.set_visible(True)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Spacior - Tutoriel")
 pygame.display.set_icon(pygame.image.load(main_path+'images/logo.png'))
+
+#définition des différentes polices
 font = pygame.font.Font(None, 40)
 font2 = pygame.font.Font(None, 30)
 moyfont = pygame.font.Font(None, 45)
 grandfont = pygame.font.Font(None, 100)
+
+# Message pour quitter
 validquit = False
 
+# Dictionnaires textes et images à afficher
 donnees = {1 :  ["Bienvenue sur le tutoriel", "images/backmenu.jpg"],
            2 :  ["Acceder au menu principal", "images/ImagesTuto/menu.jpeg"],
            3 :  ["  Quitter l'application  ", "images/ImagesTuto/quit.jpeg"],
@@ -48,6 +55,7 @@ class ecran:
 
     def affichage(self, appel):
         '''affiche les differentes étapes du tuto'''
+
         # affichage image de fond
         pygame.draw.rect(screen, OR_STP, ((0, 0), (1080, 600)))
         pygame.draw.rect(screen, BLEU_STP, ((5, 5), (1070, 590)))
@@ -61,13 +69,10 @@ class ecran:
         message = moyfont.render(donnees[appel][0] , 1, SOFT_WHITE)
         screen.blit(message, (370, 25))
 
-        # # bouton quitter
-        # pygame.draw.rect(screen, OR_STP, ((720, 450),(150, 50)), 0, 10)
-        # quitter = font.render("QUITTER", 1, BLEU_STP)
-        # screen.blit(quitter, (733, 462))
 
     def bravo(self):
         '''affiche le message de fin du tuto'''
+
         # Fond
         pygame.draw.rect(screen, OR_STP, ((0, 0), (1080, 600)))
         pygame.draw.rect(screen, BLEU_STP, ((5, 5), (1070, 590)))
@@ -86,11 +91,14 @@ class ecran:
 
 
     def quitter(self):
+        '''desine écran validation quitter'''
 
-        """desine écran validation quitter"""
+        # Dessine l'espace d'affichage
         pygame.draw.rect(screen, GRAY, ((340, 200),(400, 200)), 0, 5)
         pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300),(100, 50)), 0, 10)
         pygame.draw.rect(screen, RED, ((590, 300),(100, 50)), 0, 10)
+
+        # Affichage du texte
         sur = font.render("Sûr de vouloir quitter ?", 1, OR_STP)
         screen.blit(sur, (385, 220))
         quitter = font.render("Oui", 1, WHITE)
@@ -120,22 +128,26 @@ def main():
                 if event.key == pygame.K_RETURN:
                     appel += 1
                     if appel == 11:
+                        # Affichage du message de fin
                         HUD.bravo()
                     if appel == 12:
+                        # Lance le menu principal
                         launch.main()
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if validquit:
                     """vérifie si souris sur le boton quitter et quitte tuto si clique dans la zone"""
                     if pos_souris[0] > 465 and pos_souris[0] < 605 and pos_souris[1] > 440 and pos_souris[1] < 490:
-                        launch.main()
+                        launch.main()  # Lance le menu principal
+
                 appel += 1
+
                 if appel == 11:
+                    # Affichage du message de fin
                     HUD.bravo()
                     validquit = True
                     
-            
-
+        # (Sinon) Affiche la slide suivante
         if appel <= 10:
             HUD.affichage(appel) # Affichage des élément 
 

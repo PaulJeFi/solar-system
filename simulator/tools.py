@@ -1,3 +1,4 @@
+# Pour changer tous les chemins d'acces des fichiers
 main_path = "./simulator/"
 
 class List :
