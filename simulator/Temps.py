@@ -129,14 +129,14 @@ def astro_fra(Y, M, D):
         return "Nous rencontrons actuellement un problème technique"
 
 
-def astro_chn(Y, M, D):
+def astro_chn(annee):
     '''calcule le signe astrologique chinois par la date'''
 
-    dif = (Y - 2000) % 12    # Calcule la différence par rapport à l'année 2000 (année du dragon)
+    if annee < 0:
+        annee += 1 # L'an 0 n'existe pas
+    dif = (annee - 2000) % 12    # Calcule la différence par rapport à l'année 2000 (année du dragon)
 
     # Utilise le numéro de l'année pour en déduire le signe astrologique
-    if dif < 0:
-        dif = (Y - 2000) % 12
     if dif == 0:
         return "M"  #"Dragon"
     if dif == 1: 
@@ -144,7 +144,7 @@ def astro_chn(Y, M, D):
     if dif == 2: 
         return "O"  #"Cheval"
     if dif == 3: 
-        return "p"  #"Mouton"
+        return "P"  #"Mouton"
     if dif == 4: 
         return "Q"  #"Singe"
     if dif == 5: 

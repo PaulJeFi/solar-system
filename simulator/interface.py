@@ -101,32 +101,37 @@ for key in list(data.keys())[:-1]: # Le "[:-1]" permet de ne pas charger la
 
 
 # Données signes astrologiques
-signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
-          'B': ["  Taureau ", "21 Avril - 21 Mai",         "Élément : Terre"],
-          'C': ["  Gémaux  ", "22 Mai- 21 Juin",           "Élément : Air"],
-          'D': ["  Cancer  ", "22 Juin - 22 Juillet",      "Élément : Eau"],
-          'E': ["    Lion  ", "23 Juillet - 22 Août",      "Élément : Feu"],
-          'F': ["  Vierge  ", "23 Août - 22 Septembre",    "Élément : Terre"],
-          'G': ["  Balance ", "23 Septembre - 22 Octobre", "Élément : Air"],
-          'H': [" Scorpion ", "23 Octobre - 22 Novembre",  "Élément : Feu"],
-          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu"],
-          'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre"],
-          'K': ["  Verseau ", "21 Janvier - 18 Février",   "Élément : Air"],
-          'L': ["  Poisson ", "19 Février - 20 Mars",      "Élément : Eau"],
-          'M': ["  Dragon  ", "Dernière Année : 2012",     "Prochaine : 2024"],
-          'N': ["  serpent ", "Dernière Année : 2013",     "Prochaine : 2025"],
-          'O': ["  Cheval  ", "Dernière Année : 2014",     "Prochaine : 2026"],
-          'P': ["  Mouton  ", "Dernière Année : 2015",     "Prochaine : 2027"],
-          'Q': ["   Singe  ", "Dernière Année : 2016",     "Prochaine : 2028"],
-          'R': ["    Coq   ", "Dernière Année : 2017",     "Prochaine : 2029"],
-          'S': ["   Chien  ", "Dernière Année : 2018",     "Prochaine : 2030"],
-          'T': ["  Cochon  ", "Dernière Année : 2019",     "Prochaine : 2031"],
-          'U': ["    Rat   ", "Dernière Année : 2020",     "Prochaine : 2032"],
-          'V': ["   Boeuf  ", "Dernière Année : 2021",     "Prochaine : 2033"],
-          'W': ["   Tigre  ", "Dernière Année : 2022",     "Prochaine : 2034"],
-          'X': ["  Lièvre  ", "Dernière Année : 2011",     "Prochaine : 2023"]
-         }
+signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"         ],
+          'B': [" Taureau  ", "21 Avril - 21 Mai",         "Élément : Terre"       ],
+          'C': ["  Gémaux  ", "22 Mai- 21 Juin",           "Élément : Air"         ],
+          'D': ["  Cancer  ", "22 Juin - 22 Juillet",      "Élément : Eau"         ],
+          'E': ["   Lion   ", "23 Juillet - 22 Août",      "Élément : Feu"         ],
+          'F': ["  Vierge  ", "23 Août - 22 Septembre",    "Élément : Terre"       ],
+          'G': [" Balance  ", "23 Septembre - 22 Octobre", "Élément : Air"         ],
+          'H': [" Scorpion ", "23 Octobre - 22 Novembre",  "Élément : Feu"         ],
+          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu"         ],
+          'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre"       ],
+          'K': [" Verseau  ", "21 Janvier - 18 Février",   "Élément : Air"         ],
+          'L': [" Poisson  ", "19 Février - 20 Mars",      "Élément : Eau"         ],
 
+          'M': ["  Dragon  ", "Dernière Année : 2012",     "Prochaine : 2024", None],
+          'N': [" Serpent  ", "Dernière Année : 2013",     "Prochaine : 2025", None],
+          'O': ["  Cheval  ", "Dernière Année : 2014",     "Prochaine : 2026", None],
+          'P': ["  Mouton  ", "Dernière Année : 2015",     "Prochaine : 2027", None],
+          'Q': ["  Singe   ", "Dernière Année : 2016",     "Prochaine : 2028", None],
+          'R': ["   Coq    ", "Dernière Année : 2017",     "Prochaine : 2029", None],
+          'S': ["  Chien   ", "Dernière Année : 2018",     "Prochaine : 2030", None],
+          'T': ["  Cochon  ", "Dernière Année : 2019",     "Prochaine : 2031", None],
+          'U': ["   Rat    ", "Dernière Année : 2020",     "Prochaine : 2032", None],
+          'V': ["  Boeuf   ", "Dernière Année : 2021",     "Prochaine : 2033", None],
+          'W': ["  Tigre   ", "Dernière Année : 2022",     "Prochaine : 2034", None],
+          'X': ["  Lièvre  ", "Dernière Année : 2011",     "Prochaine : 2023", None]}
+
+# Préchargement des images
+for cle in signes:
+    if cle in "M N O P Q R S T U V W X".split():
+        img_name = signes[cle][0].replace(' ', '')
+        signes[cle][3] = pygame.transform.scale(pygame.image.load(main_path+"images/"+ img_name +".jpg"), (175, 175))
 
 def extract_gif(gif_path: str) -> List(pygame.Surface):
     '''Permet de séparer un GIF en une liste d'images'''
@@ -168,8 +173,11 @@ def load_folder(folder_path: str) -> List(pygame.Surface):
         
 
 
-# IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
-IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
+# Chargement du GIF de la Lune (choisir la méthode qui vous convient le mieux)
+
+IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
+# IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
+
 
 
 def update_time(temps: float, j: float, last_frame: float=time()) -> float:
@@ -650,11 +658,24 @@ class ecran():
             screen.blit(croix, (260, 210))
 
 
-    def signe_astro_ch(self, signe, data, lunaison) -> None:
+    def signe_astro_ch(self, signe, data, lunaison, annee) -> None:
         '''Affiche le signe asrtrologique et ses informations'''
 
         getsigne = signes.get(signe)  # Récupère les informations dans le
-                                      # dictionnaire des signes 
+                                      # dictionnaire des signes
+
+        # textes
+        text  = moyfont.render(getsigne[0], 1, OR_STP )
+        # text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
+        # text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
+        if annee < 0 and annee + 12 >= 0:
+            # L'an 0 n'existe pas
+            annee_next = annee + 13
+        else:
+            annee_next = annee + 12
+        text2 = moyfont.render(f"Dernière année : {annee}", 1, BLEU_FC)
+        text3 = moyfont.render(f"Prochaine année : {annee_next}", 1, BLEU_FC)
+        croix = moyfont.render("X", 1, WHITE)
 
         # Change l'affichage général en fonction des éléments activés à l'écran
         if data or lunaison:
@@ -677,10 +698,8 @@ class ecran():
                 ((225, 200), (45,  45)),
                 0, 0, 10, 0, 0, 30
             )
-            text  = moyfont.render(getsigne[0], 1, OR_STP )
-            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
-            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
-            croix = moyfont.render("X", 1, WHITE)
+            
+            # affichage final
             screen.blit(text,  (350, 210))
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
@@ -711,19 +730,10 @@ class ecran():
                 RED,
                 ((250, 200), (45,  45)),
                 0, 0, 10,  0, 0, 30
-            )
-            img_name = getsigne[0].replace(' ', '')    
+            )  
 
-            # images
-            img = pygame.image.load(main_path+"images/"+ img_name +".jpg")
-            img = pygame.transform.scale(img, (175, 175))
-            screen.blit(img, (662, 213))
-
-            # textes
-            text  = moyfont.render(getsigne[0], 1, OR_STP )
-            text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
-            text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
-            croix = moyfont.render("X", 1, WHITE)
+            # image
+            screen.blit(getsigne[3], (662, 213))
 
             # affichage final
             screen.blit(text,  (400, 210))
@@ -1620,7 +1630,7 @@ def main() -> None:
         if signe_astro_ch:
             signe_astro = False
             saisie = time_set.retour_date_complete()
-            HUD.signe_astro_ch(Temps.astro_chn(saisie[0], saisie[1], saisie[2]), data, lunaison)
+            HUD.signe_astro_ch(Temps.astro_chn(saisie[0]), data, lunaison, saisie[0])
             if time_set.selected:
                 signe_astro_ch = False
 
