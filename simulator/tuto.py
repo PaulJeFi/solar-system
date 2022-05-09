@@ -17,7 +17,7 @@ OR_STP = (251, 175, 0)
 BLEU_FC = (0, 0, 25)
 
 
-width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 720
+width, height = 1080, 600 # dimensions de l'écran, en pixels 1080, 600
 
 # Initialisation des éléments pygame
 pygame.init()
@@ -26,7 +26,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Spacior - Tutoriel")
 pygame.display.set_icon(pygame.image.load(main_path+'images/logo.png'))
 
-#définition des différentes polices
+# définition des différentes polices
 font = pygame.font.Font(None, 40)
 font2 = pygame.font.Font(None, 30)
 moyfont = pygame.font.Font(None, 45)
@@ -115,7 +115,7 @@ def main():
    
     while True:
 
-        """recupération coordonnées souris"""
+        # recupération coordonnées de la souris
         pos_souris = pygame.mouse.get_pos()  
 
         for event in pygame.event.get() :
@@ -136,7 +136,7 @@ def main():
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if validquit:
-                    """vérifie si souris sur le boton quitter et quitte tuto si clique dans la zone"""
+                    # vérifie si la souris est sur le boutton quitter et quitte le tuto si clique dans la zone"""
                     if pos_souris[0] > 465 and pos_souris[0] < 605 and pos_souris[1] > 440 and pos_souris[1] < 490:
                         launch.main()  # Lance le menu principal
 

@@ -16,22 +16,22 @@ from PIL import Image, ImageDraw
 
 
 
-BLACK = (0, 0, 0)
-GRAY = (70, 70, 70)
-DARK_GRAY = (20, 20, 20)
-WHITE = (255, 255, 255)
-SOFT_WHITE = (200, 200, 200)
-GREEN = (0, 255, 0)
-GREEN_CUSTOM2 = (25, 150, 25)
-GREEN_CUSTOM = (25, 200, 25)
-MARRON = (179, 139, 109)
-RED = (200, 0, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
-BLEU_STP = (2, 75, 85)
-OR_STP = (211, 155, 0)
-BLEU_FC = (0, 0, 25)
-ORANGE = (255, 127, 0)
+BLACK         = (  0,   0,   0)
+GRAY          = ( 70,  70,  70)
+DARK_GRAY     = ( 20,  20,  20)
+WHITE         = (255, 255, 255)
+SOFT_WHITE    = (200, 200, 200)
+GREEN         = (  0, 255,   0)
+GREEN_CUSTOM2 = ( 25, 150,  25)
+GREEN_CUSTOM  = ( 25, 200,  25)
+MARRON        = (179, 139, 109)
+RED           = (200,   0,   0)
+BLUE          = (  0,   0, 255)
+YELLOW        = (255, 255,   0)
+BLEU_STP      = (  2,  75,  85)
+OR_STP        = (211, 155,   0)
+BLEU_FC       = (  0,   0,  25)
+ORANGE        = (255, 127,   0)
 
 luneSur100 = 29.53 / 100
 
@@ -47,51 +47,57 @@ screen.fill(BLACK)
 clock = pygame.time.Clock()
 
 # définiton des différentes polices d'écriture
-font = pygame.font.Font(None, 25)
-font2 = pygame.font.Font(None, 30)
-moyfont = pygame.font.Font(None, 40)
+font      = pygame.font.Font(None, 25)
+font2     = pygame.font.Font(None, 30)
+moyfont   = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
 
-jouer = False  # Pour faire pause
+jouer   = False  # Pour faire pause
 musique = False   # Pour activer/déactiver la musique
 
 if musique:
-    pygame.mixer.music.load(main_path+"musique/musique.mp3")  # Chargement de la musique ( si activée )
+    # Chargement de la musique ( si activée )
+    pygame.mixer.music.load(main_path+"musique/musique.mp3")
 
 
 # Données planètes
-data = {'A' : ['Mercure', 'poids = 3,33 x 10^23 kg', 'rayon = 4200 km', 
+data = {'A' : ['Mercure', 'masse = 3,33 x 10^23 kg', 'rayon = 4200 km', 
               'distance soleil = 46 à 70 MM km', 'temps de rotation = 87,969 j',
               'température moyenne = 462°C', "images/mercure.png"],
-        'B' : [' Venus ', 'poids = 4,867 5x10^24 kg', 'rayon = 6050 km',
+        'B' : [' Venus ', 'masse = 4,867 5x10^24 kg', 'rayon = 6050 km',
               'distance soleil = 104 MM km', 'temps de rotation = 243 j',
               'température moyenne = 440°C', "images/venus.png"],
-        'C' : [' Terre ','poids = 5,973 x 10^24 kg', 'rayon = 6378 km',
+        'C' : [' Terre ','masse = 5,973 x 10^24 kg', 'rayon = 6378 km',
               'distance soleil = 150 MM km', 'temps de rotation = 365 j',
               'température moyenne = 14°C', "images/terre.png"],
-        'D' : ['  Mars ', 'poids = 6,418 x 10^23 kg', 'rayon = 3 396 km',
+        'D' : ['  Mars ', 'masse = 6,418 x 10^23 kg', 'rayon = 3 396 km',
               'distance soleil = 227 MM km', 'temps de rotation = 696 j',
               'température moyenne = -60°C', "images/mars.png"],
-        'E' : ['Jupiter', 'poids = 1,89 X 10^17 kg', 'rayon = 71 492 km',
+        'E' : ['Jupiter', 'masse = 1,89 X 10^17 kg', 'rayon = 71 492 km',
               'distance soleil = 778 MM km', 'temps de rotation = 11 ans 315 j',
               'température moyenne = -163°C', "images/jupyter.png"],
-        'F' : ['Saturne', 'poids = 5,68 X 10^26 kg', 'rayon = 58 232 km',
+        'F' : ['Saturne', 'masse = 5,68 X 10^26 kg', 'rayon = 58 232 km',
               'distance soleil = 1,4 Md km', 'temps de rotation = 29 ans 167 j',
               'température moyenne = -189°C', "images/saturne.png"],
-        'G' : [' Uranus', 'poids = 8,6 X 10^25 kg', 'rayon = 51 118 km',
+        'G' : [' Uranus', 'masse = 8,6 X 10^25 kg', 'rayon = 51 118 km',
               'distance soleil = 2,8 Md km', 'temps de rotation = 84 ans',
               'température moyenne = -218°C', "images/uranus.png"],
-        'H' : ['Neptune', 'poids = 102 X 10^24 kg', 'rayon = 24 764 km',
+        'H' : ['Neptune', 'masse = 102 X 10^24 kg', 'rayon = 24 764 km',
               'distance soleil = 4,5 Md km', 'temps de rotation = 165 ans',
               'température moyenne = -220°C', "images/neptune.png"],
-        'I' : [' Pluton', 'poids = 1,3 X 10^22 kg', 'rayon = 1185 km',
+        'I' : [' Pluton', 'masse = 1,3 X 10^22 kg', 'rayon = 1185 km',
               'distance soleil = 6 Md km', 'temps de rotation = 248 ans',
               'température moyenne = -225°C', "images/pluton.png"],
         'Z' : ['', '', '', '', '', '', '']}
 
-# On charge les images (démarage plus long, mais permet au programme d'être ensuite beaucoup plus fluide)
-for key in list(data.keys())[:-1]: # Le "[:-1]" permet de ne pas charger la dernière planête car elle n'est pas encore définie
-    data[key][-1] = pygame.transform.scale(pygame.image.load(str(main_path+data[key][-1])), (280, 275))
+# On charge les images (démarage plus long, mais permet au programme d'être
+# ensuite beaucoup plus fluide)
+for key in list(data.keys())[:-1]: # Le "[:-1]" permet de ne pas charger la
+                                   # dernière planête car elle n'est pas encore
+                                   # définie
+    data[key][-1] = pygame.transform.scale(pygame.image.load(
+        str(main_path+data[key][-1])), (280, 275)
+    )
 
 
 # Données signes astrologiques
@@ -118,7 +124,8 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"],
           'U': ["    Rat   ", "Dernière Année : 2020",     "Prochaine : 2032"],
           'V': ["   Boeuf  ", "Dernière Année : 2021",     "Prochaine : 2033"],
           'W': ["   Tigre  ", "Dernière Année : 2022",     "Prochaine : 2034"],
-          'X': ["  Lièvre  ", "Dernière Année : 2011",     "Prochaine : 2023"]}
+          'X': ["  Lièvre  ", "Dernière Année : 2011",     "Prochaine : 2023"]
+         }
 
 
 def extract_gif(gif_path: str) -> List(pygame.Surface):
@@ -170,7 +177,7 @@ def update_time(temps: float, j: float, last_frame: float=time()) -> float:
 
     new_frame = time() # Permet de faire avancer le temps non pas en fonction
                        # des FPS mais du temps réel
-    true_speed = j*(new_frame-last_frame)
+    true_speed = j * (new_frame - last_frame)
     return temps + true_speed, true_speed, new_frame
 
 
@@ -182,38 +189,88 @@ class ecran():
         self.bouton_pause_pos  = (915, 503) # Position du bouton pause
         self.bouton_pause_size = ( 45,  43) # Dimensions du bouton pause
         self.bouton_pause_images = { # Sprites du bouton pause
-                                    "play": pygame.transform.scale(pygame.image.load(main_path+"images/play.png"), self.bouton_pause_size),
-                                    "pause": pygame.transform.scale(pygame.image.load(main_path+"images/pause.png"), self.bouton_pause_size)}
+                "play": pygame.transform.scale(
+                            pygame.image.load(main_path+ "images/play.png"),
+                            self.bouton_pause_size),
+                "pause": pygame.transform.scale(
+                            pygame.image.load(main_path+"images/pause.png"),
+                            self.bouton_pause_size)
+                                   }
         
         # Paramètres des boutons de vitesse de lecture
-        self.bouton_vitesse_lecture_pos = (820, 502)
-        self.bouton_vitesse_lecture_size = (45, 45 )
+        self.bouton_vitesse_lecture_pos  = ( 820, 502)
+        self.bouton_vitesse_lecture_size = (  45,  45)
         self.bouton_vitesse_lecture2_pos = (1012, 503)
-        self.bouton_vitesse_lecture_image = {"normal": pygame.transform.scale(pygame.image.load(main_path+"images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
-                                             "rapide": pygame.transform.scale(pygame.image.load(main_path+"images/vitessecours.png"), self.bouton_vitesse_lecture_size),
-                                             "lent": pygame.transform.scale(pygame.image.load(main_path+"images/vitesselecture.png"), self.bouton_vitesse_lecture_size),
-                                             "normal2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
-                                             "rapide2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitesselecture.png"), 180), self.bouton_vitesse_lecture_size),
-                                             "lent2": pygame.transform.scale(pygame.transform.rotate(pygame.image.load(main_path+"images/vitessecours.png"), 180), self.bouton_vitesse_lecture_size)}
-        
+
+        self.bouton_vitesse_lecture_image = {
+
+            "normal":  pygame.transform.scale(
+                pygame.image.load(main_path+"images/vitesselecture.png"),
+                self.bouton_vitesse_lecture_size),
+
+            "rapide":  pygame.transform.scale(
+                pygame.image.load(main_path+  "images/vitessecours.png"),
+                self.bouton_vitesse_lecture_size),
+            "lent":    pygame.transform.scale(
+                pygame.image.load(main_path+"images/vitesselecture.png"),
+                self.bouton_vitesse_lecture_size),
+            "normal2": pygame.transform.scale(
+                pygame.transform.rotate(
+                    pygame.image.load(main_path+"images/vitesselecture.png"),
+                    180),
+                self.bouton_vitesse_lecture_size),
+            "rapide2": pygame.transform.scale(
+                pygame.transform.rotate(
+                    pygame.image.load(
+                        main_path+"images/vitesselecture.png"),
+                    180),
+                self.bouton_vitesse_lecture_size),
+            "lent2": pygame.transform.scale(
+                pygame.transform.rotate(
+                    pygame.image.load(main_path+"images/vitessecours.png"),
+                    180),
+                self.bouton_vitesse_lecture_size)
+            }
+
         # Paramètres du slider pour le zoom
-        self.zoom_slider_pos = (515, 553) # Position du background du slider (le boutton est placé en conséquance)
+        self.zoom_slider_pos = (515, 553) # Position du background du slider
+                                          # (boutton placé en conséquence)
         self.zoom_slider_size_factor = 2.35 # Facteur de taille
-        ''' Le sprite à été remplacé par un assemblage de rectangles en utilisant pygame.draw.rect()
-        self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces valeurs, modifiez celle au-dessus)
-                                'background': (120*self.zoom_slider_size_factor, 20*self.zoom_slider_size_factor),
-                                'button': (4*self.zoom_slider_size_factor, 10*self.zoom_slider_size_factor)}
+        ''' Le sprite à été remplacé par un assemblage de rectangles en
+        utilisant pygame.draw.rect()
+        self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces
+                                  # valeurs, modifiez celle au-dessus)
+            'background': (120*self.zoom_slider_size_factor,
+                            20*self.zoom_slider_size_factor),
+            'button':     (4*self.zoom_slider_size_factor,
+                            10*self.zoom_slider_size_factor)}
         self.zoom_slider_images = { # Les images utilisées pour le slider
-                                    'background': pygame.transform.scale(pygame.image.load(main_path+"images/zoom_slider_bg.png"), self.zoom_slider_size['background']),
-                                    'button': pygame.transform.scale(pygame.image.load(main_path+"images/zoom_slider_button.png"), self.zoom_slider_size['button'])}
+            'background': pygame.transform.scale(
+                pygame.image.load(main_path+"images/zoom_slider_bg.png"),
+                self.zoom_slider_size['background']),
+            'button': pygame.transform.scale(
+                pygame.image.load(main_path+"images/zoom_slider_button.png"),
+                self.zoom_slider_size['button'])}
         '''
-        self.zoom_slider_x_range = (self.zoom_slider_pos[0]+18*self.zoom_slider_size_factor, self.zoom_slider_pos[0]+98*self.zoom_slider_size_factor) # Entre quelles coordonnées y le bouton slider peut se situer
-        self.zoom_slider_current_x_pos = (self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1])/2 # Possition x actuelle du bouton du slider
-        self.zoom_slider_clicked = False # Permet de savoir si le curseur "tient" le bouton pour le faire slider
-        self.zoom_factor = 1 # Facteur de zoom de la simulation
-        self.wallE_x = 1080 #position x wall-E
-        self.wallE_y = 25 #position y wall-E
-        self.wallE_rotation  = 4 #rotation wall-E
+        # Entre quelles coordonnées y le bouton slider peut se situer
+        self.zoom_slider_x_range = (
+            self.zoom_slider_pos[0]+18*self.zoom_slider_size_factor,
+            self.zoom_slider_pos[0]+98*self.zoom_slider_size_factor
+            )
+
+        # Position x actuelle du bouton du slider
+        self.zoom_slider_current_x_pos = (
+            self.zoom_slider_x_range[0]+self.zoom_slider_x_range[1]
+            ) / 2
+
+        self.zoom_slider_clicked = False # Permet de savoir si le curseur
+                                         # "tient" le bouton pour le faire
+                                         # slider
+
+        self.zoom_factor         =    1 # Facteur de zoom de la simulation
+        self.wallE_x             = 1080 # position x wall-E
+        self.wallE_y             =   25 # position y wall-E
+        self.wallE_rotation      =    4 # rotation wall-E
 
 
     def espace_donnee(self) -> None:
@@ -229,7 +286,7 @@ class ecran():
         pygame.draw.line(screen, OR_STP,    (800, 276), (1080, 276), 3)
         pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
         pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
-        pygame.draw.line(screen, OR_STP,    (798, 495), ( 1080, 495), 3)
+        pygame.draw.line(screen, OR_STP,    (798, 495), (1080, 495), 3)
 
 
     def play_pause_date(self) -> None:
@@ -265,7 +322,7 @@ class ecran():
 
         # cls : comme self (utilisé dans d'autres langages comme JS, C#, ...)
         # Son utilisation n'est pas très "Pythonnesque", mais c'est pour la
-        # limite des 80 caractères pas lignes ... (la bonne cause)
+        # limite des 80 caractères par lignes ... (la bonne cause)
         if jeu_en_marche:
             screen.blit(cls.bouton_pause_images['play'],  cls.bouton_pause_pos)
         else:
@@ -334,40 +391,111 @@ class ecran():
         #screen.blit(self.zoom_slider_images['background'], self.zoom_slider_pos)
         #screen.blit(self.zoom_slider_images['button'], (self.zoom_slider_current_x_pos, self.zoom_slider_pos[1] + 5*self.zoom_slider_size_factor))
         self.display_zoom_slider()
-        # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour le slider
+        # Ci-dessus, affichage de l'arrière plan du slider, puis du bouton pour
+        #                                                             le slider
 
         '''Partie utilitaire'''
         # Le facteur de zoom va de 1x à 128x (soit de 0.002 (min) à 0.256 (max))
         # En détail :
         #   0.002 est le facteur minimum (1x avec x = 0.002)
-        #   7 est la puissance de 2 maximale par laquelle on peut multiplier le facteur minimum (2**7 * x <=> 128x)
+        #   7 est la puissance de 2 maximale par laquelle on peut multiplier le
+        #                                    facteur minimum (2**7 * x <=> 128x)
         #   L'équation au milieu donne un résultat compris entre 1 et 2
         # Au final, on a :
         #   self.zoom_factor = facteur minimum * (équation ** puissance)
-        self.zoom_factor = 0.002*((self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])/(self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])+1)**7
+        self.zoom_factor = 0.002*(
+            (self.zoom_slider_current_x_pos-self.zoom_slider_x_range[0])
+            / (self.zoom_slider_x_range[1]-self.zoom_slider_x_range[0])
+            + 1) ** 7
 
     def display_zoom_slider(self) -> None:
         '''Affichage du slider de zoom'''
 
         # Base du slider
-        pygame.draw.rect(screen, BLEU_STP, (self.zoom_slider_pos, (int(120*self.zoom_slider_size_factor), int(20*self.zoom_slider_size_factor))))
+        pygame.draw.rect(
+            screen,
+            BLEU_STP,
+            (self.zoom_slider_pos, (int(120*self.zoom_slider_size_factor),
+                                    int( 20*self.zoom_slider_size_factor)))
+            )
         
         # Barre ou le bouton glisse
-        pygame.draw.rect(screen, WHITE, ((int(self.zoom_slider_pos[0]+20*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+6*self.zoom_slider_size_factor)), (int(80*self.zoom_slider_size_factor), int(8*self.zoom_slider_size_factor))), 0, int(2*self.zoom_slider_size_factor))
-        pygame.draw.rect(screen, BLACK, ((int(self.zoom_slider_pos[0]+21*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+7*self.zoom_slider_size_factor)), (int(40*self.zoom_slider_size_factor), int(6*self.zoom_slider_size_factor))), 0, int(3*self.zoom_slider_size_factor))
-        pygame.draw.rect(screen, BLACK, ((int(self.zoom_slider_pos[0]+59*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+7*self.zoom_slider_size_factor)), (int(40*self.zoom_slider_size_factor), int(6*self.zoom_slider_size_factor))), 0, int(3*self.zoom_slider_size_factor))
+        pygame.draw.rect(
+            screen,
+            WHITE,
+            (
+                (int(self.zoom_slider_pos[0]+20*self.zoom_slider_size_factor),
+                 int(self.zoom_slider_pos[1]+ 6*self.zoom_slider_size_factor)),
+                (int(80*self.zoom_slider_size_factor), 
+                 int(8*self.zoom_slider_size_factor))
+            ),
+            0, int(2*self.zoom_slider_size_factor))
+
+        pygame.draw.rect(
+            screen,
+            BLACK,
+            (
+                (int(self.zoom_slider_pos[0]+21*self.zoom_slider_size_factor),
+                 int(self.zoom_slider_pos[1]+ 7*self.zoom_slider_size_factor)),
+                (int(40*self.zoom_slider_size_factor),
+                 int(6*self.zoom_slider_size_factor))
+            ),
+            0, int(3*self.zoom_slider_size_factor))
+
+        pygame.draw.rect(
+            screen,
+            BLACK,
+            (
+                (int(self.zoom_slider_pos[0]+59*self.zoom_slider_size_factor),
+                 int(self.zoom_slider_pos[1]+7*self.zoom_slider_size_factor)),
+                (int(40*self.zoom_slider_size_factor),
+                 int(6*self.zoom_slider_size_factor))
+            ),
+            0, int(3*self.zoom_slider_size_factor))
         
         # Le + et le -
-        pygame.draw.rect(screen, OR_STP, ((int(self.zoom_slider_pos[0]+4*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+8*self.zoom_slider_size_factor)), (int(12*self.zoom_slider_size_factor), int(4*self.zoom_slider_size_factor))))
-        pygame.draw.rect(screen, OR_STP, ((int(self.zoom_slider_pos[0]+104*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+8*self.zoom_slider_size_factor)), (int(12*self.zoom_slider_size_factor), int(4*self.zoom_slider_size_factor))))
-        pygame.draw.rect(screen, OR_STP, ((int(self.zoom_slider_pos[0]+108*self.zoom_slider_size_factor), int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)), (int(4*self.zoom_slider_size_factor), int(12*self.zoom_slider_size_factor))))
+        pygame.draw.rect(
+            screen,
+            OR_STP,
+            (
+                (int(self.zoom_slider_pos[0]+4*self.zoom_slider_size_factor),
+                int(self.zoom_slider_pos[1]+8*self.zoom_slider_size_factor)),
+                (int(12*self.zoom_slider_size_factor),
+                int(4*self.zoom_slider_size_factor))))
+        pygame.draw.rect(
+            screen,
+            OR_STP,
+            (
+                (int(self.zoom_slider_pos[0]+104*self.zoom_slider_size_factor),
+                 int(self.zoom_slider_pos[1]+8*self.zoom_slider_size_factor)),
+                (int(12*self.zoom_slider_size_factor),
+                 int(4*self.zoom_slider_size_factor))
+            ))
+        pygame.draw.rect(
+            screen,
+            OR_STP,
+            (
+                (int(self.zoom_slider_pos[0]+108*self.zoom_slider_size_factor),
+                 int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)),
+                (int(4*self.zoom_slider_size_factor),
+                 int(12*self.zoom_slider_size_factor))
+            ))
         
         # Le bouton
-        pygame.draw.rect(screen, RED, ((self.zoom_slider_current_x_pos, int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)), (int(4*self.zoom_slider_size_factor), int(12*self.zoom_slider_size_factor))), 0, int(2*self.zoom_slider_size_factor))
+        pygame.draw.rect(
+            screen,
+            RED,
+            (
+                (self.zoom_slider_current_x_pos,
+                int(self.zoom_slider_pos[1]+4*self.zoom_slider_size_factor)),
+                (int(4*self.zoom_slider_size_factor),
+                int(12*self.zoom_slider_size_factor))
+            ),
+            0, int(2*self.zoom_slider_size_factor))
 
 
     def barre_action(self, gre, chn, lune) -> None:
-        '''Créer une barre sur la gauche pour ajouter boutons et intéractions'''
+        '''Créer une barre sur la gauche pour ajouter boutons et interactions'''
 
         # Change la couleur en fonction de l'activation du module
         if chn:
@@ -383,26 +511,32 @@ class ecran():
         else:
             color_lune = OR_STP
 
-        # Fais apparaitre les differents boutons 
+        # Fait apparaitre les différents boutons 
         pygame.draw.rect(screen, BLEU_STP, ((0, 0),   (50, 600)))
         pygame.draw.rect(screen, color_gre,   ((0, 120), (50, 50)))
         pygame.draw.rect(screen, color_chn,   ((0, 270), (50, 50)))
         pygame.draw.rect(screen, color_lune,   ((0, 420), (50, 50)))
         pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
-        picto_astro = pygame.transform.scale(pygame.image.load(main_path+"images/pictoastro.png"), (46, 46))
+        picto_astro = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictoastro.png"),
+            (46, 46))
         screen.blit(picto_astro, (2, 122))
-        picto_astro_ch = pygame.transform.scale(pygame.image.load(main_path+"images/pictofire.png"), (42, 42))
+        picto_astro_ch = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictofire.png"),
+            (42, 42))
         screen.blit(picto_astro_ch, (2, 273))
-        pictolune = pygame.transform.scale(pygame.image.load(main_path+"images/pictolune.png"), (65, 50))
+        pictolune = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictolune.png"),
+            (65, 50))
         screen.blit(pictolune, (-10, 420))
 
-        '''bouton menu'''
-        pygame.draw.rect(screen, GRAY,  ((0, 0),  (50, 50)))
+        # bouton menu
+        pygame.draw.rect(screen, GRAY,  ((0,  0), (50, 50)))
         pygame.draw.line(screen, WHITE, (10, 12), (40, 12), 3)
         pygame.draw.line(screen, WHITE, (10, 25), (40, 25), 3)
         pygame.draw.line(screen, WHITE, (10, 38), (40, 38), 3)
         
-        '''bouton quitter'''
+        # bouton quitter
         quitter = grandfont.render("X", 1, BLACK)
         screen.blit(quitter, (11, 557))
 
@@ -428,91 +562,171 @@ class ecran():
         pygame.draw.rect(screen, GRAY,  ((50, 550),  (462, 50)))
         pygame.draw.line(screen, WHITE, (50, 551),  (600, 551), 3)
         pygame.draw.line(screen, WHITE, (51, 550),  (51, 600), 3)
-        affichage = moyfont.render("Date actuelle : " + jour + "/" + mois + "/" + année, 1, BLACK)  # Affichage final
+        affichage = moyfont.render("Date actuelle : " + jour + "/" + mois + "/"
+                                   + année, 1, BLACK)  # Affichage final
         screen.blit(affichage, (100, 565))
 
 
     def signe_astro(self, signe: str, data: bool, lunaison: bool) -> None:
-        '''affiche le signe asrtrologique et ses informations'''
+        '''Affiche le signe asrtrologique et ses informations'''
 
-        getsigne = signes.get(signe)  # Récupère les informatuions dans le dictionnaire des signes 
+        getsigne = signes.get(signe)  # Récupère les informatuions dans le
+                                                # dictionnaire des signes 
 
         # Change l'affichage général en fonction des éléments activés à l'écran
         if data or lunaison:
-            '''petite version si les données planètes sont affichées'''
-            pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED,      ((225, 200), (45,  45)),  0, 0, 10, 0, 0, 30)
-            text = moyfont.render(getsigne[0], 1, OR_STP)
+            # Petite version si les données planètes sont affichées
+            pygame.draw.rect(
+                screen,
+                BLEU_STP,
+                ((225, 200), (400, 200)),
+                0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                GRAY,
+                ((225, 200), (400, 45)),
+                0, 0, 10, 10, 0, 0
+            )
+            pygame.draw.rect(
+                screen,
+                RED,
+                ((225, 200), (45,  45)),
+                0, 0, 10, 0, 0, 30
+            )
+            text  = moyfont.render(getsigne[0], 1, OR_STP)
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
             croix = moyfont.render("X", 1, WHITE)
-            screen.blit(text, (350, 210))
+            screen.blit(text,  (350, 210))
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
 
         if not data and not lunaison:
-            '''version plus large si les données des planètes ne sont pas à l'écran'''
-            pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
-            pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY,     ((250, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED,      ((250, 200), (45,  45)),  0, 0, 10,  0, 0, 30)
+            # Version plus large si les données des planètes ne sont pas à
+                                                                 # l'écran
+            pygame.draw.rect(
+                screen,
+                BLEU_FC,
+                ((640, 200), (210, 200)),
+                0, 0,  0, 10, 0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                BLEU_STP,
+                ((250, 200), (400, 200)),
+                0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                GRAY,
+                ((250, 200), (400, 45)),
+                0, 0, 10, 10, 0, 0
+            )
+            pygame.draw.rect(
+                screen,
+                RED,
+                ((250, 200), (45,  45)),
+                0, 0, 10,  0, 0, 30
+            )
             img_name = getsigne[0].replace(' ', '')    
-            '''images'''
+
+            # images
             img = pygame.image.load(main_path+"images/"+ img_name +".png")
             img = pygame.transform.scale(img, (175, 125))
             screen.blit(img, (660, 240))
-            '''textes'''
-            text = moyfont.render(getsigne[0], 1, OR_STP)
+
+            # textes
+            text  = moyfont.render(getsigne[0], 1, OR_STP )
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
             croix = moyfont.render("X", 1, WHITE)
-            '''affichage final'''
-            screen.blit(text, (400, 210))
+
+            # affichage final
+            screen.blit(text,  (400, 210))
             screen.blit(text2, (265, 280))
             screen.blit(text3, (265, 330))
             screen.blit(croix, (260, 210))
 
 
     def signe_astro_ch(self, signe, data, lunaison) -> None:
-        """"affiche le signe asrtrologique et ses informations"""
+        '''Affiche le signe asrtrologique et ses informations'''
 
-        getsigne = signes.get(signe)  # Récupère les informatuions dans le dictionnaire des signes 
+        getsigne = signes.get(signe)  # Récupère les informations dans le
+                                      # dictionnaire des signes 
 
         # Change l'affichage général en fonction des éléments activés à l'écran
         if data or lunaison:
-            '''petite version si les données planètes sont affichées'''
-            pygame.draw.rect(screen, BLEU_STP, ((225, 200), (400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY,     ((225, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED,      ((225, 200), (45,  45)),  0, 0, 10, 0, 0, 30)
-            text = moyfont.render(getsigne[0], 1, OR_STP)
+            # Petite version si les données planètes sont affichées
+            pygame.draw.rect(
+                screen,
+                BLEU_STP,
+                ((225, 200), (400, 200)),
+                0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                GRAY,
+                ((225, 200), (400, 45)),
+                0, 0, 10, 10, 0, 0
+            )
+            pygame.draw.rect(
+                screen,
+                RED,
+                ((225, 200), (45,  45)),
+                0, 0, 10, 0, 0, 30
+            )
+            text  = moyfont.render(getsigne[0], 1, OR_STP )
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
             croix = moyfont.render("X", 1, WHITE)
-            screen.blit(text, (350, 210))
+            screen.blit(text,  (350, 210))
             screen.blit(text2, (250, 280))
             screen.blit(text3, (250, 330))
             screen.blit(croix, (235, 210))
 
         if not data and not lunaison:
-            '''version plus large si les données des planètes ne sont pas à l'écran'''
-            pygame.draw.rect(screen, BLEU_FC,  ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10)
-            pygame.draw.rect(screen, BLEU_STP, ((250, 200), (400, 200)), 0, 10)
-            pygame.draw.rect(screen, GRAY,     ((250, 200), (400, 45)),  0, 0, 10, 10, 0, 0)
-            pygame.draw.rect(screen, RED,      ((250, 200), (45,  45)),  0, 0, 10,  0, 0, 30)
+            '''Version plus large si les données des planètes ne sont pas à
+                                                                      l'écran'''
+            pygame.draw.rect(
+                screen,
+                BLEU_FC,
+                ((640, 200), (210, 200)), 0, 0,  0, 10, 0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                BLEU_STP,
+                ((250, 200), (400, 200)),
+                0, 10
+            )
+            pygame.draw.rect(
+                screen,
+                GRAY,
+                ((250, 200), (400, 45)),
+                0, 0, 10, 10, 0, 0
+            )
+            pygame.draw.rect(
+                screen,
+                RED,
+                ((250, 200), (45,  45)),
+                0, 0, 10,  0, 0, 30
+            )
             img_name = getsigne[0].replace(' ', '')    
-            '''images'''
+
+            # images
             img = pygame.image.load(main_path+"images/"+ img_name +".jpg")
             img = pygame.transform.scale(img, (175, 175))
             screen.blit(img, (662, 213))
-            '''textes'''
-            text = moyfont.render(getsigne[0], 1, OR_STP)
+
+            # textes
+            text  = moyfont.render(getsigne[0], 1, OR_STP )
             text2 = moyfont.render(getsigne[1], 1, BLEU_FC)
             text3 = moyfont.render(getsigne[2], 1, BLEU_FC)
             croix = moyfont.render("X", 1, WHITE)
-            '''affichage final'''
-            screen.blit(text, (400, 210))
+
+            # affichage final
+            screen.blit(text,  (400, 210))
             screen.blit(text2, (265, 280))
             screen.blit(text3, (265, 330))
             screen.blit(croix, (260, 210))  
@@ -521,92 +735,103 @@ class ecran():
     def ecriture(self, planete: str, dist: str) -> None:
         '''Fait apparaitre les données de la planète choisie'''
 
-        dataget = data.get(planete)  # Cherche les infos de la planète dans le dictionnaire
+        dataget = data.get(planete)  # Cherche les infos de la planète dans le
+                                                                # dictionnaire
 
         # Affichage des textes + mise en forme sur l'écran
-        text = moyfont.render(dataget[0], 1, BLACK)
-        poids = font.render(dataget[1], 1, BLACK)
-        rayon = font.render(dataget[2], 1, BLACK)
-        distance = font.render("distance = " + dist + " Ua", 1, BLACK)
-        rotation = font.render(dataget[4], 1, BLACK)
-        temperature = font.render(dataget[5], 1, BLACK)
+        text        = moyfont.render(dataget[0], 1, BLACK)
+        masse       = font   .render(dataget[1], 1, BLACK)
+        rayon       = font   .render(dataget[2], 1, BLACK)
+        distance    = font   .render("distance = " + dist + " Ua", 1, BLACK)
+        rotation    = font   .render(dataget[4], 1, BLACK)
+        temperature = font   .render(dataget[5], 1, BLACK)
 
         # Affichage final des données
-        screen.blit(text, (890, 290))
-        screen.blit(poids, (815, 350))
-        screen.blit(rayon, (815, 375))
-        screen.blit(distance, (815, 400))
-        screen.blit(rotation, (815,425))
-        screen.blit(temperature, (815,450))
+        screen.blit(text,        (890, 290))
+        screen.blit(masse,       (815, 350))
+        screen.blit(rayon,       (815, 375))
+        screen.blit(distance,    (815, 400))
+        screen.blit(rotation,    (815, 425))
+        screen.blit(temperature, (815, 450))
 
         # Affiche de l'image associée
         screen.blit(dataget[-1], (800, 0))
 
 
     def lunaison(self) -> None:
-        '''dessine la zone de texte por les infos de la lune avec le gif'''
+        '''Dessine la zone de texte por les infos de la lune avec le gif'''
 
         # affichage  image gif 
-        pygame.draw.rect(screen, BLEU_FC,  ((800,   0), (1080, 275)))
+        pygame.draw.rect(screen, BLEU_FC,   ((800,   0), (1080, 275)))
 
         # Affichage espace données
-        pygame.draw.rect(screen, WHITE,    ((800, 275), (1080, 600)))
-        pygame.draw.rect(screen, DARK_GRAY,     ((800, 381), (1080, 498)))
+        pygame.draw.rect(screen, WHITE,     ((800, 275), (1080, 600)))
+        pygame.draw.rect(screen, DARK_GRAY, ((800, 381), (1080, 498)))
 
         # Affichage lignes de séparation
-        pygame.draw.line(screen, OR_STP,    (800, 276), (1080, 276), 3)
-        pygame.draw.line(screen, OR_STP,    (800, 380), (1080, 380), 3)
-        pygame.draw.line(screen, OR_STP,    (800, 498), (1080, 498), 3)
-        pygame.draw.line(screen, OR_STP,    (798,   0), ( 798, 600), 3)
-        pygame.draw.line(screen, OR_STP,    (798, 495), (1080, 495), 3)
+        pygame.draw.line(screen, OR_STP,    ( 800, 276), (1080, 276), 3)
+        pygame.draw.line(screen, OR_STP,    ( 800, 380), (1080, 380), 3)
+        pygame.draw.line(screen, OR_STP,    ( 800, 498), (1080, 498), 3)
+        pygame.draw.line(screen, OR_STP,    ( 798,   0), ( 798, 600), 3)
+        pygame.draw.line(screen, OR_STP,    ( 798, 495), (1080, 495), 3)
 
 
     def ecriture_lune(self, temps: float) -> None:
         '''Fait apparaitre les données de la planète choisie'''
 
-        TLune = Temps.phase_lune(temps)  # Appel fonction phase de la lune ( calcule la phase de la lune en pourcentage)
+        TLune = Temps.phase_lune(temps)  # Appel fonction phase de la Lune
+                                         # (calcule la phase de la Lune en
+                                         # pourcentage)
         
         # Affichage informations complémentaire
         text = moyfont.render("La Lune", 1, BLACK)
-        pourcent = (2 * TLune / 29.53) * 100 if TLune < 29.53/2 else (200 * (29.53-TLune) / 29.53)
-        pourcentage = font2.render(f"Pourcentage = {round(pourcent, 2)} %", 1, BLEU_FC)
+        if TLune < 29.53/2:
+            pourcent = (2 * TLune / 29.53) * 100 
+        else:
+            pourcent = (200 * (29.53-TLune) / 29.53)
+        pourcentage = font2.render(f"Pourcentage = {round(pourcent, 2)} %",
+                                   1, BLEU_FC)
 
         # Utilise cette différence pour déduire phase actuelle de la Lune 
         if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
-            lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+            lunaison = font2.render("Nouvelle Lune",             1 , BLEU_STP)
         elif 12 * luneSur100 < TLune < 25 * luneSur100:
-            lunaison = font2.render("1er Croissant", 1 , BLEU_STP)
+            lunaison = font2.render("1er Croissant",             1 , BLEU_STP)
         elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
-            lunaison = font2.render("1er Quartier", 1 , BLEU_STP)
+            lunaison = font2.render("1er Quartier",              1 , BLEU_STP)
         elif 30 * luneSur100 < TLune <= 45 * luneSur100:
-            lunaison = font2.render("Lune Gibbeuse Croissante", 1 , BLEU_STP)
+            lunaison = font2.render("Lune Gibbeuse Croissante",  1 , BLEU_STP)
         elif 45 * luneSur100 < TLune <= 55 * luneSur100:
-            lunaison = font2.render("Pleine Lune", 1 , BLEU_STP)
+            lunaison = font2.render("Pleine Lune",               1 , BLEU_STP)
         elif 55 * luneSur100 < TLune <= 70 * luneSur100:
             lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
         elif 70 * luneSur100 < TLune <= 80 * luneSur100:
-            lunaison = font2.render("Dernier Quartier", 1 , BLEU_STP)
+            lunaison = font2.render("Dernier Quartier",          1 , BLEU_STP)
         elif 80 * luneSur100 < TLune <= 95 * luneSur100:
-            lunaison = font2.render("Dernier Croissant", 1 , BLEU_STP)
+            lunaison = font2.render("Dernier Croissant",         1 , BLEU_STP)
         elif 95 * luneSur100 < TLune <= 101 * luneSur100:
-            lunaison = font2.render("Nouvelle Lune", 1 , BLEU_STP)
+            lunaison = font2.render("Nouvelle Lune",             1 , BLEU_STP)
         else:
-            lunaison = font2.render("Erreur", 1 , BLEU_STP)
+            lunaison = font2.render("Erreur",                    1 , BLEU_STP)
 
         # Appel image du gif 
-        gif = IMAGES_LUNE[round((TLune/29.53*(len(IMAGES_LUNE)-1)) + (len(IMAGES_LUNE)-1)/2) % (len(IMAGES_LUNE)-1)]
+        gif = IMAGES_LUNE[
+            round(
+                (TLune/29.53*(len(IMAGES_LUNE)-1))+ (len(IMAGES_LUNE)-1)/2
+            ) % (len(IMAGES_LUNE)-1)
+            ]
 
         # Affichage des informations complémentaires 
-        distance = font.render("Distance Terre = 384 400 km", 1, SOFT_WHITE)
-        rotation = font.render("Durrée Lunaison = 27 jours", 1, SOFT_WHITE)
+        distance = font.render("Distance Terre = 384 400 km",     1, SOFT_WHITE)
+        rotation = font.render("Durrée Lunaison = 27 jours",      1, SOFT_WHITE)
         temperature = font.render("temperature = -230°C / 120°C", 1, SOFT_WHITE)
 
         # Affichage final des données
-        screen.blit(text, (880, 285))
-        screen.blit(lunaison, (815, 325))
+        screen.blit(text,        (880, 285))
+        screen.blit(lunaison,    (815, 325))
         screen.blit(pourcentage, (815, 352))
-        screen.blit(distance, (815, 400))
-        screen.blit(rotation, (815,430))
+        screen.blit(distance,    (815, 400))
+        screen.blit(rotation,    (815, 430))
         screen.blit(temperature, (815,460))
 
         # Affichage final Gif lune
@@ -618,9 +843,9 @@ class ecran():
         '''Dessine écran validation pour quitter'''
 
         # Dessine les différentes zones 
-        pygame.draw.rect(screen, GRAY,         ((340, 200), (400, 200)), 0, 5)
-        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300), (100, 50)),  0, 10)
-        pygame.draw.rect(screen, RED,          ((590, 300), (100, 50)),  0, 10)
+        pygame.draw.rect(screen, GRAY,         ((340, 200), (400, 200)), 0,  5)
+        pygame.draw.rect(screen, GREEN_CUSTOM, ((400, 300), (100,  50)), 0, 10)
+        pygame.draw.rect(screen, RED,          ((590, 300), (100,  50)), 0, 10)
 
         # Création et affichage des textes ( Phrases + boutons )
         sur = moyfont.render("Sûr de vouloir quitter ?", 1, OR_STP)
@@ -631,25 +856,36 @@ class ecran():
         screen.blit(non, (615, 312))
 
 
-    def wallE(self, objet: str, rotation: float) -> None:          # S'appelle Wall-E car ancien nom de la fonction
-        '''fait apparaitre et deplace de l'objet demandé   :)'''
+    def wallE(self, objet: str, rotation: float) -> None: # S'appelle Wall-E
+                                                          # car ancien nom de la
+                                                          # fonction
+        '''Fait apparaitre et deplace l'objet demandé   :)'''
 
         #  Affiche de l'image
-        img = pygame.transform.scale(pygame.image.load(main_path+"images/"+ objet +".png"), (350, 175))
+        img = pygame.transform.scale(
+            pygame.image.load(main_path+"images/"+ objet +".png"), (350, 175)
+            )
         img = pygame.transform.rotate(img, self.wallE_rotation + rotation)
         screen.blit(img, (self.wallE_x, self.wallE_y))
 
         # Déplacement de l'objet
         self.wallE_x -= 5
         self.wallE_rotation += 0.3
-        if self.wallE_rotation >= 88 or self.wallE_rotation <= 90 or self.wallE_rotation >= 168 or self.wallE_rotation <= 170:
+        if (self.wallE_rotation >= 88
+           or self.wallE_rotation <= 90
+           or self.wallE_rotation >= 168
+           or self.wallE_rotation <= 170):
             self.wallE_y += 0.4
-        if self.wallE_rotation >= 178 or self.wallE_rotation <= 180 or self.wallE_rotation >= 358 or self.wallE_rotation <= 0:
+        if (self.wallE_rotation >= 178
+           or self.wallE_rotation <= 180
+           or self.wallE_rotation >= 358
+           or self.wallE_rotation <= 0):
             self.wallE_y += 0.4
 
 
     def verif_object(self) -> bool:
-        '''vérifie l'emplacement de l'objet pour l'arreter si son animation est fini et replacer au point de départ'''
+        '''Vérifie l'emplacement de l'objet pour l'arrêter si son animation est
+        fini et replacer au point de départ'''
 
         # Vérifie l'emplacement en X et en Y de l'objet
         if self.wallE_x == -300:
@@ -668,6 +904,7 @@ class ecran():
         pygame.draw.line(screen, WHITE, (100, 500), (200, 500), 3)
         pygame.draw.line(screen, WHITE, (100, 495), (100, 505), 3)
         pygame.draw.line(screen, WHITE, (200, 495), (200, 505), 3)
+
         # Le texte indiquant l'échelle actuelle
         valeur = str(round(0.034/self.zoom_factor, 3))
         txt = font.render(valeur + " UA", True, WHITE)
@@ -707,35 +944,63 @@ class Gestion_Planete:
         self.uranus  = [kp.Planete(20.486593604250178, 21.01928151424853,   center_of_mass=mass_center, angle=0.032404368695452976),  2470004.5,         30_698,            (109, 180, 255), 150   ]
         self.neptune = [kp.Planete(40,                 42,                  center_of_mass=mass_center, angle=0.69),                  0,                 60_216.8,          (104, 111, 255), 135   ]
 
-        self.planetes = [self.mercury, self.venus, self.terre, self.mars, self.jupiter, self.saturne, self.uranus, self.neptune]
+        self.planetes = [self.mercury, self.venus, self.terre, self.mars,
+                         self.jupiter, self.saturne, self.uranus, self.neptune]
 
         #           [Astre père,     temps orbite, angle initial, distance astre père, couleur,         taille]
         self.lune = [self.terre[:3], 27.32,        5.22,          300,                 (225, 225, 225), 32    ]
 
         self.lunes = [self.lune]
 
-        # Ajout d'un dernier argument : La planète est-elle suivie par la caméra ?
-        #                               Sa position
-        #                               Sa taille (relative au zoom)
-        #                               Les coordonnées à ajouter à la caméra pour suivre la planête
-        #                               Une distance précise de la planète au soleil
+        # Ajout d'un dernier argument : 
+        #       La planète est-elle suivie par la caméra ?
+        #       Sa position
+        #       Sa taille (relative au zoom)
+        #       Les coordonnées à ajouter à la caméra pour suivre la planète
+        #       Une distance précise de la planète au soleil
         self.data_index = len(self.planetes[0]) # Index de cet argument
         for planete in self.planetes:
             planete.append([False, (0, 0), 0, (0, 0), 0]) # Argument ajouté
 
 
-    def draw_planet(self, date: int, planete: list, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int), vitesse: float) -> None:
+    def draw_planet(
+        self, date: int, planete: list, camera_zoom: float,
+        camera_true_pos: List(int, int), camera_focus: List(int, int), 
+        sun_pos: List(int, int), vitesse: float) -> None:
         '''Permet de dessiner une planète au bon endroit'''
 
         # Calcul des positions
-        time_to_calc = date - planete[1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
-        pos = planete[0].calculate_point_from_time(time_to_calc/planete[2]) # Calcul de la position
-        time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la frame suivante
-        pos_next = planete[0].calculate_point_from_time(time_to_calc_next/planete[2]) # Nouvelle position
+        time_to_calc = date - planete[1] # Calcul de la date (depuis un temps
+                                         # donné permettant de faciliter la
+                                         # création de ce Système Solaire)
+        # Calcul de la position
+        pos = planete[0].calculate_point_from_time(time_to_calc/planete[2])
+        time_to_calc_next = time_to_calc + vitesse # On "prédit" le temps de la
+                                                   # frame suivante
+        # Nouvelle position
+        pos_next = planete[0].calculate_point_from_time(
+            time_to_calc_next/planete[2]
+        )
 
         # Ci-dessous, ajustement de la position et de la taille
-        pos_final = (int(sun_pos[0] + camera_focus[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_true_pos[0]) * camera_zoom), int(sun_pos[1] + camera_focus[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_true_pos[1]) * camera_zoom))
-        pos_alt = (int((sun_pos[0] - pos_next[0]) * camera_zoom*3000), int((sun_pos[1] - pos_next[1]) * camera_zoom*3000))
+        pos_final = (
+            int(
+                sun_pos[0]
+                + camera_focus[0]
+                + (pos[0] - sun_pos[0]) * camera_zoom*3000
+                + (sun_pos[0] - camera_true_pos[0]) * camera_zoom
+            ),
+            int(
+                sun_pos[1]
+                + camera_focus[1]
+                + (pos[1] - sun_pos[1]) * camera_zoom * 3000
+                + (sun_pos[1] - camera_true_pos[1]) * camera_zoom
+            )
+        )
+        pos_alt = (
+            int((sun_pos[0] - pos_next[0]) * camera_zoom*3000),
+            int((sun_pos[1] - pos_next[1]) * camera_zoom*3000)
+        )
         dist = ((sun_pos[0] - pos[0])**2 + (sun_pos[1] - pos[1])**2)**0.5
 
         # Taille apparente de la planête
@@ -745,39 +1010,89 @@ class Gestion_Planete:
         pygame.draw.circle(screen, planete[3], pos_final, size)
 
         # On garde en mémoire la position et la taille (apparente) de la planète
-        planete[self.data_index] = [planete[self.data_index][0], pos_final, size, pos_alt, dist]
+        planete[self.data_index] = [
+            planete[self.data_index][0], pos_final, size, pos_alt, dist
+        ]
 
 
-    def draw_lune(self, date: int, lune: list, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int)) -> None:
+    def draw_lune(
+        self, date: int, lune: list, camera_zoom: float,
+        camera_true_pos: List(int, int), camera_focus: List(int, int),
+        sun_pos: List(int, int)) -> None:
         '''Permet de dessiner une lune au bon endroit'''
 
-        # On calcule d'abord la position de la planète dont l'astre en question est la lune
-        time_to_calc = date - lune[0][1] # Calcul de la date (depuis un temps donné permettant de faciliter la création de ce système solaire)
-        pos = lune[0][0].calculate_point_from_time(time_to_calc/lune[0][2]) # Calcul de la position
-        pos_planete = (int(sun_pos[0] + camera_focus[0] + (pos[0] - sun_pos[0]) * camera_zoom*3000 + (sun_pos[0] - camera_true_pos[0]) * camera_zoom), int(sun_pos[1] + camera_focus[1] + (pos[1] - sun_pos[1]) * camera_zoom*3000 + (sun_pos[1] - camera_true_pos[1]) * camera_zoom))
+        # On calcule d'abord la position de la planète dont l'astre en question
+        # est la lune
+        time_to_calc = date - lune[0][1] # Calcul de la date (depuis un temps
+                                         # donné permettant de faciliter la
+                                         # création de ce Système Solaire)
+        # Calcul de la position
+        pos = lune[0][0].calculate_point_from_time(time_to_calc/lune[0][2])
+        pos_planete = (
+            int(
+                sun_pos[0]
+                + camera_focus[0]
+                + (pos[0] - sun_pos[0]) * camera_zoom * 3000
+                + (sun_pos[0] - camera_true_pos[0]) * camera_zoom
+            ),
+            int(
+                sun_pos[1]
+                + camera_focus[1]
+                + (pos[1] - sun_pos[1]) * camera_zoom * 3000
+                + (sun_pos[1] - camera_true_pos[1]) * camera_zoom
+            )
+        )
         
         # On calcule la position de l'astre (lune)
-        orbit_angle = (date % lune[1])/lune[1] * 2*math.pi + lune[2] # Angle (en radiant) de la lune par rapport à la planète
-        pos_lune = (math.cos(orbit_angle)*lune[3]*camera_zoom, math.sin(orbit_angle)*lune[3]*camera_zoom)
+
+        # Angle (en radians) de la lune par rapport à la planète
+        orbit_angle = (date % lune[1])/lune[1] * 2*math.pi + lune[2] 
+
+        pos_lune = (
+            math.cos(orbit_angle)*lune[3]*camera_zoom,
+            math.sin(orbit_angle)*lune[3]*camera_zoom
+        )
         pos_final = (pos_planete[0] + pos_lune[0], pos_planete[1] + pos_lune[1])
         
         # Taille apparente de la lune
         size = int(lune[5]*camera_zoom+1)*2
-        rect = ((pos_final[0] - int(size/2), pos_final[1] - int(size/2)), (size, size))
+        rect = (
+            (pos_final[0] - int(size/2),
+            pos_final[1] - int(size/2)),
+            (size, size)
+        )
         
         # Calcul de l'angle par rapport au Soleil
-        true_pos_sun = (sun_pos[0] + camera_focus[0] + (sun_pos[0] - camera_true_pos[0]) * camera_zoom, sun_pos[1] + camera_focus[1] + (sun_pos[1] - camera_true_pos[1]) * camera_zoom)
-        dif_pos = ((true_pos_sun[0] - pos_final[0])/camera_zoom, (true_pos_sun[1] - pos_final[1])/camera_zoom) # Différence de position (pour centrer le repère)
-        dist_sun = (dif_pos[0]**2 + dif_pos[1]**2)**0.5 # Distance (pour avoir un cercle trigo de rayon 1)
-        angle = math.acos(dif_pos[0]/dist_sun)/math.pi*180 # Calcul de l'angle grâce à arc cos
+        true_pos_sun = (
+            (sun_pos[0] + camera_focus[0]
+             + (sun_pos[0] - camera_true_pos[0]) * camera_zoom),
+            (sun_pos[1] + camera_focus[1]
+             + (sun_pos[1] - camera_true_pos[1]) * camera_zoom)
+        )
+        dif_pos = (
+            (true_pos_sun[0] - pos_final[0])/camera_zoom,
+            (true_pos_sun[1] - pos_final[1])/camera_zoom
+        ) # Différence de position (pour centrer le repère)
+        dist_sun = (dif_pos[0]**2 + dif_pos[1]**2)**0.5 # Distance (pour avoir
+                                                        # un cercle trigo de
+                                                        # rayon 1)
+        angle = math.acos(dif_pos[0]/dist_sun)/math.pi*180 # Calcul de l'angle
+                                                           # grâce à arc cos
         if math.asin(dif_pos[1]/dist_sun) < 0:
-            angle = -angle # Ajustement (pour avoir 360° au lieu de seulement 180°)
+            angle = -angle # Ajustement (pour avoir 360° au lieu de seulement
+                                                                      # 180°)
         
-        # Création d'un demi-cercle (compliqué) avec PIL (pygame ne sait pas faire ça)
+        # Création d'un demi-cercle (compliqué) avec PIL (pygame ne sait pas
+                                                                 # faire ça)
         pil_image = Image.new("RGBA", (size, size))
         pil_draw = ImageDraw.Draw(pil_image)
-        pil_draw.pieslice((0, 0, size-1, size-1), angle+90, angle-90, fill=(int(lune[4][0]/10), int(lune[4][1]/10), int(lune[4][2]/10))) # Lune partie ombragée
-        pil_draw.pieslice((0, 0, size-1, size-1), angle-90, angle+90, fill=lune[4]) # Lune partie éclairée
+        pil_draw.pieslice(
+            (0, 0, size-1, size-1), angle+90, angle-90,
+            fill=(int(lune[4][0]/10), int(lune[4][1]/10), int(lune[4][2]/10))
+        ) # lune partie ombragée
+        pil_draw.pieslice(
+            (0, 0, size-1, size-1), angle-90, angle+90, fill=lune[4]
+        ) # lune partie éclairée
         
         # On convertie cette image en image pygame
         mode = pil_image.mode
@@ -788,20 +1103,29 @@ class Gestion_Planete:
         screen.blit(image, pos_final)
 
 
-    def draw_all_planets(self, date: int, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int), vitesse: float) -> None:
+    def draw_all_planets(
+        self, date: int, camera_zoom: float, camera_true_pos: List(int, int),
+        camera_focus: List(int, int), sun_pos: List(int, int),
+        vitesse: float) -> None:
         '''Dessine toutes les planètes et lunes'''
 
         # Affichage des lunes
         for lune in self.lunes:
-            self.draw_lune(date, lune, camera_zoom, camera_true_pos, camera_focus, sun_pos)
+            self.draw_lune(
+                date, lune, camera_zoom, camera_true_pos, camera_focus, sun_pos
+            )
 
         # Affichage des planètes
         for planete in self.planetes:
-            self.draw_planet(date, planete, camera_zoom, camera_true_pos, camera_focus, sun_pos, vitesse)
+            self.draw_planet(
+                date, planete, camera_zoom, camera_true_pos, camera_focus,
+                sun_pos, vitesse
+            )
     
 
     def get_followed_pos(self) -> Tuple(float, float) :
-        '''Permet de récupérer les coordonnées de la planète suivie ainsi que sa distance au soleil (en UA)'''
+        '''Permet de récupérer les coordonnées de la planète suivie ainsi que sa
+        distance au soleil (en UA)'''
 
         for planete in self.planetes:
             if planete[self.data_index][0]:
@@ -814,11 +1138,16 @@ class Gestion_Planete:
 
         mouse = pygame.mouse.get_pos() # On récupère la position du curseur
         for planete in self.planetes:
-            # Le +5 à la fin de la condition ci-dessous permet de pouvoir cliquer plus facilement sur une planète
-            if ((mouse[0]-planete[self.data_index][1][0])**2 + (mouse[1]-planete[self.data_index][1][1])**2)**0.5 <= planete[self.data_index][2] + 5:
+            # Le +5 à la fin de la condition ci-dessous permet de pouvoir
+            # cliquer plus facilement sur une planète
+            if (((mouse[0]-planete[self.data_index][1][0])**2
+                + (mouse[1]-planete[self.data_index][1][1])**2
+                )**0.5 <= planete[self.data_index][2] + 5):
                 # Cas où une planète est cliquée
                 planete[self.data_index][0] = True
-                return True, planete[self.data_index][3], planete[self.data_index][4]
+                return (True,
+                        planete[self.data_index][3],
+                        planete[self.data_index][4])
         # Cas où aucune planète n'est cliquée (else:)
         return False, (0, 0), 0
     
@@ -835,7 +1164,8 @@ def get_followed_planet(gest: Gestion_Planete) :
 
         for planete in gest.planetes:
             if planete[gest.data_index][0]:
-                return 'A B C D E F G H'.split()[gest.planetes.index(planete)]  # utilisation lettres pour appel affichage données 
+                # utilisation lettres pour appel affichage données 
+                return 'A B C D E F G H'.split()[gest.planetes.index(planete)]
         return (0, 0) # Cas où aucune planète n'est suivie
 
 

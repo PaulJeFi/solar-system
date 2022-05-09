@@ -104,19 +104,19 @@ def main():
             # Recupération coordonnées souris
             pos_souris = pygame.mouse.get_pos()
 
-            # Vérifie si souris sur le boton et lance appli si clique dans la zone
+            # Vérifie si souris sur le bouton et lance l'appli si clique dans la zone
             if pos_souris[0] > 210 and pos_souris[0] < 360 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pygame.time.wait(100)
                     tuto.main()
                     
             
-            # Vérifie si souris sur le boton et quitte appli si clique dans la zone
+            # Vérifie si souris sur le bouton et quitte l'appli si clique dans la zone
             if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     validquit = True
 
-            # Vérifie sourie pour le bouton de lancement
+            # Vérifie souris pour le bouton de lancement
             if pos_souris[0] > 460 and pos_souris[0] < 630 and pos_souris[1] > 440 and pos_souris[1] < 510:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     interface.main()
