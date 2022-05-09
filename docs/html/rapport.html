@@ -40,7 +40,7 @@
                 </li>
                 <li>
                     <a href="https://github.com/ChamaloDev">
-                        SAINT LÉGER Térence
+                        DE SAINT LÉGER Térence
                     </a>;
                 </li>
                 <li>
@@ -76,7 +76,7 @@
             https://stackoverflow.com/questions/29368902/how-can-i-wrap-my-markdown-in-an-html-div
             https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/
         -->
-        <img src="https://raw.githubusercontent.com/PaulJeFi/solar-system/main/docs/html/para.png" height="500" width="1300">
+        <div class="whiteBG"><img class="paradigme" src="https://raw.githubusercontent.com/PaulJeFi/solar-system/main/docs/html/para.png" height="500" width="1300"></div>
 
         <div class="inter-titre">
             <h2 class="tip">Nos références</h2>
@@ -84,17 +84,23 @@
                 <u>Pour que notre modélisation du Système Solaire soit la plus proche possible de 
                 la réalité, nous avons choisi plusieurs références :</u>
                 <br>
-                <li>
-                    Pour le calcul des phases de la Lune, nous avons décidé de qualibrer le système  
-                    à partir de la date du 18 janvier 2022, qui était une pleine Lune.
-                </li><li>
-                    Les données proviennent toutes de la théorie VSOP87 et du livre <i>Calculs astonomiques à l'usage des amateurs</i> de Jean Meeus.
-                </li><li>Les principaux termes de la théorie VSOP87 proviennent de la NASA.
-                </li>
-                <li><em><strong><i>Les lois de Kepler ont été utilisées pour la simulation.</i></strong></em></li>
+                <ul type="disc">
+                    <li>
+                        Pour le calcul des phases de la Lune, nous avons décidé de qualibrer le système  
+                        à partir de la date du 18 janvier 2022, qui était une pleine Lune.
+                    </li>
+                    <li>
+                        Nous avons utilisé le site <a href="calendrier.com">calendrier.com</a>
+                        pour récupérer des informations sur les dates des signes astrologiques du Zodiac et chinois.
+                    </li>
+                    <li>Les données proviennent toutes de la théorie VSOP87 et du livre <i>Calculs astonomiques à l'usage des amateurs</i> de Jean Meeus.</li>
+                    <li>Les principaux termes de la théorie VSOP87 proviennent de la NASA.</li>
+                    <li><em><strong><i>Les lois de Kepler ont été utilisées pour la simulation.</i></strong></em></li>
+                </ul>
             </p>
+            <br>
         </div>
-        
+
         <!-- fonctionnalités supplémentaires -->
         <h2 class="titre">Fonctionnalitées supplémentaires</h2>
         <div class="fonctionalites">
@@ -103,29 +109,46 @@
                     suplémentaires :</u><br>
             </p>
             <p>
-                - affichage des phases de la Lune;
-                <br>
-                - affichade des signes astrologiques chinois et du Zodiac;
-                <br>
-                - musique de fond
-                <br>
-                - accélération, décélération de la vitesse;
-                <br>
-                - mettre en pause la simulation;
-                <br>
-                - tutoriel accessible depuis le menu;
-                <br>
-                - suivi des planètes;
-                <br>
-                - affichage des données des planètes;
-                <br>
-                - déplacement horizontal et vertical;
-                <br>
-                - zoom / dézoom;
-                <br>
-                - éléments historiques à certaines dates (ex: Apollo 11);
-                <br>
-                - échelle indiquant les distances (et le niveau de zoom).
+                <ul type="disc">
+                    <p>
+                    <li>Un tutoriel accessible depuis le menu</li>
+                    Cela vous permettra de facilement vous familliariser avec ce simulateur
+                    </p><p>
+                    <li>L'affichage des phases de la Lune.</li>
+                    Cela comprend :
+                    <ul type="circle">
+                        <li>Un GIF pour visualiser la phase de la Lune</li>
+                        <li>Le taux de luminosité de la face visible de la Lune</li>
+                        <li>L'affichage de la face de la Lune à l'ombre dans la simulation du système solaire</li>
+                    </ul>
+                    </p><p>
+                    <li>L'affichade des signes astrologiques chinois et du Zodiac</li>
+                    </p><p>
+                    <li>Une musique de fond</li>
+                    </p><p>
+                    <li>Le contrôle de la vitesse de la simulation :</li>
+                    <ul type="circle">
+                        <li>En accélérant et décélérant la simulation</li>
+                        <li>En mettant en pause la simulation</li>
+                    </ul>
+                    </p><p>
+                    <li>Un système dynamique de déplacement de la caméra</li>
+                    Cela se traduit par :
+                    <ul type="circle">
+                        <li>La possibilité de déplacer la caméra avec les touches directionnelles</li>
+                        Cela peut aussi être fait avec la souris en faisant du "click and drag" (cliquer et faire glisser)
+                        <li>L'option de zoom et dézoom de la simulation à l'aide d'un slider</li>
+                    </ul>
+                    </p><p>
+                    <li>Le suivi des planètes avec la caméra</li>
+                    <ul type="circle">
+                        <li>Cela permet de suivre une planète automatiquement</li>
+                        <li>Cela permet aussi de voir le système solaire d'un autre point de vue,</li>
+                        en faisant tourner tous les astre autour de la planète choisie
+                    </ul>
+                    </p>
+                    <li>Une échelle indiquant les distances (et le niveau de zoom)</li>
+                </ul>
             </p>
         </div>
             

@@ -59,6 +59,7 @@ div.intro{
     margin-top: -25px;
     margin-left: 25px;
     margin-right: 25px;
+    margin-bottom: 10px;
 }
 
 div.intro p{
@@ -106,6 +107,7 @@ div.tip{
 div.inter-titre{
     background-color: whitesmoke;
     margin: 25px;
+    margin-bottom: 50px;
 }
 
 div.inter-titre p.reference{
@@ -176,4 +178,23 @@ div.lien{
 div.lien a{
     color: white;
     text-decoration: none;
+}
+
+div.whiteBG{
+    background-color: whitesmoke;
+    margin-top: -25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: -50px;
+}
+
+img.paradigme{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+
+p{
+    margin: 0%;
 }
