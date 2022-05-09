@@ -947,8 +947,8 @@ class Gestion_Planete:
         self.planetes = [self.mercury, self.venus, self.terre, self.mars,
                          self.jupiter, self.saturne, self.uranus, self.neptune]
 
-        #           [Astre père,     temps orbite, angle initial, distance astre père, couleur,         taille]
-        self.lune = [self.terre[:3], 27.32,        5.22,          300,                 (225, 225, 225), 32    ]
+        #           [Astre père,     temps orbite,        angle initial, distance astre père, couleur,         taille]
+        self.lune = [self.terre[:3], 27.3215277777777778, 5.52,          300,                 (225, 225, 225), 32    ]
 
         self.lunes = [self.lune]
 
@@ -1088,7 +1088,7 @@ class Gestion_Planete:
         pil_draw = ImageDraw.Draw(pil_image)
         pil_draw.pieslice(
             (0, 0, size-1, size-1), angle+90, angle-90,
-            fill=(int(lune[4][0]/10), int(lune[4][1]/10), int(lune[4][2]/10))
+            fill=(int(lune[4][0]/5), int(lune[4][1]/5), int(lune[4][2]/5))
         ) # lune partie ombragée
         pil_draw.pieslice(
             (0, 0, size-1, size-1), angle-90, angle+90, fill=lune[4]
@@ -1338,15 +1338,16 @@ class Text_Input:
 class Trainee:
 
     def __init__(self, anim_speed: int=1, init_now: bool=False):
-        self.anim_speed = anim_speed
-        self.current_frame = 0
+        self.anim_speed = anim_speed # Vitesse d'apparition et disparition
+        self.current_frame = 0 # Frame actuelle
+                               # Si self.current_frame == 0 : Update l'affichage
         self.all_points = [] # Argument : [pos x y, durée de vie]
         if init_now:
             self.pre_start()
     
 
     def pre_start(self):
-        '''créer coordonnées de 255 points aléatoirement'''
+        '''Créer coordonnées de 255 points aléatoirement affin d'éviter une periode sans points au démarage'''
         for i in range(255):
             self.all_points.append([(random.randint(0, width), random.randint(0, height)), 255-i])
     
@@ -1354,7 +1355,7 @@ class Trainee:
     def add_point(self, pos: Tuple(float, float)):
         '''Ajouter un point à afficher'''
 
-        if not self.current_frame:
+        if self.current_frame == 0:
             self.all_points.append([pos, 255])
             self.current_frame = self.anim_speed
         self.current_frame -= 1
@@ -1365,10 +1366,12 @@ class Trainee:
 
         for point in self.all_points:
             if point[1] > 0:
+                # Affichage du point
                 screen.set_at(point[0], [255 - abs(point[1] * 2 - 255)] * 3)
                 if not self.current_frame:
+                    # Réduction de la durrée de vie restante
                     point[1] -= 1
-            else:
+            else: # Supression des points "morts"
                 self.all_points.remove(point)
 
 
