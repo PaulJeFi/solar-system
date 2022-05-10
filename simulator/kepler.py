@@ -78,10 +78,10 @@ class Planete :
         # Angle du corps si l'orbit était circulaire
         mean_anomaly = t * math.pi * 2
         # Résoudre l'anomalie eccentrique (angle du corps dans son orbite elliptique)
-        eccentric_anomaly = solve_kepler(mean_anomaly, self.eccentricity)
+        eccentric_anomaly = -solve_kepler(mean_anomaly, self.eccentricity)
 
         # Ajour du décalage
-        eccentric_anomaly += self.angle
+        eccentric_anomaly -= self.angle
 
         # Calculer les coordonnées cartésiennes
         point_x = math.cos(eccentric_anomaly) * self.semi_major_axis + self.ellipse_centre_X

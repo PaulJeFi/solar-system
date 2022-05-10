@@ -131,7 +131,10 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"   
 for cle in signes:
     if cle in "M N O P Q R S T U V W X".split():
         img_name = signes[cle][0].replace(' ', '')
-        signes[cle][3] = pygame.transform.scale(pygame.image.load(main_path+"images/"+ img_name +".jpg"), (175, 175))
+        signes[cle][3] = pygame.transform.scale(
+            pygame.image.load(main_path+"images/"+ img_name +".jpg"),
+            (175, 175)
+        )
 
 def extract_gif(gif_path: str) -> List(pygame.Surface):
     '''Permet de séparer un GIF en une liste d'images'''
