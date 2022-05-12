@@ -59,15 +59,21 @@ class ecran:
         tuto = font.render("Tutoriel", 1, BLEU_STP)
         screen.blit(tuto, (230, 462))
         
-        # Bouton quitter
+        # Bouton de la base de donnée externe
         pygame.draw.rect(screen, OR_STP, ((720, 450),(150, 50)), 0, 10)
-        quitter = font.render("QUITTER", 1, BLEU_STP)
-        screen.blit(quitter, (733, 462))
+        ext = font.render("Galaxies", 1, BLEU_STP)
+        screen.blit(ext, (733, 462))
 
         # Bouton lancement système
         pygame.draw.rect(screen, GREEN_CUSTOM2, ((460, 440),(170, 70)), 0, 10)
         start = moyfont.render("START", 1, SOFT_WHITE)
         screen.blit(start, (490, 460))
+
+        # Bouton quitter
+        pygame.draw.rect(screen, RED, ((470, 530),(150, 50)), 0, 10)
+        quitter = font.render("QUITTER", 1, WHITE)
+        screen.blit(quitter, (483, 542))
+        
 
 
     def quitter(self):
@@ -111,8 +117,8 @@ def main():
                     tuto.main()
                     
             
-            # Vérifie si souris sur le bouton et quitte l'appli si clique dans la zone
-            if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
+            # Vérifie si souris sur le bouton et affiche message pour quitte l'appli si clique dans la zone
+            if pos_souris[0] > 470 and pos_souris[0] < 620 and pos_souris[1] > 530 and pos_souris[1] < 580:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     validquit = True
 
@@ -120,6 +126,10 @@ def main():
             if pos_souris[0] > 460 and pos_souris[0] < 630 and pos_souris[1] > 440 and pos_souris[1] < 510:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     interface.main()
+
+            if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    print("paul tu peux ajouter ton truc là")
                     
 
             if validquit == True:
