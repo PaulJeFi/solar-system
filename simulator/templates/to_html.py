@@ -7,7 +7,7 @@ my_text = ''
 
 for galaxie in galaxies:
     my_text += f'''                <tr>
-                        <td>{galaxie}</td>
+                        <td>{galaxie[:-1]}</td>
                         <td>{galaxies[galaxie]['Type']}</td>
                         <td>{galaxies[galaxie]['RA']}</td>
                         <td>{galaxies[galaxie]['Dec']}</td>
