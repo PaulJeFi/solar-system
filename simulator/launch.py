@@ -129,6 +129,7 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     interface.main()
 
+            # Paul's Satan's tricks
             if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     webbrowser.open('file://' + os.path.realpath('./simulator/templates/index.html'))
