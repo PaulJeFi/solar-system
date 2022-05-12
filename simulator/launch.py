@@ -3,6 +3,8 @@ import sys
 import interface
 from tools import main_path
 import tuto
+import webbrowser
+import os
 
 BLACK = (0, 0, 0)
 GRAY = (75, 75, 75)
@@ -129,7 +131,7 @@ def main():
 
             if pos_souris[0] > 720 and pos_souris[0] < 870 and pos_souris[1] > 445 and pos_souris[1] < 502:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print("paul tu peux ajouter ton truc là")
+                    webbrowser.open('file://' + os.path.realpath('./simulator/templates/index.html'))
                     
 
             if validquit == True:
