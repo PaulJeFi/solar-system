@@ -4,21 +4,104 @@
         <meta charset="utf-8">
         <title> Galaxies du Groupe Local </title>
         <style>
-            table
-            {
+            
+            table{
                 border-collapse: collapse;
+                text-align: center;
             }
             td, th /* Mettre une bordure sur les td ET les th */
             {
-                border: 1px solid black;
+                border: 2px solid black;
+		padding: 5px;
+		padding-left: 10px;
+		padding-right: 10px;
+            }
+            h1{
+                padding-top: 15px;
+		padding-bottom: 15px;
+                text-align: center;
+                color:#fbaf00;
+            }
+
+            /* éléments de la bannière */
+            header.ban{
+                color: #fbaf00;
+                padding: none;
+                height: 210px;
+                margin: -10px;
+                margin-bottom: 0px;
+                display: inline-block;
+                display: flex;
+                background-color: #024b55;
+            }
+            div.logo{
+                margin-top: 5px;
+                margin-left: 23%;
+                height: 145px;
+                /* width: 150px; */
+            }
+            div.nomduprojet h1{
+                color: #fbaf00;
+                margin-top: 25px;
+                margin-left: 20px;
+                font-weight: 5px;
+                font-size: 115px;
+            }
+
+
+            div.ligne{
+                height: 5px;
+                background-color: #fbaf00;
+                margin-left: -10px;
+                margin-right: -10px;
+                box-shadow: 0px 0px 10px 0px;
+            }
+	    div.lignefinale{
+                height: 5px;
+                background-color: #fbaf00;
+                margin-left: -10px;
+                margin-right: -10px;
+		margin-top: 35px;
+		box-shadow: 0 0 10px 0;
+	    }
+	    div.table{
+		padding-left: 210px;
+	    }
+	    
+
+            /* le tableau */
+            thead{
+                background-color: #024b55;
+            }
+            tbody{
+                background-color: whitesmoke;
+            }
+
+            body{
+                background-color: #272727;
             }
         </style>
     </head>
     
     <body>
+        <!-- bannière -->
+        <header class="ban">
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/PaulJeFi/solar-system/main/simulator/images/logo2.png">
+            </div>
+            <div class="nomduprojet">
+                <h1 class="nomduprojet">
+                    Spacior
+                </h1>
+            </div>
+        </header>
+
+        <div class="ligne"></div>
+        <!-- fin de la bannière -->
+
+        <h1>Galaxies du Groupe Local</h1>
+	<div class="table">
         <table>
-            <caption>Galaxies du Groupe Local</caption>
-         
             <thead> <!-- En-tête du tableau -->
                 <tr>
                     <th>Nom</th>
@@ -3055,6 +3138,8 @@
                 
             </tbody>
          </table>
+	 </div>
+	 <div class="lignefinale"></div>
     </body>
 
 </html>
