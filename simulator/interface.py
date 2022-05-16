@@ -101,18 +101,18 @@ for key in list(data.keys())[:-1]: # Le "[:-1]" permet de ne pas charger la
 
 
 # Données signes astrologiques
-signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"         ],
-          'B': [" Taureau  ", "21 Avril - 21 Mai",         "Élément : Terre"       ],
-          'C': ["  Gémaux  ", "22 Mai- 21 Juin",           "Élément : Air"         ],
-          'D': ["  Cancer  ", "22 Juin - 22 Juillet",      "Élément : Eau"         ],
-          'E': ["   Lion   ", "23 Juillet - 22 Août",      "Élément : Feu"         ],
-          'F': ["  Vierge  ", "23 Août - 22 Septembre",    "Élément : Terre"       ],
-          'G': [" Balance  ", "23 Septembre - 22 Octobre", "Élément : Air"         ],
-          'H': [" Scorpion ", "23 Octobre - 22 Novembre",  "Élément : Feu"         ],
-          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu"         ],
-          'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre"       ],
-          'K': [" Verseau  ", "21 Janvier - 18 Février",   "Élément : Air"         ],
-          'L': [" Poisson  ", "19 Février - 20 Mars",      "Élément : Eau"         ],
+signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu",    None],
+          'B': [" Taureau  ", "21 Avril - 21 Mai",         "Élément : Terre",  None],
+          'C': ["  Gémaux  ", "22 Mai- 21 Juin",           "Élément : Air",    None],
+          'D': ["  Cancer  ", "22 Juin - 22 Juillet",      "Élément : Eau",    None],
+          'E': ["   Lion   ", "23 Juillet - 22 Août",      "Élément : Feu",    None],
+          'F': ["  Vierge  ", "23 Août - 22 Septembre",    "Élément : Terre",  None],
+          'G': [" Balance  ", "23 Septembre - 22 Octobre", "Élément : Air",    None],
+          'H': [" Scorpion ", "23 Octobre - 22 Novembre",  "Élément : Feu",    None],
+          'I': ["Sagittaire", "23 Novembre - 21 Décembre", "Élément : Feu",    None],
+          'J': ["Capricorne", "22 Décembre - 20 Janvier",  "Élément : Terre",  None],
+          'K': [" Verseau  ", "21 Janvier - 18 Février",   "Élément : Air",    None],
+          'L': [" Poisson  ", "19 Février - 20 Mars",      "Élément : Eau",    None],
 
           'M': ["  Dragon  ", "Dernière Année : 2012",     "Prochaine : 2024", None],
           'N': [" Serpent  ", "Dernière Année : 2013",     "Prochaine : 2025", None],
@@ -129,12 +129,11 @@ signes = {'A': ["  Bélier  ", "21 Mars - 20 Avril",        "Élément : Feu"   
 
 # Préchargement des images
 for cle in signes:
-    if cle in "M N O P Q R S T U V W X".split():
-        img_name = signes[cle][0].replace(' ', '')
-        signes[cle][3] = pygame.transform.scale(
-            pygame.image.load(main_path+"images/"+ img_name +".jpg"),
-            (175, 175)
-        )
+    img_name = signes[cle][0].replace(' ', '')
+    if cle in "A B C D E F G H I J K L".split():
+        signes[cle][3] = pygame.transform.scale(pygame.image.load(main_path+"images/"+ img_name +".png"), (175, 125))
+    else:
+        signes[cle][3] = pygame.transform.scale(pygame.image.load(main_path+"images/"+ img_name +".jpg"), (175, 175))
 
 def extract_gif(gif_path: str) -> List(pygame.Surface):
     '''Permet de séparer un GIF en une liste d'images'''
@@ -178,8 +177,8 @@ def load_folder(folder_path: str) -> List(pygame.Surface):
 
 # Chargement du GIF de la Lune (choisir la méthode qui vous convient le mieux)
 
-IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
-# IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
+# IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
+IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
 
 
 
@@ -282,6 +281,20 @@ class ecran():
         self.wallE_x             = 1080 # position x wall-E
         self.wallE_y             =   25 # position y wall-E
         self.wallE_rotation      =    4 # rotation wall-E
+
+        # Autres images utilisées
+        self.image_picto_astro = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictoastro.png"),
+            (46, 46))
+        self.image_picto_astro_ch = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictofire.png"),
+            (42, 42))
+        self.image_picto_lune = pygame.transform.scale(
+            pygame.image.load(main_path+"images/pictolune.png"),
+            (65, 50))
+        self.image_trajectoire = pygame.transform.scale(
+            pygame.image.load(main_path+"images/trajectoire.png"),
+            (46, 46))
 
 
     def espace_donnee(self) -> None:
@@ -505,7 +518,7 @@ class ecran():
             0, int(2*self.zoom_slider_size_factor))
 
 
-    def barre_action(self, gre, chn, lune) -> None:
+    def barre_action(self, gre: bool, chn: bool, lune: bool, traj: bool) -> None:
         '''Créer une barre sur la gauche pour ajouter boutons et interactions'''
 
         # Change la couleur en fonction de l'activation du module
@@ -521,25 +534,24 @@ class ecran():
             color_lune = GREEN
         else:
             color_lune = OR_STP
+        if traj:
+            color_traj = GREEN
+        else:
+            color_traj = OR_STP
 
         # Fait apparaitre les différents boutons 
         pygame.draw.rect(screen, BLEU_STP, ((0, 0),   (50, 600)))
         pygame.draw.rect(screen, color_gre,   ((0, 120), (50, 50)))
-        pygame.draw.rect(screen, color_chn,   ((0, 270), (50, 50)))
-        pygame.draw.rect(screen, color_lune,   ((0, 420), (50, 50)))
+        pygame.draw.rect(screen, color_chn,   ((0, 220), (50, 50)))
+        pygame.draw.rect(screen, color_lune,   ((0, 320), (50, 50)))
+        pygame.draw.rect(screen, color_traj,   ((0, 420), (50, 50)))
         pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
-        picto_astro = pygame.transform.scale(
-            pygame.image.load(main_path+"images/pictoastro.png"),
-            (46, 46))
-        screen.blit(picto_astro, (2, 122))
-        picto_astro_ch = pygame.transform.scale(
-            pygame.image.load(main_path+"images/pictofire.png"),
-            (42, 42))
-        screen.blit(picto_astro_ch, (2, 273))
-        pictolune = pygame.transform.scale(
-            pygame.image.load(main_path+"images/pictolune.png"),
-            (65, 50))
-        screen.blit(pictolune, (-10, 420))
+        
+        # Icones des boutons
+        screen.blit(self.image_picto_astro, (2, 122))
+        screen.blit(self.image_picto_astro_ch, (2, 223))
+        screen.blit(self.image_picto_lune, (-10, 320))
+        screen.blit(self.image_trajectoire, (2, 422))
 
         # bouton menu
         pygame.draw.rect(screen, GRAY,  ((0,  0), (50, 50)))
@@ -641,12 +653,9 @@ class ecran():
                 ((250, 200), (45,  45)),
                 0, 0, 10,  0, 0, 30
             )
-            img_name = getsigne[0].replace(' ', '')    
 
-            # images
-            img = pygame.image.load(main_path+"images/"+ img_name +".png")
-            img = pygame.transform.scale(img, (175, 125))
-            screen.blit(img, (660, 240))
+            # image
+            screen.blit(getsigne[3], (660, 240))
 
             # textes
             text  = moyfont.render(getsigne[0], 1, OR_STP )
@@ -1059,7 +1068,7 @@ class Gestion_Planete:
         # On calcule la position de l'astre (lune)
 
         # Angle (en radians) de la lune par rapport à la planète
-        orbit_angle = (date % lune[1])/lune[1] * 2*math.pi + lune[2] 
+        orbit_angle = -((date % lune[1])/lune[1] * 2*math.pi + lune[2])
 
         pos_lune = (
             math.cos(orbit_angle)*lune[3]*camera_zoom,
@@ -1119,8 +1128,14 @@ class Gestion_Planete:
     def draw_all_planets(
         self, date: int, camera_zoom: float, camera_true_pos: List(int, int),
         camera_focus: List(int, int), sun_pos: List(int, int),
-        vitesse: float) -> None:
-        '''Dessine toutes les planètes et lunes'''
+        vitesse: float, trajectoire: bool) -> None:
+        '''Dessine toutes les planètes, leurs trajectoires ainsi que leurs lunes'''
+
+        # Affichage des trajectoires des planètes
+        if trajectoire:
+            for planete in self.planetes:
+                for point in planete[0].get_path(camera_zoom, camera_true_pos, camera_focus, sun_pos):
+                    screen.set_at(point, (planete[3][0]//2, planete[3][1]//2, planete[3][2]//2))
 
         # Affichage des lunes
         for lune in self.lunes:
@@ -1400,6 +1415,7 @@ def main() -> None:
     can_press_button = True
     lunaison = False
     objet = False
+    trajectoire = False
 
     appel = "C"
     sprite = "wallE"
@@ -1590,7 +1606,7 @@ def main() -> None:
 
         # on fait apparaitre les différents astres
         #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
-        planetes.draw_all_planets(temps, camera_zoom, camera_true_pos, camera_focus, sunpos, true_speed)
+        planetes.draw_all_planets(temps, camera_zoom, camera_true_pos, camera_focus, sunpos, true_speed, trajectoire)
         pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom)], 200*camera_zoom+1) # Soleil
         #for point in moon.orbit_path :
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
@@ -1611,7 +1627,7 @@ def main() -> None:
             HUD.ecriture_lune(temps)
 
         # Mise en place des éléments permanents de l'interface
-        HUD.barre_action(signe_astro, signe_astro_ch, lunaison)
+        HUD.barre_action(signe_astro, signe_astro_ch, lunaison, trajectoire)
         HUD.play_pause_date()
         HUD.vitesse_lecture(vitesse)
         HUD.display_bouton_pause(jouer)
@@ -1738,7 +1754,7 @@ def main() -> None:
                 signe_astro = time_set.verif() 
 
             # bouton signe astrologique chinois
-            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 270 and pos_souris[1] < 320:
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 220 and pos_souris[1] < 270:
                 signe_astro = False
                 signe_astro_ch = time_set.verif()
 
@@ -1749,7 +1765,7 @@ def main() -> None:
                 elif signe_astro_ch and data or signe_astro_ch and lunaison:
                     signe_astro_ch = False
 
-            # Bouton fermeture signe astrologique ( tous ) avec data fermé
+            # Bouton fermeture signe astrologique (tous) avec data fermé
             if pos_souris[0] > 250 and pos_souris[0] < 295 and pos_souris[1] > 200 and pos_souris[1] < 245:
                 if signe_astro and not data or signe_astro and not lunaison:
                     signe_astro = False
@@ -1757,7 +1773,7 @@ def main() -> None:
                     signe_astro_ch = False
 
             # Bouton affichage lunaison et info
-            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 420 and pos_souris[1] < 470:
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 320 and pos_souris[1] < 370:
                 planetes.unfollow_all()
                 camera_true_pos = list(sunpos)
                 camera_focus = [0, 0]
@@ -1767,6 +1783,10 @@ def main() -> None:
                 if not lunaison:
                     vitesse = vitesse_normale
             
+            # bouton pour l'affichage des trajectoires
+            if pos_souris[0] > 0 and pos_souris[0] < 50 and pos_souris[1] > 420 and pos_souris[1] < 470:
+                trajectoire = not trajectoire
+
             # Variable utilisée pour le "click and drag"
             mouse_current_pos = pygame.mouse.get_pos()
         

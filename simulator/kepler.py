@@ -1,3 +1,4 @@
+from tools import Tuple, List
 import math
 
 # G = 6.674_30 × 10**-(11) # m3 kg−1 s−2
@@ -58,16 +59,28 @@ class Planete :
         else :
             self.orbital_period = None
 
-    def compute_orbit_path(self, camera_zoom: float=1, camera_pos: tuple=(540, 310), sunpos: tuple=(540, 310)) -> None :
+    def compute_orbit_path(self) -> None :
         self.orbit_path = []
 
         for i in range(orbit_resolution) :
             angle = (i / (orbit_resolution - 1)) * math.pi * 2
             px = math.cos(angle) * self.semi_major_axis + self.ellipse_centre_X
             py = math.sin(angle) * self.semi_minor_axis + self.ellipse_centre_Y # dans la vidéo, il utilise ellipse_centre_x ?
-            px = int(sunpos[0] + (px - camera_pos[0]) * camera_zoom) # Ajustements pour le zoom
-            py = int(sunpos[1] + (py - camera_pos[1]) * camera_zoom) # Ajustements pour le zoom
             self.orbit_path.append([px, py])
+    
+    def get_path(self, camera_zoom: float, camera_true_pos: List(int, int), camera_focus: List(int, int), sun_pos: List(int, int)) -> Tuple(Tuple(int, int)):
+        '''Permet d'obtenir une liste de positions représentant la trajectoire de la planète'''
+        return  (
+                (
+                int(sun_pos[0] + camera_focus[0]
+                + (pos[0] - sun_pos[0]) * camera_zoom*3000
+                + (sun_pos[0] - camera_true_pos[0]) * camera_zoom),
+                int(sun_pos[1] + camera_focus[1]
+                + (pos[1] - sun_pos[1]) * camera_zoom * 3000
+                + (sun_pos[1] - camera_true_pos[1]) * camera_zoom)
+                )
+                for pos in self.orbit_path
+                )
 
     def calculate_point_from_time(self, t: float) -> list :
 
