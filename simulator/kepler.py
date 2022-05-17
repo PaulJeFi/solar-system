@@ -5,7 +5,7 @@ import math
 # On veut convertir G pour que son unité de temps soit le jour, et son unité de distance l'UA.
 G = 1.4818517 * 10 ** (-34) # kg^-1 • AU^3 • jour^(-2)
 
-orbit_resolution = 100
+orbit_resolution = 1000
 
 # On utilise la méthode de Newton pour résoudre l'équation de Kepler.
 def kepler_equation(E: float, M: float, e:float) -> float:
