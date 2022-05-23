@@ -190,9 +190,9 @@ div.whiteBG{
 
 img.paradigme{
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     margin-bottom: 50px;
+    height: auto;
+    width: 100%;
 }
 
 p{
