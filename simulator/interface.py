@@ -1,5 +1,3 @@
-from cmath import phase
-import math
 import math
 from os import times, walk
 import kepler as kp
