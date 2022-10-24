@@ -520,42 +520,34 @@ class ecran():
         '''Créer une barre sur la gauche pour ajouter boutons et interactions'''
 
         # Change la couleur en fonction de l'activation du module
-        if chn:
-            color_chn = GREEN
-        else:
-            color_chn = OR_STP 
-        if gre:
-            color_gre = GREEN
-        else:
-            color_gre = OR_STP
-        if lune:
-            color_lune = GREEN
-        else:
-            color_lune = OR_STP
-        if traj:
-            color_traj = GREEN
-        else:
-            color_traj = OR_STP
+        color_chn = GREEN if chn else OR_STP 
+        color_gre = GREEN if gre else OR_STP
+        color_lune = GREEN if lune else OR_STP
+        color_traj = GREEN if traj else OR_STP
 
-        # Fait apparaitre les différents boutons 
-        pygame.draw.rect(screen, BLEU_STP, ((0, 0),   (50, 600)))
-        pygame.draw.rect(screen, color_gre,   ((0, 120), (50, 50)))
-        pygame.draw.rect(screen, color_chn,   ((0, 220), (50, 50)))
-        pygame.draw.rect(screen, color_lune,   ((0, 320), (50, 50)))
-        pygame.draw.rect(screen, color_traj,   ((0, 420), (50, 50)))
-        pygame.draw.rect(screen, RED,      ((0, 550), (50, 50)))
+        # Fait apparaitre les différents boutons
+        for color_and_pos in [(BLEU_STP,    ((0,   0), (50, 600))),
+                              (color_gre,   ((0, 120), (50,  50))),
+                              (color_chn,   ((0, 220), (50,  50))),
+                              (color_lune,  ((0, 320), (50,  50))),
+                              (color_traj,  ((0, 420), (50,  50))),
+                              (RED,         ((0, 550), (50,  50)))] :
+            pygame.draw.rect(screen, *color_and_pos)
+        
         
         # Icones des boutons
-        screen.blit(self.image_picto_astro, (2, 122))
-        screen.blit(self.image_picto_astro_ch, (2, 223))
-        screen.blit(self.image_picto_lune, (-10, 320))
-        screen.blit(self.image_trajectoire, (2, 422))
+        for element in [(self.image_picto_astro,    (  2, 122)),
+                        (self.image_picto_astro_ch, (  2, 223)),
+                        (self.image_picto_lune,     (-10, 320)),
+                        (self.image_trajectoire,    (  2, 422))] :
+            screen.blit(*element)
 
         # bouton menu
         pygame.draw.rect(screen, GRAY,  ((0,  0), (50, 50)))
-        pygame.draw.line(screen, WHITE, (10, 12), (40, 12), 3)
-        pygame.draw.line(screen, WHITE, (10, 25), (40, 25), 3)
-        pygame.draw.line(screen, WHITE, (10, 38), (40, 38), 3)
+        for element in [(WHITE, (10, 12), (40, 12), 3),
+                        (WHITE, (10, 25), (40, 25), 3),
+                        (WHITE, (10, 38), (40, 38), 3)] :
+            pygame.draw.line(screen, *element)
         
         # bouton quitter
         quitter = grandfont.render("X", 1, BLACK)
@@ -812,27 +804,26 @@ class ecran():
         pourcentage = font2.render(f"Pourcentage = {round(pourcent, 2)} %",
                                    1, BLEU_FC)
 
-        # Utilise cette différence pour déduire phase actuelle de la Lune 
-        if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100:
+        # Utilise cette différence pour déduire phase actuelle de la Lune
+
+        if TLune >= 0 * luneSur100 and TLune <= 12 * luneSur100 :
             lunaison = font2.render("Nouvelle Lune",             1 , BLEU_STP)
-        elif 12 * luneSur100 < TLune < 25 * luneSur100:
-            lunaison = font2.render("1er Croissant",             1 , BLEU_STP)
-        elif 20 * luneSur100 < TLune <= 30 * luneSur100:   
-            lunaison = font2.render("1er Quartier",              1 , BLEU_STP)
-        elif 30 * luneSur100 < TLune <= 45 * luneSur100:
-            lunaison = font2.render("Lune Gibbeuse Croissante",  1 , BLEU_STP)
-        elif 45 * luneSur100 < TLune <= 55 * luneSur100:
-            lunaison = font2.render("Pleine Lune",               1 , BLEU_STP)
-        elif 55 * luneSur100 < TLune <= 70 * luneSur100:
-            lunaison = font2.render("Lune Gibbeuse Déroissante", 1 , BLEU_STP)
-        elif 70 * luneSur100 < TLune <= 80 * luneSur100:
-            lunaison = font2.render("Dernier Quartier",          1 , BLEU_STP)
-        elif 80 * luneSur100 < TLune <= 95 * luneSur100:
-            lunaison = font2.render("Dernier Croissant",         1 , BLEU_STP)
-        elif 95 * luneSur100 < TLune <= 101 * luneSur100:
-            lunaison = font2.render("Nouvelle Lune",             1 , BLEU_STP)
-        else:
-            lunaison = font2.render("Erreur",                    1 , BLEU_STP)
+        else :
+            error_foud = True
+            for info_ in [(12, 25, "1er Croissant"),
+                                 (20, 30, "1er Quartier"),
+                                 (30, 45, "Lune Gibbeuse Croissante"),
+                                 (45, 55, "Pleine Lune"),
+                                 (55, 70, "Lune Gibbeuse Déroissante"),
+                                 (70, 80, "Dernier Quartier"),
+                                 (80, 95, "Dernier Croissant"),
+                                 (95, 101, "Nouvelle Lune")] :
+                if info_[0] * luneSur100 < TLune <= info_[1] * luneSur100 :
+                    lunaison = font2.render(info_[2], 1, BLEU_STP)
+                    error_foud = False
+                    break
+            if error_foud :
+                lunaison = font2.render("Erreur", 1, BLEU_STP)
 
         # Appel image du gif 
         gif = IMAGES_LUNE[
