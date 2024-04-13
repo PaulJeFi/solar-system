@@ -52,11 +52,12 @@ moyfont   = pygame.font.Font(None, 40)
 grandfont = pygame.font.Font(None, 60)
 
 jouer   = False  # Pour faire pause
-musique = False   # Pour activer/déactiver la musique
 
-if musique:
-    # Chargement de la musique ( si activée )
-    pygame.mixer.music.load(main_path+"musique/musique.mp3")
+# Initialisation de la musique
+pygame.mixer.music.init()
+pygame.mixer.music.load(main_path+"musique/musique.mp3")
+pygame.mixer.music.play()
+pygame.mixer.music.pause()
 
 
 # Données planètes
@@ -923,22 +924,6 @@ class ecran():
         screen.blit(txt, (148 - 6*len(valeur), 480))
 
 
-class sons():
-
-    def __init__(self) -> None:
-        pygame.mixer.init()
-        
-    def lecture(self):
-        '''Lancement lecture musique'''
-
-        sound = pygame.mixer.Sound(main_path+"musique/musiques.mp3")
-        pygame.mixer.Sound.play(sound)
-
-    def pause(self):
-        '''Musique en pause'''
-        pygame.mixer.music.pause()
-
-
 class Gestion_Planete:
 
     def __init__(self, mass_center: Tuple(int, int)) -> None :
@@ -1417,8 +1402,6 @@ def main() -> None:
 
     HUD = ecran()
     trainee = Trainee(5, True)
-    if musique:
-            SON = sons()
     time_set = Text_Input()
 
 
@@ -1442,9 +1425,6 @@ def main() -> None:
     camera_focus = (0, 0) # Postion de l'objet à suivre
     is_following = False # Permet de savoir si la caméra suit une planète
     p_dist = 0 # Distance de la planète suivie au Soleil en UA
-    
-    if musique:
-        SON.lecture()
 
     # Nom des objets à déplacer pour date spéciales
     wallE = "wallE"
@@ -1537,8 +1517,14 @@ def main() -> None:
                     if event.key == pygame.K_c:
                         if time_set.verif():
                             signe_astro_ch = not signe_astro_ch
+                    
+                    if event.key == pygame.K_m: # activer/désactiver la musique
+                        if pygame.mixer.music.get_busy():
+                            pygame.mixer.music.pause()
+                        else :
+                            pygame.mixer.music.unpause()
 
-                # On arrète de suivre la planète
+                # On arrête de suivre la planète
                 if event.key == pygame.K_BACKSPACE and not time_set.selected:
                     planetes.unfollow_all()
                     camera_true_pos = list(sunpos)
