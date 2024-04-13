@@ -54,7 +54,7 @@ grandfont = pygame.font.Font(None, 60)
 jouer   = False  # Pour faire pause
 
 # Initialisation de la musique
-pygame.mixer.music.init()
+pygame.mixer.init()
 pygame.mixer.music.load(main_path+"musique/musique.mp3")
 pygame.mixer.music.play()
 pygame.mixer.music.pause()
