@@ -1,5 +1,6 @@
 import math
-from os import times, walk
+from os import walk
+import pygame.gfxdraw
 import kepler as kp
 import pygame
 import sys
@@ -1018,7 +1019,10 @@ class Gestion_Planete:
         size = int(planete[4]*camera_zoom+1)
 
         # Affichage de la planète
-        pygame.draw.circle(screen, planete[3], pos_final, size)
+        if pos_final[0] >= -size and pos_final[1] >= -size and pos_final[0] <= width+size \
+                and pos_final[1] <= height+size : # on vérifie que la planète est dans la fenêtre
+            pygame.gfxdraw.aacircle(screen, *pos_final, size, planete[3])
+            pygame.gfxdraw.filled_circle(screen, *pos_final, size, planete[3])
 
         # On garde en mémoire la position et la taille (apparente) de la planète
         planete[self.data_index] = [
@@ -1595,8 +1599,11 @@ def main() -> None:
 
         # on fait apparaitre les différents astres
         #pygame.draw.circle(screen, WHITE, [int(sunpos[0] + (moon_pos[0] - camera_pos[0]) * camera_zoom), int(sunpos[1] + (moon_pos[1] - camera_pos[1]) * camera_zoom)], 15*camera_zoom) # Astre random sorti de mon imaginaire
+        # Affichage planètes
         planetes.draw_all_planets(temps, camera_zoom, camera_true_pos, camera_focus, sunpos, true_speed, trajectoire)
-        pygame.draw.circle(screen, YELLOW, [int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom)], 200*camera_zoom+1) # Soleil
+        # Affichage Soleil
+        pygame.gfxdraw.aacircle(screen, int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom), int(200*camera_zoom+1), YELLOW)
+        pygame.gfxdraw.filled_circle(screen, int(sunpos[0] + camera_focus[0] + (sunpos[0] - camera_true_pos[0]) * camera_zoom), int(sunpos[1] + camera_focus[1] + (sunpos[1] - camera_true_pos[1]) * camera_zoom), int(200*camera_zoom+1), YELLOW)
         #for point in moon.orbit_path :
             #screen.set_at((int(point[0]), int(point[1])), WHITE)
             # print(int(point[0]), int(point[1]))
