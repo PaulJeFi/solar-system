@@ -1096,7 +1096,7 @@ class Gestion_Planete:
             (0, 0, size-1, size-1), angle-90, angle+90, fill=lune[4]
         ) # lune partie éclairée
         
-        # On convertie cette image en image pygame
+        # On convertit cette image en image pygame
         mode = pil_image.mode
         data = pil_image.tobytes()
         image = pygame.image.fromstring(data, (size, size), mode)
@@ -1525,6 +1525,8 @@ def main() -> None:
                             pygame.mixer.music.pause()
                         else :
                             pygame.mixer.music.unpause()
+                    if event.key == pygame.K_n: # aller à la date actuelle
+                        temps = Temps.JJ(*list(gmtime(time()))[:3]) 
 
                 # On arrête de suivre la planète
                 if event.key == pygame.K_BACKSPACE and not time_set.selected:

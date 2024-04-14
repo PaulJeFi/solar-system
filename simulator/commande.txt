@@ -9,3 +9,4 @@ W       : Wall-E
 A       : Activer/désactiver le signe astrologique Grégorien  (attention à entrer une date)
 C       : Activer/désactiver le signe astrologique Chinois (attention à entrer une date)
 M       : Activer/Désactiver la musique
+N       : Aller à la date actuelle
