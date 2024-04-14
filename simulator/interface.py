@@ -558,7 +558,7 @@ class ecran():
         screen.blit(quitter, (11, 557))
 
 
-    def date_actiuelle(self, time: float) -> None:
+    def date_actuelle(self, time: float) -> None:
         '''affiche la date actuelle du système à gauche du slider zoom'''
 
         date = Temps.gregorien(time)  # Convertion de la date 
@@ -1204,9 +1204,9 @@ class Text_Input:
         
         # Valider l'input
         if event.key == pygame.K_RETURN:
-            # On vérifie que l'imput et valide
+            # On vérifie que l'input et valide
             if self.verif():
-                # Cas où l'imput est valide
+                # Cas où l'input est valide
                 return Temps.JJ(int(self.text[4:]), int(self.text[2:4]), int(self.text[:2]))
             # Cas échéant (else:)
             return temps
@@ -1616,7 +1616,7 @@ def main() -> None:
         HUD.vitesse_lecture(vitesse)
         HUD.display_bouton_pause(jouer)
         HUD.zoom_slider()
-        HUD.date_actiuelle(temps)
+        HUD.date_actuelle(temps)
         HUD.echelle()
         time_set.display()
 
