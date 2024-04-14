@@ -12,6 +12,7 @@ import random
 from tools import main_path, Tuple, List
 import random
 from PIL import Image, ImageDraw
+import platform
 
 
 
@@ -139,7 +140,7 @@ def extract_gif(gif_path: str) -> List(pygame.Surface):
     '''Permet de séparer un GIF en une liste d'images'''
     
     gif = Image.open(gif_path) # On ouvre le GIF
-    images = [] # On créer une liste vide
+    images = [] # On crée une liste vide
     
     # On parcourt les frames du GIF
     for i in range(gif.n_frames):
@@ -151,7 +152,7 @@ def extract_gif(gif_path: str) -> List(pygame.Surface):
         size = image.size
         data = image.tobytes()
         
-        # On la convertie en image pygame
+        # On la convertit en image pygame
         py_image = pygame.image.fromstring(data, size, mode)
         
         # On ajoute cette nouvelle image à notre liste
@@ -163,9 +164,9 @@ def extract_gif(gif_path: str) -> List(pygame.Surface):
 def load_folder(folder_path: str) -> List(pygame.Surface):
     '''Permet de charger l'ensemble des images contenues dans un dossier'''
 
-    images = [] # On créer une liste vide
+    images = [] # On crée une liste vide
 
-    # On parcours le dossier
+    # On parcourt le dossier
     for filename in next(walk(folder_path), (None, None, []))[2]:
 
         # On charge l'image
@@ -175,10 +176,11 @@ def load_folder(folder_path: str) -> List(pygame.Surface):
         
 
 
-# Chargement du GIF de la Lune (choisir la méthode qui vous convient le mieux)
-
-# IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
-IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
+# Chargement du GIF de la Lune
+if platform.system() in ['Darwin', 'Linux'] :
+    IMAGES_LUNE = extract_gif(str(main_path + "images/gif_lune/lune.gif"))[1:]
+else :
+    IMAGES_LUNE = load_folder(str(main_path + "images/lune/"))
 
 
 
@@ -249,7 +251,7 @@ class ecran():
         ''' Le sprite à été remplacé par un assemblage de rectangles en
         utilisant pygame.draw.rect()
         self.zoom_slider_size = { # Les tailles des éléments (ne pas toucher ces
-                                  # valeurs, modifiez celle au-dessus)
+                                  # valeurs, modifiez celles au-dessus)
             'background': (120*self.zoom_slider_size_factor,
                             20*self.zoom_slider_size_factor),
             'button':     (4*self.zoom_slider_size_factor,
@@ -902,7 +904,7 @@ class ecran():
 
         # Vérifie l'emplacement en X et en Y de l'objet
         if self.wallE_x == -300:
-            self.wallE_x = 1080 #position x wall-E
+            self.wallE_x = width #position x wall-E
             self.wallE_y = 25 #position y wall-E
             self.wallE_rotation  = 4
             return False
@@ -1440,7 +1442,7 @@ def main() -> None:
     while True:
 
         dt = clock.tick(144)
-        #on creer un fond de couleur noir
+        # on crée un fond de couleur noir
         screen.fill(BLACK)
 
         # Actualisation du zoom
@@ -1453,7 +1455,7 @@ def main() -> None:
                 pygame.quit()
                 sys.exit()
             
-            # Actions à ne faire qu'une seule fois par clique
+            # Actions à ne faire qu'une seule fois par clic
             if event.type == pygame.KEYDOWN:
 
                 if time_set.selected:
